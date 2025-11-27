@@ -1,0 +1,227 @@
+{
+  "games": [
+
+    {
+      "id": "pinatas_festival",
+      "name": "Pinatas Festival",
+      "iframe": "https://bosphorusspinstr.com/launcher/?game=https%3A%2F%2Fbosphorusspinstr.com%2Fgames%2Fpinatas-festival%2F1.0.11%2F&session=demo-1764002399355887&v=2",
+      "image": "assets/images/game-previews/pinatas_festival.jpg",
+      "animatedLogo": "assets/images/game-previews/pinatas_festival.svg"
+    },
+    {
+      "id": "roman_fortune",
+      "name": "Roman Fortune",
+      "iframe": "https://bosphorusspinstr.com/launcher/?game=https%3A%2F%2Fbosphorusspinstr.com%2Fgames%2Froman-fortune%2F1.0.3%2F&session=demo-1764002545954744&v=2",
+      "image": "assets/images/game-previews/roman_fortune.jpg",
+      "animatedLogo": "assets/images/game-previews/roman_fortune_animated.svg"
+    },
+    {
+      "id": "flame_fruits_frenzy",
+      "name": "Flame Fruits Frenzy",
+      "iframe": "https://bosphorusspinstr.com/launcher/?game=https%3A%2F%2Fbosphorusspinstr.com%2Fgames%2Fflame-fruits-frenzy%2F1.0.16%2F&session=demo-1764002741906801&v=2",
+      "image": "assets/images/game-previews/flame_fruits_frenzy.jpg",
+      "animatedLogo": "assets/images/game-previews/flame_fruits_frenzy.svg"
+    },
+    {
+      "id": "riches_express",
+      "name": "Riches Express",
+      "iframe": "https://bosphorusspinstr.com/launcher/?game=https%3A%2F%2Fbosphorusspinstr.com%2Fgames%2Friches_express%2F1.0.4%2F&session=demo-1764002870575756&v=2",
+      "image": "assets/images/game-previews/riches_express.jpg",
+      "animatedLogo": "assets/images/game-previews/riches_express.svg"
+    },
+    {
+      "id": "moon_princess",
+      "name": "Moon Princess",
+      "iframe": "https://asccw.playngonetwork.com/casino/ContainerLauncher?pid=2&gid=moonprincess&lang=en_GB&practice=1&channel=desktop&demo=2&refresh=1764004454759",
+      "image": "assets/images/game-previews/moon_princess.jpg",
+      "animatedLogo": "assets/images/game-previews/moon_princess.svg"
+    },
+    {
+      "id": "scroll_of_dead",
+      "name": "Scroll of Dead",
+      "iframe": "https://asccw.playngonetwork.com/casino/ContainerLauncher?pid=2&gid=scrollofdead&lang=en_GB&practice=1&channel=desktop&demo=2&refresh=1764014199450",
+      "image": "assets/images/game-previews/scroll_of_dead.jpg",
+      "animatedLogo": "assets/images/game-previews/scroll_of_dead.svg"
+    },
+    {
+      "id": "big_bamboo",
+      "name": "Big Bamboo",
+      "iframe": "https://launcher-eu1.fh8labs.com/games/encrypted/launcher?payload=QTEyOEdDTQ.nLJoRGg-cE7xxiymI_m6vyfJavqo-3Rp0rt58mrz6KHy87feYUPN7maa5W0.DNEjkBfQ81Vu1Y_g._7rGnELlvIoLQ84JCt9lYxC2JKx9ILrgq1N2SMIQZ6GFAnhXv9V-Mn_y5cYCRcn8uhrq0VAU3xt7nHPNnX5gfdb4Xm0eqS7mbB-QM4bci2uAvPj57USUfXR2DRzhv-4yOjTJGd3KUk_7tNHtzlB6Vn0LZzY4PjnzmspQRFNq0pH0B21Z5iACd8NqMgP0YZTjbqe3T6ssNKpJZQskBhAfKXfThOUZy1xrbBxwwlhb2ced53246paMRTWvDffnepnJnfLYcXs8IX74w89C9cksmmlHdD5RAICx1hQs-BqYq-1xrS_3r3G1h98XvQvy2_j3kfDZq7p_pZfd8LN_IqQFHbniaziIm3upUokC3toclzwGHbaMS3ELHVnGQtZSqnSP_tRyUQJoR0NlIsTtkYwnG7RrJAKEPbRjiDwHm85tBOvNAigJi9U.r5ovN37j-cFmGRBvOvoPAA&",
+      "image": "assets/images/game-previews/big_bamboo.jpg"
+    },
+    {
+      "id": "retro_tapes",
+      "name": "Retro Tapes",
+      "iframe": "https://launcher-eu1.fh8labs.com/games/encrypted/launcher?payload=QTEyOEdDTQ.jzcG6k0rR8BxNN4dYeGWU1HpAK6tc1YNrdLDGpY5TjpdgPlmMrPOaVqO3kA.N5xC6TNZJqfarGdr.UWPaaCUBlY4_xTN0cmyXF-HxhxsrxlgGVGbRH647DzMnerpBKIBWE7X66SXnUVkBq901xCmr4pHLR5EwZJI6Au8gxiRBbZyfJ1n43zI7xM9sZFaRNdJBt5RtUhpy1ScSWlfpsbvv4ENG6ohlqgj5JlszZMkRGaTWFNsZlxFzEIb_63YI3N9zVxHGrb5Ty7IeGGeWl9lq-Izx3ZSeQJRyFsdWpPi-w2Y7g2I8-ihzdgR3Kvt5DUJPwVrvYGVIA9peuwwTrtXIdT9yf0J3PqROT2U0V1jbE1uDcSl0ZIbL8n8XBBKlnY1tI2tT6y8T3iWXNLaEuHiPDlRL1_-JyZUbgpohkxivKaP1QIkIOXVEtvJVL8Rxokdak5ByftmTivp3KE-FfNnS_tek32vNwI05vGtqaDUo1ub-FUuAfAJOKo9Ob3pLg5nO.SLMBbkQWE5t4r_CtdaEGJA&",
+      "image": "assets/images/game-previews/retro_tapes.jpg"
+    },
+    {
+      "id": "mental",
+      "name": "Mental",
+      "iframe": "https://launcher-eu1.fh8labs.com/games/encrypted/launcher?payload=QTEyOEdDTQ._Q9fgSG9Ji12Vxm0z3pgDGyGIu_B4b9-bYoex6R4dgl8WWBH6d-ktszwb8I.ifP0ZD_on5KGJxzL.Mxs8psX1-nRCVk5yI44E8Gkpj4tfrLlYfiNJCCZzy7dt-65c2Hh0NHy0RdnZUfJsUnHntY1nYAKPBm3MJRfHHA8sS0CFjKyYAzLHH3myRACRKpNq3gGeGD3oLMLan_zNR9QxVmE3XYUTpupcbBFmFBjPkhYySWUr5ksjBWUoEOB-F1stgLGlrrH_WbPDo3guQUxblGVAsGBgKj_L6HXP3o5bfeqQfPVm-wUVXhVH6sfI70BgODhBbvLJZ3XgyZdDFYBKstHfKbYy7UAzZfzGo0EOyMii6C4aYJalFP44EzhhLqJM5dr8Sc5Hzt3fX_lJTlHuDuAZRimkrlte2YIF0crS5Ye_xfBFVPzsZP2byN9H8bPbydBSPfswVDvpNtGPoGM-sdrXbr20ZPgPPn2B5Kv3IPTnMAIzNkpMzhuNXYWVv8o.Iin6PKnFofoT3uUsBx8bgw&",
+      "image": "assets/images/game-previews/mental.jpg"
+    },
+    {
+      "id": "money_train_2",
+      "name": "Money Train 2",
+      "iframe": "https://launcher-eu1.fh8labs.com/games/encrypted/launcher?payload=QTEyOEdDTQ.gK5vVCly-gUq_hJPBza_8ULTbrpt_U5XBsC-MSMQYL4A58a0Oir7KgJlf-M.NLpRTb0tVPNoIn8t.dsCCveEH5Lu_pW8TuS7n4CrMxGI3lzIJnQns6s67zYFbh0t7kAROx8zleOOXDEmiYYbiZ6JPWHtAEUlaeQe8rvjJgEwBpQJCPD-ck2fRI-7t6j4qpKOVkJTxqXaJUZG6Kf7OrsGel9ZOa1Vto6--3A0rm7Dt651LofwV6ezaHWu9WkCjftxWbyybx54ZgADecn3vVrKKEAfEbXMigrVuuB1EoYQrWgtRQwXrVnG3xYE7d5EQDRzKxp6G4c8cfDuVVmqM8BxehJStj7Cipvce4E9bX2IDSpK5MRmVdBB38GViv-eNSu6cFlUF3sN3X3Bd1M1Bqin15jZgO6X9cFU2CkKbm1uYdIiHwOJ-W-MHmLQO76Z74hqHqahEx2RXzR3O0odz4JiyTI75Lgm4Hhh6Gh-1_tLnTpiA_mLVz-UVbXHMiKgKTL9QRg.9IJyAVj4fXUE-7pm39eq0w&",
+      "image": "assets/images/game-previews/money_train_2.jpg"
+    },
+    {
+      "id": "deadwood_xnudge",
+      "name": "Deadwood Xnudge",
+      "iframe": "https://launcher-eu1.fh8labs.com/games/encrypted/launcher?payload=QTEyOEdDTQ.jm5R25auF_ch3zJYYbiFFbGRZ_SKImul3K8ThUCK0QeU9a4tfpKqQUZuvbg.P9SrY31Xld361BBS.N9RuQgbOhgh_WPIin2CPClF_foBNf_JDfCFIBf1aSHsRRFBYmq4QXwJ9lOEWVpxC1DcwzKcbEn_hQhMDdfpzipBGYYisvch1thgxW3yfXXHrj49qeC8yCcgrPg94qpATby6PH6L9OOc_03i85jXrEIoeR0kmodwxsAb4vHAlnDOWRrVtSoJGF82Igrbl1j60wK-7UdthR9yMORHW82_AOG8_64v9XZ62H1bBqsxaHzrvBNBzjNG7FjO6OpT5KYri8KdYR9m9qONFNbiTWpLgYBPy2zOMZ_s7Kzst-xNnc3lXbnxei-ltENC0v08TFFsJZDxLj60ypz2qjsflfxUBoV6YceUTntkMuwOMOx2VbklyPv2QO36Tse8x9ruN8xAtgPfE9aitc2p_Xw3JLbjHCm6IkavVzyaho6t0Yx744e9hDChm-DGQXGKjjA.jwxAjSRY_vuySGtrn1vPqA&",
+      "image": "assets/images/game-previews/deadwood_xnudge.jpg"
+    },
+    {
+      "id": "mystery_museum",
+      "name": "Mystery Museum",
+      "iframe": "https://launcher-eu1.fh8labs.com/games/encrypted/launcher?payload=QTEyOEdDTQ.xzmK9YKT6DYeHid55GmI7ywKNlcBA2wReRyePZ-why6fnLWyLzpiW715PeM.MxVyX3XBOjxvHdEc.Z2NxTUC4F5pM82QM48pjAnT9rnOxwjvgfiS1dxwKh2-xBHJYAhYvtezBiHf2NBxqrVe6Kihxs5CLzD7oIv2ZYxLMTtuNRZQe1GbWV7M0EoEKpgc60XDci0pmr53s_Y6q-Fdu5lDU0EPOUBCIt6M8mNF0PfDssP2pxAveyXDeIKCwHz9oPUehEFvELEbWH4hd2sqC0XyYIvfxr7Kvb6fIK_zfT2pPJKcMBIceMbRt6cGmLfP7xI9j2Yk8OO_SJ6F4RSoCoXgUEkd2BiDMnZRkuIbXdM65O1ksqwwoGzY8QRDG9AtwEm3E1mLd3wpOhxs7_hdFlycQY1SsC90C1HW7f36mG_vzuxG2oTPISs2XuohSt_raz-BBmmrCjD04ysoIoGQSeb2inllsNo_Qi7sGHKxqn-OpZ1qtBI5_oyrt4pcHpIDedog7kAGQ.Op9rxl34ZxsC9lL3CSfVwg&",
+      "image": "assets/images/game-previews/mystery_museum.jpg"
+    },
+    {
+      "id": "xways_hoarder_xsplit",
+      "name": "Xways Hoarder Xsplit",
+      "iframe": "https://launcher-eu1.fh8labs.com/games/encrypted/launcher?payload=QTEyOEdDTQ.N_p1KVkRa953m7d8n-eT-C8mwY2KP940pk2PrI7WeTwLgkFfVsdz61H9xyI.g2ML6kj2JN6BiTVM.wBZ21_VfMu_FKpRBSPIOwNUV5-ZiyXGinciI40q8mwBc51heF_G5amz338d5Y74yyf2lAcKKNUUloA1Nqouw1EAa1lKtJHOkAvBeQKJtTSZiuBZiqYTe5fcEhnvl3VUWNDMNQGwn5DZoKbEwL8qrO73Enk_yrsncZmLyfiZFKJ2Vul_jCFreFwGByPRPlySbMGmYFS0Pghkf9Hmt822Ee8nRMXtLnxH1uIGibEs0r0w6Zt-nXGsBKgUmzMpvVLC1UsJmeFoANQlsvSLqhGbPmbslE_h60loiNmFjNHOskxIS0z606RdS4QcVp8li5V9Wc0Jahid7B6S_xqjEN35ygDV6S2dac_TlZQN6cdISJhbIQ86QosPBKSfwlUUUsmZz32xxfRXXsc1fPKD6zRT3rdQ_FueXyXzoRnVMipaq3RbwQUqyjSupO-kCaw1ViN8.HiXjakdpMyFFlt2o2KypXA&",
+      "image": "assets/images/game-previews/xways_hoarder_xsplit.jpg"
+    },
+    {
+      "id": "razor_returns",
+      "name": "Razor Returns",
+      "iframe": "https://launcher-eu1.fh8labs.com/games/encrypted/launcher?payload=QTEyOEdDTQ.Jt3p1gyU5G86-smKkI_bb5F8Rro2A78TyQ5Fv2pfIcORPz00vOoSFIDH2Zk.nvq06b5yEQFm8jZb.xWreWu0lhpx685N-i2fTGU_d01h37EVkym-7B1mhNBcTSSzvu5g8Lz8CNHfNYT_8LjiqEQasVsWis7ykSqm9vx527MvK2YB59uFYJEp_08hq2RmcOJ1OqC9L_sBtcGN1OAZvNIT1lFe6tgCjg8C-W9z-M8hN-DVpDDl4leEdYaxX6p1h3GzQMGgR_RMp29jUlxG-n8K_vN4jjfBkp2L22kc3PpBpdawynul6Tg0nVIwu73u4yVopgSU_3B5ehsPximdPukKfk4SgOY0YD6G37BC3YVhszhh2cphqfI9R6BB41tBVO-HrNKRRw2VhSB4VY_Ig9Voifb8V1k9wDZEEZg_Iw322iw0Q3d1riMnaJKrFGAXFXnAdyhYWSEQhH5e7sygh32GFX1bLt_z5qx7FhYb1lwnsJPoQfZkMpsv39zb9UprFYVZ_-no._otlIM6G63UtrRT0siiG5w&",
+      "image": "assets/images/game-previews/razor_returns.jpg"
+    },
+    {
+      "id": "san_quentin_xways",
+      "name": "San Quentin Xways",
+      "iframe": "https://launcher-eu1.fh8labs.com/games/encrypted/launcher?payload=QTEyOEdDTQ.jY-meEuGb4k806Qr2PyuOtrj5USlaonqBwkT5Mu9gu93-MDlOUXmydgvsVc.sDYP2I800TzvL4U2.q3pRsyJ-s_aApoQX_HkRgp9LfJOkq_n_P2a5e61nQfdTkdrK5IhJGgyZ95B4I91QLs7ZbTMpZng5u-U3l6wVXX1NWn5tzKfHHG7tF0CPD3dZrf-ZuJGzjXV5hIGFsyOytNo8rZdTxYAh9WP8-vYgK_Az_f9260Hfor1WnnB2AbFnXF0Wp2sxiWFLevi2-RSBllLafTP7eRlwtzqLhyChxWg0BqPC8QpvS8rNhjsOBKetVR2cP6CsMQVG6s6IZaLpzK8yPp2PYv7tVuwYmg460nuGjksssKvZeWP0skz1nc2Mor0mhr-m3Xn1EKDpZFp7TlAqAjfsdKKEvCJ0p60H9CqUcbwuz86jWUDCTf30DoF_zEZJz_hmrFM81OzNYdj3RbCXyVhPfARZb073Utz_3ugbU-cUeb6SyLm8rRo1nRaksqhEW53N.F09mou5AVWRTKf9Zxt6_tQ&",
+      "image": "assets/images/game-previews/san_quentin_xways.jpg"
+    },
+    {
+      "id": "reactoonz",
+      "name": "Reactoonz",
+      "iframe": "https://launcher-eu1.fh8labs.com/games/encrypted/launcher?payload=QTEyOEdDTQ.HMsXhT7v7aM5YcTlSdoaR_CYBsw_6xGdycJBbeQZcvw25KZEwuKDMg2dNDc.Rct8XL08NCCqUsfr.8SCzmRDhbczEp80Oa9mNMY9SVOr7Zi4RAe-JIGjG_LGoHU3rcY5004V3srse7n4gSc4d7nBM-DhmekGaxFrhY_ciooZm7ZvfhiOXI6jDsBK2SiDD-dsmqcIFrU0xf3Hc0nwUsMhKFC2KsumBkpqIGHhoB93BwiAuKc0dVcmbqj6vtLNHhbVWiPeIBXvPsVCfcohcMLeySW4m85AgsitDzIswaXY5sEBKcSGKaKUTtiAvE3jOLGQYm3aAU5bnGyPQn8jbhVJEDDHqoJUQrdLxhYHy8R7OPaJMRTfki_BPxOSJ8Pix6BAJ8N2cwNoqeBY8zXTiqjIVuq99n5AgsOJfgLtc4UpHKoi5vNaJ9g-CtvGmLyHgc-yoBTvaO4-HH86cb_vdwwka8ogfQzc-XPD_960mzxsoNjhC54mYHSFaGA5us--YIFw.X5lM-pC0WiR6bjaq9sywbQ&",
+      "image": "assets/images/game-previews/reactoonz.jpg"
+    },
+    {
+      "id": "pine_of_plinko_2",
+      "name": "Pine Of Plinko 2",
+      "iframe": "https://launcher-eu1.fh8labs.com/games/encrypted/launcher?payload=QTEyOEdDTQ.3G5Zmsp4GeS7rrD6DOdzQMKeshFUeweu6AN42dw1JFSnAEwqASu6I2s4frw.anzZ_aJWev3bSLCV.GOfE5rrBSHa9gmqxV8y7KeMGOZsbZfjOnlF_mfpI4iLvUgcNGdIDwE2nvPvgTAuNbtuwK1MaOXB-Mpn81dw1NxWoCtOlnN1OM1SpXy6MDMZP86wL-C0oWlZFY0p96LF8t46RWD1B5JIMu2CTOwqsmlQz8snG7hMo1IU9DmXNxXIuugc0HVAAghoD7BC7PFpyIphpx6o6mB1GfmB2V4hyxhKdfTlWrYPRYNQ5G02SR5ao006hpVOQIotFjR7Lk3HH93SjlyYzJ_qA2hz-U4qvKUmyIoIJsEesxuZ4glTezd6nS0np_kk70YXX9egN-33ZcTEw21v-7M63L382Q5PyzqKX0qfv9MkVE2Jg5i7qJADx-rUB6vGQdWRtu7_rnfq3kbNkN7P2ioW_MZxLrJt_p8S-5GYCRT6KFAj6E21FlqrWu05QDUqih-tb.b_euPDbMEM0kwS9IpzmC0g&",
+      "image": "assets/images/game-previews/pine_of_plinko_2.jpg"
+    },
+    {
+      "id": "tombstone_r_i_p",
+      "name": "Tombstone R.I.P",
+      "iframe": "https://launcher-eu1.fh8labs.com/games/encrypted/launcher?payload=QTEyOEdDTQ.I-NJ23glKjP-BjDLYzPyk9p7C44fl8ADJjfb86-gUkvxuPiL-EotI_81odM.ovV8qL97lOPYGck9.tp5MEtFWrajnr1cCnrH1w1taZKJWvKDOO8nukG14jYebBKQ-vYZJGcMYI9gOTfofAbuMrWNQxMEJQAFpbZiCg6tYOvHXDi5o2W8bgSzZYfOoR5PgiA8etexs6JD_ZouOSEwXApLtc_7T1JZM_46PrKtlsfEL7TkcVLDuNPiDUYJn3TGO6h39a75NQUqO2oiBuUTQGbLqEqoiqRQvKxzB5OsrP7umpHxfJ19cGbJWAqwZm6h6Osr4TV6Yint5_j9MaZ8yhYNm0GtTFw7MRocm2Kj4qQ_UGIy3HIV6jMShSsQmYsjOupIWfeK3eONAUngdzmX8FS6_bUUcPbXIo9tRLQESSjyXlGnUa64yQiBCliAv-z81mkxk5d1DxAniTvIL30K6OO-E2OVNDI3wts6TMkYgdB_WvA2qOvoiRXI-X7NVwnk2maYiUlE.pp24yvzBw8WIWAGGWdANvA&",
+      "image": "assets/images/game-previews/tombstone_r.i.p.jpg"
+    },
+    {
+      "id": "fire_in_the_hole_2",
+      "name": "Fire In The Hole 2",
+      "iframe": "https://launcher-eu1.fh8labs.com/games/encrypted/launcher?payload=QTEyOEdDTQ.EdAYDVHKJ_2C86kKFljOn9q8eHVL72oMFGdf6qBBPEPbUgHEAbGpmZnxfR4.7lnoKwLGlNvamrK5.W-NJ1Frjbb28kAKS-6yG1Ae-n0F653I36__E_9mMgpYmPuiSoZ73Z2mwYmm3pRgVn9toHaV46R_cXWWLO_BDo3LlH_FoufMbVJxQ1yDbu7xH7tm-Q5ipRPMjsHbCW8TpPtmXQ7iftnN8nvUp0SgYIvJ9h0dyG3msIiVszWDczdlEKlTjJqXz_ULLe9thQjdmem06AHraDBhpPoFdKtr-q-qCVOx3GNWrvzeAdto0Y1b_a38tJzCZEuZEmY5YgrHarzsD25IUosF8NcHadMfHahQMvYfby62D3oDkxo43B-ETDvASTbX0i7-RLS6TNp_UM7Ojk-58FqTnie-fb7ce1_PY9VWl5YM17ICct3P9XZqbzUnaX5b-zqi3C_8x7xMj6wXBmy-8-aOURdZMmVdHSXbDnRhzljO8K_yrOgP4F5R-7S5XhWNmCRtDHQ.DszM6uFgAta8mWdXHzKevw&",
+      "image": "assets/images/game-previews/fire_in_the_hole_2.jpg"
+    },
+    {
+      "id": "money_train_3",
+      "name": "Money Train 3",
+      "iframe": "https://launcher-eu1.fh8labs.com/games/encrypted/launcher?payload=QTEyOEdDTQ.WN29zqogPXlymqzgAeJm8rhXLv9PX21ZCaV4lUS9OBbPHhPGHVDPROPPTas.3yGg10zc84U1DHOH.XL8voBIiF7yeGM0nkIKPYOpjYHARkc6Kl1bhzhMcKFh81VA4qnOObwfT-kNFA4FpJvPllEwRTFKjdyLzyoIRXycd_JB80CkbZn5wMyl1G8mF8iXi7TDMv9SbZweaXn7wBnj-mYOI3cXO22Wsz0KXPYBnrGK7i-NCEL0115w_wM5eaUhNA3r7-6CkkYBoZhz6gOANOuB8tEGW9tJqCwjLOw9RD7uL8cCCVoUhs8qCkcGMo24oJOV8KTmABHKdEwg2DGtWIfVDUJ4xiyR1asYFXQoAir26UPIKrx-rI0ENhXfx4STsZK5vbp6Bq7hwv3y4ADNatOQQfKzP3snYW_xfxzGDZ6sp1lAb0q_12qiv2EMXY0ZTWslBwqh1SEaN1TiYF0r1ZtGg6CROngwje60fZ4y3dmPKid4USyaO3iXWGkqeOH8kaQZzWg.DVFrQkdWVjDcbuD-pyZ4eQ&",
+      "image": "assets/images/game-previews/money_train_3.jpg"
+    },
+    {
+      "id": "snake_arena",
+      "name": "Snake Arena",
+      "iframe": "https://launcher-eu1.fh8labs.com/games/encrypted/launcher?payload=QTEyOEdDTQ.QALqfG9W_EoOWcaWw3an_ZgWB1lA0vG-uWu12Az3mJPHQmtCn-rZkVUJLrs.UP1oQ6VhsknEbKau.1VwAnALFEiTa08Ck-WOROMkeC8fHUcjFxv7-Ksum5Mt_YxyAvqwJyISI7O1ZAov5DRRNS1fHPUE_ayAX-9qpmMVHzXXmMRT-UlpBRRMRKcNSL0fYA9-nByJYzZ6v_xxXPQm-jFBk8nE5TDuy3P1NJsMrS_OzRWgmEGn6OKjtsYd-0YWSwgGF4ShzgfHyEnUHBUPJ-wsL9MlqTAX6zve_zniNFB7mXzMGPW6F_Rb-c5hh7rtkVDoY4qG929y1utpYXln5T0RCh86kMneKFHcw82UUpJhd7c6mvdkdTrVfqRR4nKnkVaNeKbBkHn4BBcJOkD3bdcIKFIOvXx7jgCcTipNNosaOtCAxgo2uwc6Yrd8S4HepMoTHXGlTn9PQdw3yH2qi7BF88gbbeNYxsGtGiib1R4ps2h-tsPKgN01m9QOpGV9z9PAD.O4lASLMZ6hZHgiuiux3TJg&",
+      "image": "assets/images/game-previews/snake_arena.jpg"
+    },
+    {
+      "id": "retro_sweets",
+      "name": "Retro Sweets",
+      "iframe": "https://launcher-eu1.fh8labs.com/games/encrypted/launcher?payload=QTEyOEdDTQ.Yvy7kg1PBXjYLHjnLjXlXMJWh5_MehKEOkner-7wBNys7gP-ZxkwnzF-wu0.dDG7kBCzoseZ-dyH.AsIAGGlNFIE8v8laC46wwX7ll9ByvSlX-ML-hmlOzQAfP46Wq2Frj62bhqhkgEYNX_jZzazUAf4Nd9Bn-2nSIjIN7zempQnfBy8CqxNnzNlB9Omph8VfddT-QSll8W6nqLDb1yK4t-IXZfb1ZX0lx6dIb7aSA4VjvWkkbk3e87Wq1cQejkwTDGo-4xkFjJNzTBKQL02wbaB43ujJj7kQQw0K-R1lCwLWJkaTETMaDjyhZU2Cq4Aiem3r1RlkVQj2YlAXibFuiN2sRq2v9weXE2ks4k_iUiWj5jwu3_garVlfQwIXB-GX4M7g2lOiQ0fWbu8PH2wMcnml6TPnVfxkwRLUSGgv2K6tkKo3CnArejgONl5OSv9EUeF6iIf2sDAsBTroYu_a-2HxrewWNj6SZKjAX_6rNk9s0kmvnX898vHq1zvSzbQJiA.AF_S2PvT58wktHikKpZOcw&",
+      "image": "assets/images/game-previews/retro_sweets.jpg"
+    },
+    {
+      "id": "duck_hunters",
+      "name": "Duck Hunters",
+      "iframe": "https://launcher-eu1.fh8labs.com/games/encrypted/launcher?payload=QTEyOEdDTQ.v-30GjqL_Zhqp4S77qNE4Ub1DhBBmQb_IvtGhXqSOhJlEZVNjiNJIu0TNQQ.nk3EvRdexI2V2Y81.A-EzK_zGUYnEPXPRo7YgFqW9lRjmFGbYOiljIfsyVK40hIDabS37HFASUz76sd973Qf0iUbB8Mi6kqYygbEv5s8hab7-kLRow7bAY-ig0JVJh6E0IqeqXJ47RY4tBh9of1QiGPORjW6doZVdwtALPjZsrmxkRPTEuMlG0i6ezks71TZliPpzLdZ0ef0C8XfoFHy_j56nOchPiTO8A-gmQjhQAz3mLY3AtnZTEaid1kXmuFfkAGlZ3PgAWhuKYeVPd9Qc3RZ8_Eev3cLYEDPKPBVzaGMD8LP5CFGmzFked_IqVs83nPrbSjAPrVCg31YaUxKtiWIKv8Bn3OmW31jY9JAy6MeMJuTR4PJcyxg85Tfb8Gxw8UobKaHMOX5AjRJIsGpSkMrczXzSmH6yJM5m0ssD5NYee15KNxV_jWmIh7ihoc9XtuJ8_g.kq0xMEbrneXycyprJ4ipqw&",
+      "image": "assets/images/game-previews/duck_hunters.jpg"
+    },
+    {
+      "id": "barbarossa",
+      "name": "Barbarossa",
+      "iframe": "https://launcher-eu1.fh8labs.com/games/encrypted/launcher?payload=QTEyOEdDTQ.gbxvUQG-r2kvFxM7-0GqSzjUhiR99SMh8H36chInwX3la_-dqC0P6pgIDCg.d2vz0uBYt-4i6jsC.M0EodZvmznfPFem3dDI8u4JTh5zjnp5rpUmk9PWE4JbFzifhdv4p_F-jnVWKSly85quGQ-tgh8pdS4ysDdSVRAWhqDu2-KSp_pLCB6NxCkE6GQB3oXL0IZb9mE1bn6Of0ZH8xVmFKvenU8EAVQGit3YvNjMs13eBlhJXwpDECfOgH7dalipNW5chK1quSE5rja4XchbBVoB8l8IMyOqIFuexj96Dpe2-kSCMO6cENd5gpkieGHD_OJd0xN0li6GeD_5oLZhZ9ae1-C7D7dxfpD-l7j5b7AKvA4Xa0WEqiQfWgx_4Ajl8ShTTaaysyP_2jaIll8q89RWyPOePGKHJi8gFQihhPgZb-Ch3Qz2wN3DmKR99oPRkDTnsAfwUuUX-WJQ5viNucw_YVGK472aiHkaJoUMjIBOa2-6tgH7INyflNqFqiq60QQ.OCP7ShPOoyB403VTNeKNaA&",
+      "image": "assets/images/game-previews/barbarossa.jpg"
+    },
+    {
+      "id": "barbarossa_revenge",
+      "name": "Barbarossa Revenge",
+      "iframe": "https://launcher-eu1.fh8labs.com/games/encrypted/launcher?payload=QTEyOEdDTQ.lT4svr0eyp3Lian6bTzDIvBEozeylnu88FnKSiEV_1Ak6i6cnNH8NF4GmUw.-mYP_hO-WphCReVW.2sE6NXZHtPBfFZv_WGtHwBvV5xpSScW4M2QjjpvftP1l-J3rX2IIDTNApdtVoK5FZSgZRcYlhAcjDy2YuVDUClHkh_FlDLcVswDv7kzih-pg7P5Vn4rWSgD5pqvs5GWe2TMOf6CMLn8oiuHcs5zKgKYdBh2FPxR-_juE0uqlpdiCmfeqxWHgKNiQIDfz7a8ax_yhWMlAdFFNxOD743au4g7neRk9eNO5DxoJ3tGKpNBVojqSbOkQK_J-MN6eS1-pYvIpra-uA6iZiNvzXG4VY13sis1JqGYNgydNXmplv-DKdZRFNeF-D8oHoRY8BPqHAEgbIefCcKQXe-CrKaplqiDGP6DD93gsaNQRg5DutuRos0OBpZrni7i2f0YxSOEGKzKOJBW_dn6zy3VBiiWb6eOYkST6u72sshCxq5uKTa23RE2dTVxMk0Ea9lENGx4.K8XnW20Y3sN98Fp1mpm2Fg&",
+      "image": "assets/images/game-previews/barbarossa_revenge.jpg"
+    },
+    {
+      "id": "dinopolis",
+      "name": "Dinopolis",
+      "iframe": "https://launcher-eu1.fh8labs.com/games/encrypted/launcher?payload=QTEyOEdDTQ.s4x1TLEWj3nDwiGqpvY7gEAKuKRcAasN-0blT7_wk_cgm29r0-1JudYr0E0.0jUUYy8IresDfhRi.-dN1xzBXqFABFF4douY0YBjnaqfEGnZBjAUZOkMBv-oHkViHbBTs6WU4B_GGX3GCOolyNFJJOm536zb_CiOMMkqIPQQg0FVph0HBQd4eEQAv6UZ5Fro2eApXHZGhIwfibReBULSbKaukK_2oieey9v1W0K7E4TNvbl6d0xlZG_iBp2_fvQTRpcCPMidyFXwZzhDAfCYJpe7nUWBzOp7CtG9fhHteLhl4tqaaf2cJMu6gfVdRgpYwrPP2UaoucmNBUnD9Ru210mtYQR7ou4caUqWRUSeG_GWbPLuIRRLW7ZBBAEreBWj9ZS_1GxhaRGvlKz8VnVgWY7qFABdxmhe8z7IBM8Zr5k-HvZvATI1Jy2J_5oQMBw45W5pknb4QW-rGqZUR7HepDwp-v72dzGBslREUT-KFpXeCUZktFD744aVMyzC0BvA.Mdm1EArpRGL1s0xrxFWmxA&",
+      "image": "assets/images/game-previews/dinopolis.jpg"
+    },
+    {
+      "id": "nine_to_five",
+      "name": "Nine To Five",
+      "iframe": "https://launcher-eu1.fh8labs.com/games/encrypted/launcher?payload=QTEyOEdDTQ.ankvOa27UFsX-dw0JMzV-xVfCrskufaxvo5ZC-uf9-QT1YJ-vq3oyg9QLQc.d220OIxp_ymP4OeL.kbcXiibLXC9pS_eBj4XRCIilw2mdSfftqqeoLn-zkdLM6UJqPu77V69H49Xg2s6mDBBZjV8zMIX2Q8E7WbWib0VyvuRrZ5ZlXM-ZfL2wqX-4G2QNzEgbEQhKHxStcs_PWaOp9f1NjB5aLkXFw5HePXqzYCILkZfGJ6NZXEA3yJHeuDs1mr_jfWj3-XTu2rYJs1MQL9LnqyRB_N406LJQUNZWItMPg4afkjKwitdQxm3vX1dwF50UECZyyOYR5acDvMJCtkdKSaEzweyYBz_fjFF5YQ4e50hQYfGshLu-w4wNm7yeiasCp2YRYy5WRkUqpQSYeKPDNio4pGc2pU6cJHnRmf5d_ebAjdEz8DiTs8AugWJOOyrY06aN90B9Sn8dF7wUaPbwX00em4qdB7Qq0f214ai0qj08meRpAgVfSWcnQZHV2Hy6.JWDvv-rfVbRrWWcGp3CPfg&",
+      "image": "assets/images/game-previews/nine_to_five.jpg"
+    },
+    {
+      "id": "the_crypt",
+      "name": "The Crypt",
+      "iframe": "https://launcher-eu1.fh8labs.com/games/encrypted/launcher?payload=QTEyOEdDTQ.j7X1hMVlN4VqwWo1V0gMWkFxX-bxWMh7KVADiQFB2fm5MGM-2OMhtCu99TM.nYbc-hYImIcUhD9p.zwLU6NaOlRna0AyZL_SJrPadag9QtwIWm56ZBFXigghUx_dDpXJGBFb79t2TRD5WjyP9TQUYrNiw1GqdJFH5QStILW_RKPinb277LHkw_OamYFhhorXP7uNzl4ofmhSzNWkUdrJOAWJF--DTyTdky9uqAV4-oZh50AqVbUrKCd6PcOlp0MVVfvPUKsA8-TsTovgLprEEmtT4SElIXJ4fYsJW87BAqXs0RlFigS6zsCC_mkAxzGqqRrE5uzV2EBcYqSJXl6FgDYQ6LrvMBfKPZsLimUNZgeU8tVjYX7zpbLRE57FR6YWvw0_R7QyFi8HrYvRVeJbSfxq5TJcYTarJRvsMsDWMdf3Q48PFK-LbmSMljZwMLFIFmPaJmtdTnj9w0Fz6PtlDF20bSUHqf0URNdjY1t6-kmzEsMRUcWzOPQR3Agr6Xw.z016bLezJb4gNGgnXsf8IA&",
+      "image": "assets/images/game-previews/the_crypt.jpg"
+    },
+    {
+      "id": "iron_bank",
+      "name": "Iron Bank",
+      "iframe": "https://launcher-eu1.fh8labs.com/games/encrypted/launcher?payload=QTEyOEdDTQ.8Ehei54YUpBILm80_KOF6d5ADHl7guv4WWv-TH7jo1SsYw1pLxJxXU_4rHM.FfkdojLkQYPxWiLU.GJA88hxAJG01pSCdynTCTsAzo9ngKsoPVrO8EbS1we6x_Y-7ANhUHFKnavcr4iKNieE0Odm2c5TlXlL3Nk7L3aTWMr81d3j9xWJ_1pEYcVVToSoGO2NOuRWmDu_p-pp-_eop-LQWiaih5h6F6y4-eNwF6oz31vEf4CTp22XZEkowWpLpKAS_7MOf7woHWWIsrHY-tHnJp_1FwrXwzXfYTpZsW6yfbJcA0dN9PY0bcMjzISoTDPUi5qcVmOIJgkrvQ-0_3Js_tqNogc2UbL9h1BTTVD51dZUSp1ShpcFFSHsWwyaXqydXMBw2F0QcJCOojnlViCPccYl8H68hlvYWH1kiUHxA3kcNyLkSE5aTap4frMQSsjj4uIqxhxlGmvq-GLrOywcMklPLulh7UkGCBnDrUaS7ObfDLwLy6Hs8SmQ7HtO8GA.3sHYwjF5203Qud6edy4uCw&",
+      "image": "assets/images/game-previews/iron_bank.jpg"
+    },
+    {
+      "id": "tombstone",
+      "name": "Tombstone",
+      "iframe": "https://launcher-eu1.fh8labs.com/games/encrypted/launcher?payload=QTEyOEdDTQ.NSYnwpyTcjBH2s2QxrZ0RMxXAM1MfuyMB2Bo0e-s1ppovql5RHBuze2JRqE.PCOjyeOgffOxb851.nxCctfcidAgxlWsbzd5ohgFF7wMsWb9FydMZn4FnDXi0OHR0Kt6cFro-CRGZrXzNsyJisap0s1b5UJ3uHbkeguSietCFHCTlveWdWYgBKUHitx2p8taE1t0mWzlqFP0T843PWi4cGEDcFKO1s5w9b8w7xPR5TF-ypCTEL4JS5vVNLZ6czcrjIlJC2HjUaUVbr5rNIoll9id0ab_1t0F5SiKYUelI9pmnh-kiEYDnBgbhbx0PCfCRNYoBl1qo3tonzx5DxJkwFiAPYBJrZnSygLF-gn7aiyrLy_exYDShynX9ihF9FlrmKQA8q2vdaa-9ul_UoW_EEaO6ztwlGQAF_MY4_S0SmsgXsdWT9nbr_GKUkSnADWW1IaZqW9JdUy1ZBRZ3Gi7FpUfU72DdGo9PlUGPMNnV16YCmEG63KYieZ3H_F9h3z8.f07Dr1wisTinsiV0nALxcQ&",
+      "image": "assets/images/game-previews/tombstone.jpg"
+    },
+    {
+      "id": "brute_force",
+      "name": "Brute Force",
+      "iframe": "https://launcher-eu1.fh8labs.com/games/encrypted/launcher?payload=QTEyOEdDTQ.vEq9VfsVhiqOungJAxqZpodELY5fNPgMOUFYQPgIf6tzQcG-4K5JQ7rSL78.nN-dAmnllGuxTSvI.tV8Rh5fvOazxxe4V0KUDG9Os5tZdxCjS7koyNr960lD4lPR3NkP1EpVRl4IMFY59GstMSYvA5hZxuGPQwhm7ZCj1QRlM01iXEc1HB960C0deXKUexMyYdCUp48W79sWtkGde8u20AjB4ZkMzJJi3AtrOSJII14i4FmkcTpHSX4E2cfpqvMNdckRQlH3omDZ_vigHj2Ykg5J5qzCg7ayVSqbwzAm_p2crWCRFuM7hUWQ2HEL00dZ686JEecgllUxiT_Qej4MlzcQKLSMFcYFM5oIWiLeUGvM3Ijy6B-jHKfGPqRZqeCDi-ZMUPuYN-iVWz2vG5-oUvYeBtZJbNEl6I4xc1oh-oP1UXPCb13IOXYUVpuBMY-x2LSacrdxBkoCi-Ek1P-UI2UJRjrVeRzzzFADUFGQ3bDB1mcjXHQmzGHpDbH-TYjER.FAGDloikZtkxpYpvHd7fGA&",
+      "image": "assets/images/game-previews/brute_force.jpg"
+    },
+    {
+      "id": "dasxboot",
+      "name": "Dasxboot",
+      "iframe": "https://launcher-eu1.fh8labs.com/games/encrypted/launcher?payload=QTEyOEdDTQ.EOvtz-Jia9ymFJm_crRvQkxSX7R0rrwrNNvM3oX1XPARVRdQbGY-eLxGofE._zUguTsIw6DZ8NQI.Uz7_CKfOH1QK2AU9s-P5zA2dQJIgrfhbvtJm58vR9oBHPK1DzgbPNN4mNHnGmdhLFw0Gn5XCTwBfjWhfu3e1hKmbxsBFAMGaNh8luIXyc3lgmdX1mihdtPlIsrwhudZy-zSQRD-0Gx6ZbjO9a7KVtt4J8anys7lGMU8kfaweUO2T6UNkowbXDYkPwxjNaG_BURtCs4bOR8HxELyOfRWYq4605Cl4Uk0-rW7mC_Wv5lHt9m4Ex7UeKq0Z8VVO2tEY5e59Y-NhcTBQcCtgpFa-eMfDVPpsq98g-wQyi8YUNPZ9B1db0n7TJkwUyzeIhHsX4X_W5qh5hFwuQIL4jMY5BO2FgkVAHQSXgYAGidAS2LA50CFLpVC5rTy-hCCkNT1b5usbMC7mJJrIEbbtwCUFz4VTcq6bqOaDYasGU5F6Y8CIcWD6HA.6Jrxe8KhxWhtcHphpy0xBw&",
+      "image": "assets/images/game-previews/dasxboot.jpg"
+    },
+    {
+      "id": "mental_2",
+      "name": "Mental 2",
+      "iframe": "https://launcher-eu1.fh8labs.com/games/encrypted/launcher?payload=QTEyOEdDTQ.9mfWAYikrA1OKudpU3DMMt40In0o5Gt4-8trCYfOP716IUSO4Erg9v98Tpg.zUob9bXuxXJE2Ehf.OYO_pX_m4WkdTdlRlMIRH7l0SIsfRB2P7J13L7FC2WccVARHD95Bg5edYiHeQtN6IqIO6o3pYwgFscUFYTry2WIqipNu7DeAji0s_b9P-S6bY_k1Jr_etESGMgOgjjlelzVhO-EScPpSwj-d5xM8zQZlwYdYASvqICpqGHjOTJ_j2RgZBbVW8_steJgG7ZG6JuDFSDhphgP1Bd5dBTy2z6L5wlk_AzU4-YDwYwhmWOUBp23Xivfac7HCMRSoaceb2OUKishQSur0NF-Du25mOpmohwQ9VUIK3F-FFJoTJqPKkfJJqZTXXbUhP5MekZfcEQeNd2i3tnyQK4FB6VxiNcAC4d52ApdsFu7cWqEmMBcSW8jj3y8Gpw0QOxC0DCxqDL0NXWE1SFdNOKCrKTbd2EgZwyXuNjaIuDdfK4e6oeLVBypZ.snExpmHfJciOg0id0g2xPA&",
+      "image": "assets/images/game-previews/mental_2.jpg"
+    },
+    {
+      "id": "outsourced",
+      "name": "Outsourced",
+      "iframe": "https://launcher-eu1.fh8labs.com/games/encrypted/launcher?payload=QTEyOEdDTQ.nm6cwAITcx3FiT6P7WO6Hnh-HDpR6iJ_OlRMlguYP7Jsex9AZny3l458Q0Q.Tw01IZEveBpblx0K.6X7B6hoRYp4MRD5kif2QfKyNZEyx5A5wuGNWImq8lPw_nX5GpMBBJu6o_35jqXqineOSNIHiX2b0lIQpxp5-7yfHyflOFUh7DXm8vqlyJBCfwirNQ5W1CDevsl9XbCNmXWydlzxkOPUOpOuC-OjNwJ_BjSjszXj4BHh1itGsp731djHJB0P2xqZvGJ5xdr1_2UxCKnC5nJdThOD-SiBlsDM0S1Gv9RNj-PkBS72V62RrZrxL2b_Ng6WbObzbnACVIzW3eubD8-WlROLU0zbdWIteGdU5n-ud-SMrjF18UsZ5vj2oKnPQofUjeMAS3c7bxIpXrK9IqFJQI7iXz-W0yBE77ES5Y-CDq_mww6g94jC4cEbbgieB2rfoM8-1WvHaFQolapg4F4lBQZBDZZnUydmeWrpfJ6ikK8EeQP2EPLeMNj1n9_io.E5ZqJP1CQ4ZIDH_I1z7oCQ&",
+      "image": "assets/images/game-previews/outsourced.jpg"
+    },
+    {
+      "id": "jammin_jars_2",
+      "name": "Jammin Jars 2",
+      "iframe": "https://launcher-eu1.fh8labs.com/games/encrypted/launcher?payload=QTEyOEdDTQ.appOiW47wKXhdF4MBFM295FN_ltpDZOuMdFIWurn7FUqET1HfZW4ta1SHNs.maiK5mBhf90_xeO_.Owvj_-XI50AhjFS7pcKxJjgHvV7h762tasQqOPAIn8iwgKXGaEN_VhTQ1-KXM5TlX4HvoiDs9_y0I2aYLSASKlJKRSBQkXYRkMF9Uzdc3PRRb2w93-41Z1BJV5yJpCPuEk7zIUsqP1OTfwY64i0l0cDW56zKGYpNnNZJJr-vntEyc2AWaXdXB8u0segNyjkpvt_qGFeQ0YPbssKKeDQMi9X87PRyTHNlCY4vaAmG5kmWG33ymoaXqrin5CXpBcutaW1eUoA4Fr_rDR1RR7myeEvenDzFgUv2_2Vf9q_jFSWrtHtdD8ymSOcCkRRBgA2R1GKBk0ShqUAFM2b4bCVDcq9hoiSXxg2IPFKpUISIM3fqBYE6GVlm818M9qrMG7p79ksBzJN49HTl5Tx_dPEAXhigLEBDmVS_dsMMtorlBdT3xrJelIcmkQ.4WcBUki-icocnRrODaTdlA&",
+      "image": "assets/images/game-previews/jammin_jars_2.jpg"
+    },
+    {
+      "id": "reactoonz_2",
+      "name": "Reactoonz 2",
+      "iframe": "https://launcher-eu1.fh8labs.com/games/encrypted/launcher?payload=QTEyOEdDTQ.Yp_C8UO0X9kXH8Wrq0OmA-LlTsT0HpJH_Mr2PrwLv5Uf5d6t375dmIejFws.cFygbX2uKM8AiUqk.aI3yg_wQo55dWFlgrttuvZ3TPdCNB-csrUQwJGOKhT2-k5nUN6R1Fzp03wRbo810Sx5PVQtujKe2WYSqLAmVx90TE91psq7aAtYGcZ13zd3CphdvSqIF4gshRGPWp6kmyayHCgNfJ3WiwTqT95leAEoRv2JetqK4g3pMiLYjrXsZ12HesBQbWEPhbASisivJyV8JeMQdfuhsvAZk-9fMCvXm1wTo-L5o2XRiT2Js5y_U5pnuFVAbvJBDaHRSsyRhzLK7l61gghYNmMSBLSoEOBei7pncwa0Ez4GVhyVc5R3gLC2Sd9i9fJsD7OCof4IioQ945mumTn4UJdHaDTnNnPzQ0yn75hbvazwAXOXwAxp9462CFx9QPL9yBdcoJCHkIArJa-OyeY_Wsmv_NjLy-MMHs5imFjDK3x1La6ahr7d5t3LkhfkW.06EKqR8CHzStR8nI7KVyjw&",
+      "image": "assets/images/game-previews/reactoonz_2.jpg"
+    }
+  ]
+}
