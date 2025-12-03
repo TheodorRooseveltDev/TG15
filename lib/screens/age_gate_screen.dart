@@ -62,19 +62,17 @@ class _AgeGateScreenState extends State<AgeGateScreen> {
           ),
           
           // Content
-          SafeArea(
-            child: SingleChildScrollView(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: AppSpacing.xl,
-                  vertical: AppSpacing.xxl,
-                ),
-                child: Column(
-                  children: [
-                    const SizedBox(height: AppSpacing.xl),
-                    
-                    // App Icon
-                    _buildLogo()
+          Center(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(
+                horizontal: AppSpacing.lg,
+              ),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  // App Icon
+                  _buildLogo()
                         .animate()
                         .scale(
                           duration: 800.ms,
@@ -82,7 +80,7 @@ class _AgeGateScreenState extends State<AgeGateScreen> {
                         )
                         .fadeIn(duration: 600.ms),
                     
-                    const SizedBox(height: AppSpacing.xl),
+                    const SizedBox(height: AppSpacing.lg),
                     
                     // Welcome Text
                     Text(
@@ -98,7 +96,7 @@ class _AgeGateScreenState extends State<AgeGateScreen> {
                         .fadeIn(delay: 300.ms, duration: 600.ms)
                         .slideY(begin: 0.2, end: 0, delay: 300.ms),
                     
-                    const SizedBox(height: AppSpacing.lg),
+                    const SizedBox(height: AppSpacing.md),
                     
                     // Adult Audience Text
                     Text(
@@ -112,7 +110,7 @@ class _AgeGateScreenState extends State<AgeGateScreen> {
                         .animate()
                         .fadeIn(delay: 500.ms, duration: 600.ms),
                     
-                    const SizedBox(height: AppSpacing.lg),
+                    const SizedBox(height: AppSpacing.md),
                     
                     // Review Terms Text with Links
                     _buildReviewText()
@@ -127,7 +125,7 @@ class _AgeGateScreenState extends State<AgeGateScreen> {
                         .fadeIn(delay: 1000.ms, duration: 600.ms)
                         .slideX(begin: -0.1, end: 0, delay: 1000.ms),
                     
-                    const SizedBox(height: AppSpacing.xxl),
+                    const SizedBox(height: AppSpacing.xl),
                     
                     // Confirm Button
                     _buildConfirmButton()
@@ -135,19 +133,16 @@ class _AgeGateScreenState extends State<AgeGateScreen> {
                         .fadeIn(delay: 1400.ms, duration: 600.ms)
                         .slideY(begin: 0.2, end: 0, delay: 1400.ms),
                     
-                    const SizedBox(height: AppSpacing.lg),
+                    const SizedBox(height: AppSpacing.md),
                     
                     // Bottom Legal Text
                     _buildLegalText()
                         .animate()
                         .fadeIn(delay: 1600.ms, duration: 600.ms),
-                    
-                    const SizedBox(height: AppSpacing.lg),
                   ],
                 ),
               ),
             ),
-          ),
         ],
       ),
     );
@@ -155,8 +150,8 @@ class _AgeGateScreenState extends State<AgeGateScreen> {
 
   Widget _buildLogo() {
     return Container(
-      width: 180,
-      height: 180,
+      width: 140,
+      height: 140,
       decoration: BoxDecoration(
         shape: BoxShape.circle,
         boxShadow: [
@@ -399,7 +394,8 @@ class _AgeGateScreenState extends State<AgeGateScreen> {
       'By confirming your age, you acknowledge that you meet the age requirement and agree to our Terms & Conditions and Privacy Policy. If you are under 18, please exit this app immediately.',
       style: AppTextStyles.caption.copyWith(
         color: Colors.white.withOpacity(0.5),
-        height: 1.6,
+        fontSize: 10,
+        height: 1.4,
       ),
       textAlign: TextAlign.center,
     );
