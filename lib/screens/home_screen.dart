@@ -7,7 +7,6 @@ import '../constants/constants.dart';
 import '../models/game.dart';
 import '../services/games_service.dart';
 import '../widgets/app_background.dart';
-import '../widgets/animated_svg_logo.dart';
 import 'game_detail_screen.dart';
 
 /// Home screen with hero banner, featured games, and categories
@@ -20,12 +19,13 @@ class HomeScreen extends StatefulWidget {
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateMixin {
+class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   final GamesService _gamesService = GamesService();
   List<Game> _featuredGames = [];
   List<Game> _allGames = [];
   bool _isLoading = true;
   late AnimationController _pulseController;
+  late AnimationController _glareController;
 
   @override
   void initState() {
@@ -34,12 +34,19 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
       vsync: this,
       duration: const Duration(milliseconds: 2000),
     )..repeat(reverse: true);
+    
+    _glareController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 2500),
+    )..repeat();
+    
     _loadGames();
   }
 
   @override
   void dispose() {
     _pulseController.dispose();
+    _glareController.dispose();
     super.dispose();
   }
 
@@ -84,9 +91,9 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         _buildHeroSection(),
-                        const SizedBox(height: 32),
+                        const SizedBox(height: 48),
                         _buildHotGamesCarousel(),
-                        const SizedBox(height: 32),
+                        const SizedBox(height: 48),
                         _buildAllGamesGrid(),
                         const SizedBox(height: 120),
                       ],
@@ -130,7 +137,8 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
   Widget _buildHeroSection() {
     return Container(
       padding: const EdgeInsets.fromLTRB(20, 60, 20, 0),
-      child: Column(
+      child: Stack(
+        clipBehavior: Clip.none,
         children: [
           // Main Hero Card
           Container(
@@ -154,12 +162,15 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
               borderRadius: BorderRadius.circular(28),
               child: Stack(
                 children: [
-                  // Hero image
-                  Image.asset(
-                    'assets/images/main-hero.png',
-                    width: double.infinity,
-                    height: 280,
-                    fit: BoxFit.cover,
+                  // Hero image with blur
+                  ImageFiltered(
+                    imageFilter: ImageFilter.blur(sigmaX: 2, sigmaY: 2),
+                    child: Image.asset(
+                      'assets/images/herobg.png',
+                      width: double.infinity,
+                      height: 380,
+                      fit: BoxFit.cover,
+                    ),
                   ),
                   
                   // Gradient overlay
@@ -199,61 +210,47 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                     ),
                   ),
                   
-                  // Content
-                  Positioned.fill(
+                  // Content without button
+                  Positioned(
+                    top: 0,
+                    left: 0,
+                    right: 0,
+                    bottom: 0,
                     child: Padding(
                       padding: const EdgeInsets.all(24),
                       child: Column(
-                        mainAxisAlignment: MainAxisAlignment.end,
+                        mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          // Badge
-                          Container(
-                            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                            decoration: BoxDecoration(
-                              gradient: LinearGradient(
-                                colors: [
-                                  AppColors.goldAccent,
-                                  AppColors.orange,
-                                ],
-                              ),
-                              borderRadius: BorderRadius.circular(20),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: AppColors.goldAccent.withOpacity(0.4),
-                                  blurRadius: 10,
-                                ),
-                              ],
-                            ),
-                            child: const Text(
-                              '100% FREE TO PLAY',
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 11,
-                                fontWeight: FontWeight.w800,
-                                letterSpacing: 1,
-                              ),
-                            ),
-                          )
-                              .animate()
-                              .fadeIn(delay: 200.ms, duration: 400.ms)
-                              .slideX(begin: -0.2, delay: 200.ms),
-                          
-                          const SizedBox(height: 12),
-                          
                           // Title
                           ShaderMask(
                             shaderCallback: (bounds) => const LinearGradient(
                               colors: [Colors.white, Color(0xFFE0E0E0)],
                             ).createShader(bounds),
-                            child: const Text(
-                              'Premium Slots\nExperience',
+                            child: Text(
+                              'Premium Casino Games',
+                              textAlign: TextAlign.left,
                               style: TextStyle(
-                                fontSize: 34,
-                                fontWeight: FontWeight.w900,
+                                fontSize: 44,
+                                fontWeight: FontWeight.w400,
                                 color: Colors.white,
                                 height: 1.1,
                                 letterSpacing: -0.5,
+                                shadows: [
+                                  Shadow(
+                                    color: AppColors.goldAccent.withOpacity(0.5),
+                                    blurRadius: 20,
+                                  ),
+                                  Shadow(
+                                    color: AppColors.purplePrimary.withOpacity(0.8),
+                                    blurRadius: 30,
+                                  ),
+                                  Shadow(
+                                    color: Colors.black.withOpacity(0.5),
+                                    blurRadius: 10,
+                                    offset: const Offset(0, 2),
+                                  ),
+                                ],
                               ),
                             ),
                           )
@@ -266,68 +263,21 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                           Text(
                             'No deposits. No purchases. Just play.',
                             style: TextStyle(
-                              color: Colors.white.withOpacity(0.8),
-                              fontSize: 14,
-                              fontWeight: FontWeight.w500,
+                              color: Colors.white.withOpacity(0.9),
+                              fontSize: 16,
+                              fontWeight: FontWeight.w300,
+                              shadows: [
+                                Shadow(
+                                  color: Colors.black.withOpacity(0.8),
+                                  blurRadius: 8,
+                                ),
+                              ],
                             ),
                           )
                               .animate()
                               .fadeIn(delay: 400.ms, duration: 400.ms),
                           
-                          const SizedBox(height: 20),
-                          
-                          // CTA Button
-                          GestureDetector(
-                            onTap: () {
-                              HapticFeedback.mediumImpact();
-                              widget.onNavigateToGames?.call();
-                            },
-                            child: AnimatedBuilder(
-                              animation: _pulseController,
-                              builder: (context, child) {
-                                return Container(
-                                  padding: const EdgeInsets.symmetric(horizontal: 28, vertical: 22),
-                                  decoration: BoxDecoration(
-                                    image: const DecorationImage(
-                                      image: AssetImage('assets/images/main-button-bg.png'),
-                                      fit: BoxFit.cover,
-                                    ),
-                                    borderRadius: BorderRadius.circular(20),
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: AppColors.purplePrimary.withOpacity(0.3 + _pulseController.value * 0.2),
-                                        blurRadius: 20 + _pulseController.value * 10,
-                                        spreadRadius: _pulseController.value * 2,
-                                      ),
-                                    ],
-                                  ),
-                                  child: Row(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      Icon(
-                                        Icons.play_arrow_rounded,
-                                        color: Colors.white,
-                                        size: 24,
-                                      ),
-                                      const SizedBox(width: 8),
-                                      const Text(
-                                        'BROWSE ALL GAMES',
-                                        style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.w800,
-                                          letterSpacing: 1,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                );
-                              },
-                            ),
-                          )
-                              .animate()
-                              .fadeIn(delay: 500.ms, duration: 400.ms)
-                              .scale(begin: const Offset(0.9, 0.9), delay: 500.ms),
+                          const SizedBox(height: 40), // Space for button overflow
                         ],
                       ),
                     ),
@@ -336,155 +286,123 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
               ),
             ),
           ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildQuickPlaySection() {
-    if (_allGames.isEmpty) return const SizedBox.shrink();
-    
-    // Pick 3 random games for quick play
-    final quickPlayGames = List<Game>.from(_allGames)..shuffle();
-    final selectedGames = quickPlayGames.take(3).toList();
-    
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              Container(
-                padding: const EdgeInsets.all(8),
-                decoration: BoxDecoration(
-                  color: Colors.white.withOpacity(0.1),
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: const Icon(
-                  Icons.bolt_rounded,
-                  color: Colors.white,
-                  size: 20,
-                ),
-              ),
-              const SizedBox(width: 12),
-              const Text(
-                'Quick Play',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 20,
-                  fontWeight: FontWeight.w700,
-                ),
-              ),
-            ],
-          )
-              .animate()
-              .fadeIn(delay: 300.ms),
           
-          const SizedBox(height: 16),
-          
-          Row(
-            children: selectedGames.asMap().entries.map((entry) {
-              final index = entry.key;
-              final game = entry.value;
-              
-              return Expanded(
-                child: Padding(
-                  padding: EdgeInsets.only(
-                    left: index == 0 ? 0 : 6,
-                    right: index == 2 ? 0 : 6,
-                  ),
-                  child: GestureDetector(
-                    onTap: () => _navigateToGame(game),
+          // CTA Button positioned inside card at bottom
+          Positioned(
+            bottom: 24,
+            left: 24,
+            right: 24,
+            child: GestureDetector(
+              onTap: () {
+                HapticFeedback.mediumImpact();
+                widget.onNavigateToGames?.call();
+              },
+              child: AnimatedBuilder(
+                animation: Listenable.merge([_pulseController, _glareController]),
+                builder: (context, child) {
+                  return CustomPaint(
+                    painter: _ButtonGlarePainter(
+                      glareAnimation: _glareController,
+                      borderRadius: 30,
+                    ),
                     child: Container(
-                      height: 110,
+                      padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 18),
                       decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(16),
+                        // Golden gradient background
+                        gradient: LinearGradient(
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                          colors: [
+                            AppColors.goldAccent,
+                            AppColors.orange,
+                            const Color(0xFFD4841C),
+                          ],
+                          stops: const [0.0, 0.5, 1.0],
+                        ),
+                        borderRadius: BorderRadius.circular(30),
                         border: Border.all(
-                          color: AppColors.purpleMuted.withOpacity(0.3),
-                          width: 1.5,
+                          color: AppColors.goldAccent.withOpacity(0.8),
+                          width: 2.5,
                         ),
                         boxShadow: [
                           BoxShadow(
-                            color: AppColors.purplePrimary.withOpacity(0.15),
+                            color: AppColors.goldAccent.withOpacity(0.5 + _pulseController.value * 0.3),
+                            blurRadius: 30 + _pulseController.value * 15,
+                            spreadRadius: 5 + _pulseController.value * 5,
+                          ),
+                          BoxShadow(
+                            color: AppColors.orange.withOpacity(0.4 + _pulseController.value * 0.2),
+                            blurRadius: 40 + _pulseController.value * 10,
+                            spreadRadius: 3 + _pulseController.value * 3,
+                          ),
+                          BoxShadow(
+                            color: AppColors.purplePrimary.withOpacity(0.3),
+                            blurRadius: 25,
+                            spreadRadius: 2,
+                          ),
+                          BoxShadow(
+                            color: AppColors.goldAccent.withOpacity(0.6),
                             blurRadius: 15,
+                            offset: const Offset(0, -2),
+                          ),
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.6),
+                            blurRadius: 20,
+                            offset: const Offset(0, 8),
                           ),
                         ],
                       ),
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(16),
-                        child: Stack(
-                          fit: StackFit.expand,
-                          children: [
-                            game.image.startsWith('http')
-                                ? CachedNetworkImage(
-                                    imageUrl: game.image,
-                                    fit: BoxFit.cover,
-                                  )
-                                : Image.asset(
-                                    game.image,
-                                    fit: BoxFit.cover,
-                                  ),
-                            // Gradient overlay
-                            Container(
-                              decoration: BoxDecoration(
-                                gradient: LinearGradient(
-                                  begin: Alignment.topCenter,
-                                  end: Alignment.bottomCenter,
-                                  colors: [
-                                    Colors.transparent,
-                                    Colors.black.withOpacity(0.7),
-                                  ],
-                                ),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Container(
+                            padding: const EdgeInsets.all(8),
+                            decoration: BoxDecoration(
+                              gradient: LinearGradient(
+                                colors: [
+                                  Colors.white.withOpacity(0.2),
+                                  Colors.white.withOpacity(0.1),
+                                ],
                               ),
-                            ),
-                            // Play icon
-                            Center(
-                              child: Container(
-                                padding: const EdgeInsets.all(10),
-                                decoration: BoxDecoration(
-                                  color: Colors.white.withOpacity(0.2),
-                                  shape: BoxShape.circle,
-                                  border: Border.all(
-                                    color: Colors.white.withOpacity(0.5),
-                                    width: 2,
-                                  ),
+                              shape: BoxShape.circle,
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.black.withOpacity(0.3),
+                                  blurRadius: 10,
                                 ),
-                                child: const Icon(
-                                  Icons.play_arrow_rounded,
-                                  color: Colors.white,
-                                  size: 24,
-                                ),
-                              ),
+                              ],
                             ),
-                            // Game name
-                            Positioned(
-                              bottom: 8,
-                              left: 8,
-                              right: 8,
-                              child: Text(
-                                game.name,
-                                style: const TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 11,
-                                  fontWeight: FontWeight.w600,
-                                ),
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
-                                textAlign: TextAlign.center,
-                              ),
+                            child: Icon(
+                              Icons.play_arrow_rounded,
+                              color: Colors.white,
+                              size: 24,
                             ),
-                          ],
-                        ),
+                          ),
+                          const SizedBox(width: 14),
+                          Text(
+                            'BROWSE ALL GAMES',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 16,
+                              fontWeight: FontWeight.w800,
+                              letterSpacing: 1,
+                              shadows: [
+                                Shadow(
+                                  color: Colors.black.withOpacity(0.5),
+                                  blurRadius: 5,
+                                  offset: const Offset(0, 2),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
                       ),
                     ),
-                  )
-                      .animate()
-                      .fadeIn(delay: (400 + index * 100).ms)
-                      .scale(begin: const Offset(0.9, 0.9), delay: (400 + index * 100).ms),
-                ),
-              );
-            }).toList(),
+                  );
+                },
+              ).animate().fadeIn(delay: 500.ms, duration: 400.ms).scale(begin: const Offset(0.9, 0.9), delay: 500.ms),
+            ),
           ),
         ],
       ),
@@ -501,17 +419,10 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
           padding: const EdgeInsets.symmetric(horizontal: 20),
           child: Row(
             children: [
-              Container(
-                padding: const EdgeInsets.all(8),
-                decoration: BoxDecoration(
-                  color: Colors.white.withOpacity(0.1),
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: const Icon(
-                  Icons.local_fire_department_rounded,
-                  color: Colors.white,
-                  size: 20,
-                ),
+              const Icon(
+                Icons.local_fire_department_rounded,
+                color: Colors.white,
+                size: 20,
               ),
               const SizedBox(width: 12),
               const Text(
@@ -519,7 +430,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                 style: TextStyle(
                   color: Colors.white,
                   fontSize: 20,
-                  fontWeight: FontWeight.w700,
+                  fontWeight: FontWeight.w400,
                 ),
               ),
               const Spacer(),
@@ -528,7 +439,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                 child: Container(
                   padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                   decoration: BoxDecoration(
-                    color: AppColors.purpleMuted.withOpacity(0.2),
+                    color: Colors.white.withOpacity(0.1),
                     borderRadius: BorderRadius.circular(20),
                   ),
                   child: Row(
@@ -536,7 +447,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                       Text(
                         'See All',
                         style: TextStyle(
-                          color: AppColors.purpleLight,
+                          color: Colors.white.withOpacity(0.8),
                           fontSize: 13,
                           fontWeight: FontWeight.w600,
                         ),
@@ -544,7 +455,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                       const SizedBox(width: 4),
                       Icon(
                         Icons.arrow_forward_ios_rounded,
-                        color: AppColors.purpleLight,
+                        color: Colors.white.withOpacity(0.8),
                         size: 12,
                       ),
                     ],
@@ -560,7 +471,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
         const SizedBox(height: 16),
         
         SizedBox(
-          height: 200,
+          height: 240,
           child: ListView.builder(
             scrollDirection: Axis.horizontal,
             padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -568,148 +479,114 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
             itemBuilder: (context, index) {
               final game = _featuredGames[index];
               return Padding(
-                padding: EdgeInsets.only(right: index < _featuredGames.length - 1 ? 16 : 0),
+                padding: EdgeInsets.only(right: index < _featuredGames.length - 1 ? 12 : 0),
                 child: GestureDetector(
                   onTap: () => _navigateToGame(game),
-                  child: Container(
-                    width: 150,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(20),
-                      border: Border.all(
-                        color: AppColors.purpleMuted.withOpacity(0.3),
-                        width: 1.5,
-                      ),
-                      boxShadow: [
-                        BoxShadow(
-                          color: AppColors.purplePrimary.withOpacity(0.2),
-                          blurRadius: 20,
-                          offset: const Offset(0, 8),
-                        ),
-                      ],
-                    ),
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(20),
-                      child: Stack(
-                        fit: StackFit.expand,
-                        children: [
-                          // Use animated SVG if available, otherwise static image
-                          game.animatedLogo != null
-                              ? AnimatedSvgLogo(
-                                  assetPath: game.animatedLogo!,
-                                  width: 150,
-                                  height: 200,
-                                  fit: BoxFit.cover,
-                                  backgroundColor: Colors.black,
-                                )
-                              : game.image.startsWith('http')
-                                  ? CachedNetworkImage(
-                                      imageUrl: game.image,
-                                      fit: BoxFit.cover,
-                                    )
-                                  : Image.asset(
-                                      game.image,
-                                      fit: BoxFit.cover,
-                                    ),
-                          // Gradient (only for static images)
-                          if (game.animatedLogo == null)
-                            Container(
-                              decoration: BoxDecoration(
-                                gradient: LinearGradient(
-                                  begin: Alignment.topCenter,
-                                  end: Alignment.bottomCenter,
-                                  stops: const [0.5, 1.0],
-                                  colors: [
-                                    Colors.transparent,
-                                    Colors.black.withOpacity(0.85),
-                                  ],
-                                ),
+                  child: SizedBox(
+                    width: 140,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Expanded(
+                          child: Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(16),
+                              border: Border.all(
+                                color: AppColors.purpleMuted.withOpacity(0.3),
+                                width: 1.5,
                               ),
-                            ),
-                          // Featured badge
-                          if (game.isFeatured)
-                            Positioned(
-                              top: 10,
-                              left: 10,
-                              child: Container(
-                                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                                decoration: BoxDecoration(
-                                  gradient: LinearGradient(
-                                    colors: [AppColors.goldAccent, AppColors.orange],
-                                  ),
-                                  borderRadius: BorderRadius.circular(8),
-                                ),
-                                child: const Text(
-                                  'HOT',
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 10,
-                                    fontWeight: FontWeight.w800,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          // Game info
-                          Positioned(
-                            bottom: 12,
-                            left: 12,
-                            right: 12,
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  game.name,
-                                  style: const TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w700,
-                                  ),
-                                  maxLines: 1,
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                                const SizedBox(height: 6),
-                                Container(
-                                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-                                  decoration: BoxDecoration(
-                                    gradient: LinearGradient(
-                                      colors: [
-                                        AppColors.purplePrimary,
-                                        AppColors.purpleLight,
-                                      ],
-                                    ),
-                                    borderRadius: BorderRadius.circular(20),
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: AppColors.purplePrimary.withOpacity(0.4),
-                                        blurRadius: 8,
-                                        offset: const Offset(0, 2),
-                                      ),
-                                    ],
-                                  ),
-                                  child: Row(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      const Icon(
-                                        Icons.play_circle_filled_rounded,
-                                        color: Colors.white,
-                                        size: 14,
-                                      ),
-                                      const SizedBox(width: 4),
-                                      const Text(
-                                        'Play Free',
-                                        style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 11,
-                                          fontWeight: FontWeight.w600,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: AppColors.purplePrimary.withOpacity(0.15),
+                                  blurRadius: 12,
                                 ),
                               ],
                             ),
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(14),
+                              child: Stack(
+                                fit: StackFit.expand,
+                                children: [
+                                  game.image.startsWith('http')
+                                      ? CachedNetworkImage(
+                                          imageUrl: game.image,
+                                          fit: BoxFit.cover,
+                                        )
+                                      : Image.asset(
+                                          game.image,
+                                          fit: BoxFit.cover,
+                                        ),
+                                  // Gradient overlay
+                                  Container(
+                                    decoration: BoxDecoration(
+                                      gradient: LinearGradient(
+                                        begin: Alignment.topCenter,
+                                        end: Alignment.bottomCenter,
+                                        colors: [
+                                          Colors.transparent,
+                                          Colors.black.withOpacity(0.6),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                  // Play icon
+                                  Center(
+                                    child: Container(
+                                      padding: const EdgeInsets.all(10),
+                                      decoration: BoxDecoration(
+                                        color: Colors.white.withOpacity(0.2),
+                                        shape: BoxShape.circle,
+                                        border: Border.all(
+                                          color: Colors.white.withOpacity(0.4),
+                                          width: 2,
+                                        ),
+                                      ),
+                                      child: const Icon(
+                                        Icons.play_arrow_rounded,
+                                        color: Colors.white,
+                                        size: 20,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          )
+                              .animate(
+                                onPlay: (controller) => controller.repeat(reverse: true),
+                              )
+                              .shimmer(
+                                duration: 2000.ms,
+                                delay: Duration(milliseconds: index * 200),
+                              )
+                              .scale(
+                                duration: 2000.ms,
+                                begin: const Offset(1.0, 1.0),
+                                end: const Offset(1.02, 1.02),
+                              ),
+                        ),
+                        const SizedBox(height: 10),
+                        Text(
+                          game.name,
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 13,
+                            fontWeight: FontWeight.w600,
                           ),
-                        ],
-                      ),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                        const SizedBox(height: 2),
+                        Text(
+                          game.subtitle,
+                          style: TextStyle(
+                            color: AppColors.purpleLight.withOpacity(0.6),
+                            fontSize: 11,
+                          ),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ],
                     ),
                   ),
                 )
@@ -740,17 +617,10 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
           padding: const EdgeInsets.symmetric(horizontal: 20),
           child: Row(
             children: [
-              Container(
-                padding: const EdgeInsets.all(8),
-                decoration: BoxDecoration(
-                  color: Colors.white.withOpacity(0.1),
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: const Icon(
-                  Icons.grid_view_rounded,
-                  color: Colors.white,
-                  size: 20,
-                ),
+              const Icon(
+                Icons.grid_view_rounded,
+                color: Colors.white,
+                size: 20,
               ),
               const SizedBox(width: 12),
               const Text(
@@ -827,69 +697,47 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                           gradient: LinearGradient(
                             begin: Alignment.topCenter,
                             end: Alignment.bottomCenter,
-                            stops: const [0.4, 1.0],
                             colors: [
                               Colors.transparent,
-                              Colors.black.withOpacity(0.9),
+                              Colors.black.withOpacity(0.6),
                             ],
                           ),
                         ),
                       ),
-                      // Content
-                      Positioned(
-                        bottom: 12,
-                        left: 12,
-                        right: 12,
+                      // Play icon and text
+                      Center(
                         child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisSize: MainAxisSize.min,
                           children: [
-                            Text(
-                              game.name,
-                              style: const TextStyle(
-                                color: Colors.white,
-                                fontSize: 14,
-                                fontWeight: FontWeight.w700,
-                              ),
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                            const SizedBox(height: 6),
                             Container(
-                              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                              padding: const EdgeInsets.all(10),
                               decoration: BoxDecoration(
-                                gradient: LinearGradient(
-                                  colors: [
-                                    AppColors.purplePrimary,
-                                    AppColors.purpleLight,
-                                  ],
+                                color: Colors.white.withOpacity(0.2),
+                                shape: BoxShape.circle,
+                                border: Border.all(
+                                  color: Colors.white.withOpacity(0.4),
+                                  width: 2,
                                 ),
-                                borderRadius: BorderRadius.circular(20),
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: AppColors.purplePrimary.withOpacity(0.4),
-                                    blurRadius: 8,
-                                    offset: const Offset(0, 2),
-                                  ),
-                                ],
                               ),
-                              child: Row(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  const Icon(
-                                    Icons.play_circle_filled_rounded,
-                                    color: Colors.white,
-                                    size: 14,
-                                  ),
-                                  const SizedBox(width: 4),
-                                  const Text(
-                                    'Play Free',
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 11,
-                                      fontWeight: FontWeight.w600,
-                                    ),
-                                  ),
-                                ],
+                              child: const Icon(
+                                Icons.play_arrow_rounded,
+                                color: Colors.white,
+                                size: 20,
+                              ),
+                            ),
+                            const SizedBox(height: 12),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 12),
+                              child: Text(
+                                game.name,
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 13,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                                maxLines: 2,
+                                textAlign: TextAlign.center,
+                                overflow: TextOverflow.ellipsis,
                               ),
                             ),
                           ],
@@ -908,4 +756,60 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
       ],
     );
   }
+}
+
+/// Custom painter for animated glare effect on button border
+class _ButtonGlarePainter extends CustomPainter {
+  final AnimationController glareAnimation;
+  final double borderRadius;
+
+  _ButtonGlarePainter({
+    required this.glareAnimation,
+    required this.borderRadius,
+  }) : super(repaint: glareAnimation);
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final progress = glareAnimation.value;
+    
+    // Only show glare for first 1.5 seconds, then 1 second pause
+    if (progress > 0.6) return; // 0.6 * 2.5s = 1.5s animation, 1s pause
+    
+    final adjustedProgress = progress / 0.6; // Normalize to 0-1
+    
+    final rect = Rect.fromLTWH(0, 0, size.width, size.height);
+    final rrect = RRect.fromRectAndRadius(rect, Radius.circular(borderRadius));
+    
+    // Calculate glare position (top-left to bottom-right)
+    final glareStart = Offset(
+      -size.width * 0.3 + (size.width * 1.6 * adjustedProgress),
+      -size.height * 0.3 + (size.height * 1.6 * adjustedProgress),
+    );
+    
+    final glareEnd = Offset(
+      glareStart.dx + size.width * 0.3,
+      glareStart.dy + size.height * 0.3,
+    );
+    
+    final glareGradient = LinearGradient(
+      begin: Alignment.topLeft,
+      end: Alignment.bottomRight,
+      colors: [
+        Colors.white.withOpacity(0),
+        Colors.white.withOpacity(0.6),
+        Colors.white.withOpacity(0),
+      ],
+      stops: const [0.0, 0.5, 1.0],
+    );
+    
+    final glarePaint = Paint()
+      ..shader = glareGradient.createShader(Rect.fromPoints(glareStart, glareEnd))
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = 3.0;
+    
+    canvas.drawRRect(rrect, glarePaint);
+  }
+
+  @override
+  bool shouldRepaint(_ButtonGlarePainter oldDelegate) => true;
 }

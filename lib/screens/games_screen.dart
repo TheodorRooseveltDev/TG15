@@ -1,4 +1,3 @@
-import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
@@ -71,10 +70,6 @@ class _GamesScreenState extends State<GamesScreen> {
     });
   }
 
-  void _onSearchChanged(String query) {
-    _applyFiltersAndSort();
-  }
-
   void _clearSearch() {
     _searchController.clear();
     _applyFiltersAndSort();
@@ -117,8 +112,6 @@ class _GamesScreenState extends State<GamesScreen> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         _buildHeroHeader(),
-                        const SizedBox(height: 24),
-                        _buildSearchSection(),
                         const SizedBox(height: 24),
                         _buildFilterChips(),
                         const SizedBox(height: 24),
@@ -165,85 +158,28 @@ class _GamesScreenState extends State<GamesScreen> {
   Widget _buildHeroHeader() {
     return Container(
       padding: const EdgeInsets.fromLTRB(20, 60, 20, 0),
-      child: Container(
-        padding: const EdgeInsets.all(24),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(24),
-          gradient: LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-            colors: [
-              AppColors.purpleDark.withOpacity(0.8),
-              AppColors.backgroundSecondary.withOpacity(0.9),
-            ],
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Text(
+            'Game Library',
+            style: TextStyle(
+              fontSize: 28,
+              fontWeight: FontWeight.w400,
+              color: Colors.white,
+              height: 1.1,
+            ),
           ),
-          border: Border.all(
-            color: AppColors.purpleMuted.withOpacity(0.3),
-            width: 1.5,
+          const SizedBox(height: 8),
+          Text(
+            '${_displayedGames.length} premium games available',
+            style: TextStyle(
+              color: Colors.white.withOpacity(0.8),
+              fontSize: 14,
+              fontWeight: FontWeight.w500,
+            ),
           ),
-          boxShadow: [
-            BoxShadow(
-              color: AppColors.purplePrimary.withOpacity(0.2),
-              blurRadius: 30,
-              offset: const Offset(0, 10),
-            ),
-          ],
-        ),
-        child: Row(
-          children: [
-            Container(
-              padding: const EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  colors: [AppColors.purplePrimary, AppColors.purpleSecondary],
-                ),
-                borderRadius: BorderRadius.circular(16),
-                boxShadow: [
-                  BoxShadow(
-                    color: AppColors.purplePrimary.withOpacity(0.4),
-                    blurRadius: 15,
-                  ),
-                ],
-              ),
-              child: const Icon(
-                Icons.games_rounded,
-                color: Colors.white,
-                size: 32,
-              ),
-            ),
-            const SizedBox(width: 20),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  ShaderMask(
-                    shaderCallback: (bounds) => const LinearGradient(
-                      colors: [Colors.white, Color(0xFFE0E0E0)],
-                    ).createShader(bounds),
-                    child: const Text(
-                      'Game Library',
-                      style: TextStyle(
-                        fontSize: 28,
-                        fontWeight: FontWeight.w900,
-                        color: Colors.white,
-                        height: 1.1,
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 4),
-                  Text(
-                    '${_displayedGames.length} premium games available',
-                    style: TextStyle(
-                      color: AppColors.purpleLight.withOpacity(0.8),
-                      fontSize: 14,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
+        ],
       ),
     )
         .animate()
@@ -251,149 +187,77 @@ class _GamesScreenState extends State<GamesScreen> {
         .slideY(begin: -0.1, duration: 400.ms);
   }
 
-  Widget _buildSearchSection() {
+  Widget _buildFilterChips() {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20),
       child: Container(
+        padding: const EdgeInsets.all(4),
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(16),
+          color: AppColors.backgroundSecondary.withOpacity(0.6),
+          borderRadius: BorderRadius.circular(30),
           border: Border.all(
             color: AppColors.purpleMuted.withOpacity(0.3),
             width: 1.5,
           ),
-          boxShadow: [
-            BoxShadow(
-              color: AppColors.purplePrimary.withOpacity(0.1),
-              blurRadius: 20,
-            ),
-          ],
         ),
-        child: TextField(
-          controller: _searchController,
-          onChanged: _onSearchChanged,
-          style: const TextStyle(color: Colors.white, fontSize: 16),
-          decoration: InputDecoration(
-            hintText: 'Search games...',
-            hintStyle: TextStyle(
-              color: AppColors.purpleLight.withOpacity(0.5),
-              fontSize: 16,
-            ),
-            prefixIcon: Container(
-              padding: const EdgeInsets.all(12),
-              child: Icon(
-                Icons.search_rounded,
-                color: AppColors.purplePrimary,
-                size: 24,
-              ),
-            ),
-            suffixIcon: _searchController.text.isNotEmpty
-                ? IconButton(
-                    icon: const Icon(Icons.clear_rounded),
-                    onPressed: _clearSearch,
-                    color: AppColors.purpleLight,
-                  )
-                : null,
-            filled: true,
-            fillColor: AppColors.backgroundSecondary.withOpacity(0.8),
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(16),
-              borderSide: BorderSide.none,
-            ),
-            enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(16),
-              borderSide: BorderSide.none,
-            ),
-            focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(16),
-              borderSide: const BorderSide(
-                color: AppColors.purplePrimary,
-                width: 2,
-              ),
-            ),
-            contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
-          ),
-        ),
-      ),
-    )
-        .animate()
-        .fadeIn(delay: 100.ms, duration: 400.ms);
-  }
-
-  Widget _buildFilterChips() {
-    return SizedBox(
-      height: 50,
-      child: ListView.builder(
-        scrollDirection: Axis.horizontal,
-        padding: const EdgeInsets.symmetric(horizontal: 20),
-        itemCount: _filters.length,
-        itemBuilder: (context, index) {
-          final filter = _filters[index];
-          final isSelected = filter['name'] == _selectedFilter;
-          
-          return Padding(
-            padding: EdgeInsets.only(right: index < _filters.length - 1 ? 12 : 0),
-            child: GestureDetector(
-              onTap: () => _selectFilter(filter['name']),
-              child: AnimatedContainer(
-                duration: const Duration(milliseconds: 200),
-                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-                decoration: BoxDecoration(
-                  gradient: isSelected
-                      ? LinearGradient(
-                          colors: [
-                            (filter['color'] as Color).withOpacity(0.3),
-                            (filter['color'] as Color).withOpacity(0.1),
-                          ],
-                        )
-                      : null,
-                  color: isSelected ? null : AppColors.backgroundSecondary.withOpacity(0.6),
-                  borderRadius: BorderRadius.circular(25),
-                  border: Border.all(
-                    color: isSelected
-                        ? (filter['color'] as Color).withOpacity(0.6)
-                        : AppColors.purpleMuted.withOpacity(0.3),
-                    width: isSelected ? 2 : 1,
+        child: Row(
+          children: _filters.asMap().entries.map((entry) {
+            final filter = entry.value;
+            final isSelected = filter['name'] == _selectedFilter;
+            
+            return Expanded(
+              child: GestureDetector(
+                onTap: () => _selectFilter(filter['name']),
+                child: AnimatedContainer(
+                  duration: const Duration(milliseconds: 250),
+                  curve: Curves.easeOutCubic,
+                  padding: const EdgeInsets.symmetric(vertical: 12),
+                  decoration: BoxDecoration(
+                    color: isSelected 
+                        ? AppColors.purplePrimary.withOpacity(0.3)
+                        : Colors.transparent,
+                    borderRadius: BorderRadius.circular(26),
+                    boxShadow: isSelected
+                        ? [
+                            BoxShadow(
+                              color: AppColors.purplePrimary.withOpacity(0.4),
+                              blurRadius: 15,
+                              spreadRadius: 0,
+                            ),
+                          ]
+                        : null,
                   ),
-                  boxShadow: isSelected
-                      ? [
-                          BoxShadow(
-                            color: (filter['color'] as Color).withOpacity(0.3),
-                            blurRadius: 12,
-                          ),
-                        ]
-                      : null,
-                ),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Icon(
-                      filter['icon'] as IconData,
-                      color: isSelected
-                          ? filter['color'] as Color
-                          : AppColors.purpleLight.withOpacity(0.7),
-                      size: 18,
-                    ),
-                    const SizedBox(width: 8),
-                    Text(
-                      filter['name'] as String,
-                      style: TextStyle(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(
+                        filter['icon'] as IconData,
                         color: isSelected
                             ? Colors.white
-                            : AppColors.purpleLight.withOpacity(0.8),
-                        fontSize: 14,
-                        fontWeight: isSelected ? FontWeight.w700 : FontWeight.w500,
+                            : AppColors.purpleLight.withOpacity(0.5),
+                        size: 18,
                       ),
-                    ),
-                  ],
+                      const SizedBox(width: 8),
+                      Text(
+                        filter['name'] as String,
+                        style: TextStyle(
+                          color: isSelected
+                              ? Colors.white
+                              : AppColors.purpleLight.withOpacity(0.5),
+                          fontSize: 14,
+                          fontWeight: isSelected ? FontWeight.w700 : FontWeight.w500,
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
-            ),
-          )
-              .animate()
-              .fadeIn(delay: (200 + index * 80).ms)
-              .slideX(begin: 0.2, delay: (200 + index * 80).ms);
-        },
-      ),
+            );
+          }).toList(),
+        ),
+      )
+          .animate()
+          .fadeIn(delay: 200.ms),
     );
   }
 
@@ -409,17 +273,10 @@ class _GamesScreenState extends State<GamesScreen> {
           padding: const EdgeInsets.symmetric(horizontal: 20),
           child: Row(
             children: [
-              Container(
-                padding: const EdgeInsets.all(8),
-                decoration: BoxDecoration(
-                  color: Colors.white.withOpacity(0.1),
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: const Icon(
-                  Icons.grid_view_rounded,
-                  color: Colors.white,
-                  size: 20,
-                ),
+              const Icon(
+                Icons.grid_view_rounded,
+                color: Colors.white,
+                size: 20,
               ),
               const SizedBox(width: 12),
               const Text(
@@ -427,7 +284,7 @@ class _GamesScreenState extends State<GamesScreen> {
                 style: TextStyle(
                   color: Colors.white,
                   fontSize: 20,
-                  fontWeight: FontWeight.w700,
+                  fontWeight: FontWeight.w400,
                 ),
               ),
               const Spacer(),
@@ -460,7 +317,7 @@ class _GamesScreenState extends State<GamesScreen> {
           padding: const EdgeInsets.symmetric(horizontal: 20),
           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: MediaQuery.of(context).size.shortestSide >= 600 ? 3 : 2,
-            childAspectRatio: 0.85,
+            childAspectRatio: 0.7,
             crossAxisSpacing: 12,
             mainAxisSpacing: 12,
           ),

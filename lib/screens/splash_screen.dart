@@ -78,95 +78,87 @@ class _SplashScreenState extends State<SplashScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.backgroundPrimary,
-      body: Container(
-        decoration: const BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage('assets/images/splash-screen.png'),
-            fit: BoxFit.cover,
-          ),
-        ),
-        child: Container(
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-              colors: [
-                AppColors.backgroundPrimary.withOpacity(0.7),
-                AppColors.backgroundPrimary.withOpacity(0.9),
-              ],
+      body: Stack(
+        children: [
+          // Background image
+          Container(
+            decoration: const BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage('assets/images/splashscreen.jpg'),
+                fit: BoxFit.cover,
+              ),
+            ),
+            child: Container(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [
+                    AppColors.backgroundPrimary.withOpacity(0.7),
+                    AppColors.backgroundPrimary.withOpacity(0.9),
+                  ],
+                ),
+              ),
             ),
           ),
-          child: SafeArea(
+          // Top gradient fade to black
+          Positioned(
+            top: 0,
+            left: 0,
+            right: 0,
+            child: Container(
+              height: 200,
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [
+                    Colors.black.withOpacity(0.8),
+                    Colors.black.withOpacity(0.0),
+                  ],
+                ),
+              ),
+            ),
+          ),
+          // Bottom gradient fade to black
+          Positioned(
+            bottom: 0,
+            left: 0,
+            right: 0,
+            child: Container(
+              height: 200,
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.bottomCenter,
+                  end: Alignment.topCenter,
+                  colors: [
+                    Colors.black.withOpacity(0.8),
+                    Colors.black.withOpacity(0.0),
+                  ],
+                ),
+              ),
+            ),
+          ),
+          // Content
+          SafeArea(
             child: Column(
               children: [
-                const Spacer(flex: 2),
-                
-                // App Icon
-                Container(
-                  width: 200,
-                  height: 200,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    boxShadow: [
-                      BoxShadow(
-                        color: AppColors.goldAccent.withOpacity(0.4),
-                        blurRadius: 50,
-                        spreadRadius: 15,
-                      ),
-                      BoxShadow(
-                        color: AppColors.purplePrimary.withOpacity(0.4),
-                        blurRadius: 80,
-                        spreadRadius: 30,
-                      ),
-                    ],
-                  ),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      border: Border.all(
-                        color: AppColors.goldAccent,
-                        width: 4,
-                      ),
-                    ),
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(100),
-                      child: Image.asset(
-                        'assets/images/icon.png',
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                  ),
-                )
-                    .animate()
-                    .scale(
-                      duration: 1200.ms,
-                      curve: Curves.elasticOut,
-                    )
-                    .fadeIn(duration: 600.ms),
-                
-                const Spacer(flex: 1),
+                const Spacer(),
                 
                 // Loading Indicator
-                SizedBox(
+                const SizedBox(
                   width: 50,
                   height: 50,
                   child: CircularProgressIndicator(
                     strokeWidth: 4,
                     valueColor: AlwaysStoppedAnimation<Color>(
-                      AppColors.goldAccent,
+                      Color(0xFFFFD700),
                     ),
-                    backgroundColor: AppColors.goldAccent.withOpacity(0.2),
+                    backgroundColor: Color(0x33FFD700),
                   ),
-                )
-                    .animate(
-                      onPlay: (controller) => controller.repeat(),
-                    )
-                    .fadeIn(
-                      delay: 800.ms,
-                      duration: 600.ms,
-                    ),
+                ),
                 
-                const Spacer(flex: 2),
+                const Spacer(),
                 
                 // Legal Links
                 Padding(
@@ -199,7 +191,7 @@ class _SplashScreenState extends State<SplashScreen> {
                       Text(
                         '© 2025 VIP Gaming Lounge. All rights reserved.',
                         style: AppTextStyles.caption.copyWith(
-                          color: Colors.white.withOpacity(0.4),
+                          color: Colors.white.withOpacity(0.8),
                           fontSize: 11,
                         ),
                         textAlign: TextAlign.center,
@@ -215,7 +207,7 @@ class _SplashScreenState extends State<SplashScreen> {
               ],
             ),
           ),
-        ),
+        ],
       ),
     );
   }
@@ -226,10 +218,10 @@ class _SplashScreenState extends State<SplashScreen> {
       child: Text(
         text,
         style: AppTextStyles.caption.copyWith(
-          color: AppColors.goldAccent,
+          color: Colors.white.withOpacity(0.8),
           fontWeight: FontWeight.w500,
           decoration: TextDecoration.underline,
-          decorationColor: AppColors.goldAccent.withOpacity(0.5),
+          decorationColor: Colors.white.withOpacity(0.4),
         ),
       ),
     );

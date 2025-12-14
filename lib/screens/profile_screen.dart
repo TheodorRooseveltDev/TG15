@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
@@ -23,8 +22,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   final SettingsService _settingsService = SettingsService();
   final ImagePicker _imagePicker = ImagePicker();
   
-  bool _soundEffects = true;
-  bool _backgroundMusic = true;
+  bool _hapticFeedback = true;
   bool _notifications = true;
   
   // Support modal state
@@ -55,27 +53,19 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   Future<void> _loadSettings() async {
-    final soundEffects = await _settingsService.getSoundEffects();
-    final backgroundMusic = await _settingsService.getBackgroundMusic();
+    final hapticFeedback = await _settingsService.getHapticFeedback();
     final notifications = await _settingsService.getNotifications();
     
     setState(() {
-      _soundEffects = soundEffects;
-      _backgroundMusic = backgroundMusic;
+      _hapticFeedback = hapticFeedback;
       _notifications = notifications;
     });
   }
 
-  Future<void> _toggleSoundEffects(bool value) async {
+  Future<void> _toggleHapticFeedback(bool value) async {
     HapticFeedback.lightImpact();
-    await _settingsService.setSoundEffects(value);
-    setState(() => _soundEffects = value);
-  }
-
-  Future<void> _toggleBackgroundMusic(bool value) async {
-    HapticFeedback.lightImpact();
-    await _settingsService.setBackgroundMusic(value);
-    setState(() => _backgroundMusic = value);
+    await _settingsService.setHapticFeedback(value);
+    setState(() => _hapticFeedback = value);
   }
 
   Future<void> _toggleNotifications(bool value) async {
@@ -148,21 +138,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
         backgroundColor: AppColors.success,
         behavior: SnackBarBehavior.floating,
         duration: const Duration(seconds: 3),
-      ),
-    );
-  }
-
-  Future<void> _clearCache() async {
-    HapticFeedback.mediumImpact();
-    await _settingsService.clearAllCache();
-    
-    if (!mounted) return;
-    
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: const Text('Cache cleared successfully'),
-        backgroundColor: AppColors.success,
-        behavior: SnackBarBehavior.floating,
       ),
     );
   }
@@ -353,11 +328,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               children: [
                 _buildHeroHeader(),
                 const SizedBox(height: 24),
-                _buildSupportSection(),
-                const SizedBox(height: 32),
                 _buildSettingsSection(),
-                const SizedBox(height: 32),
-                _buildDataSection(),
                 const SizedBox(height: 32),
                 _buildLegalSection(),
                 const SizedBox(height: 120),
@@ -372,186 +343,33 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Widget _buildHeroHeader() {
     return Container(
       padding: const EdgeInsets.fromLTRB(20, 60, 20, 0),
-      child: Container(
-        padding: const EdgeInsets.all(24),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(24),
-          gradient: LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-            colors: [
-              AppColors.purpleDark.withOpacity(0.8),
-              AppColors.backgroundSecondary.withOpacity(0.9),
-            ],
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Text(
+            'Settings',
+            style: TextStyle(
+              fontSize: 28,
+              fontWeight: FontWeight.w400,
+              color: Colors.white,
+              height: 1.1,
+            ),
           ),
-          border: Border.all(
-            color: AppColors.purpleMuted.withOpacity(0.3),
-            width: 1.5,
+          const SizedBox(height: 8),
+          Text(
+            'Manage your preferences',
+            style: TextStyle(
+              color: Colors.white.withOpacity(0.8),
+              fontSize: 14,
+              fontWeight: FontWeight.w500,
+            ),
           ),
-          boxShadow: [
-            BoxShadow(
-              color: AppColors.purplePrimary.withOpacity(0.2),
-              blurRadius: 30,
-              offset: const Offset(0, 10),
-            ),
-          ],
-        ),
-        child: Row(
-          children: [
-            Container(
-              padding: const EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  colors: [AppColors.purplePrimary, AppColors.purpleSecondary],
-                ),
-                borderRadius: BorderRadius.circular(16),
-                boxShadow: [
-                  BoxShadow(
-                    color: AppColors.purplePrimary.withOpacity(0.4),
-                    blurRadius: 15,
-                  ),
-                ],
-              ),
-              child: const Icon(
-                Icons.settings_rounded,
-                color: Colors.white,
-                size: 32,
-              ),
-            ),
-            const SizedBox(width: 20),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  ShaderMask(
-                    shaderCallback: (bounds) => const LinearGradient(
-                      colors: [Colors.white, Color(0xFFE0E0E0)],
-                    ).createShader(bounds),
-                    child: const Text(
-                      'Settings',
-                      style: TextStyle(
-                        fontSize: 28,
-                        fontWeight: FontWeight.w900,
-                        color: Colors.white,
-                        height: 1.1,
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 4),
-                  Text(
-                    'Manage your preferences',
-                    style: TextStyle(
-                      color: AppColors.purpleLight.withOpacity(0.8),
-                      fontSize: 14,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
+        ],
       ),
     )
         .animate()
         .fadeIn(duration: 400.ms)
         .slideY(begin: -0.1, duration: 400.ms);
-  }
-
-  Widget _buildSupportSection() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20),
-      child: GestureDetector(
-        onTap: _openSupportModal,
-        child: Container(
-          padding: const EdgeInsets.all(20),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(20),
-            gradient: LinearGradient(
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-              colors: [
-                AppColors.goldAccent.withOpacity(0.15),
-                AppColors.orange.withOpacity(0.08),
-              ],
-            ),
-            border: Border.all(
-              color: AppColors.goldAccent.withOpacity(0.3),
-              width: 1.5,
-            ),
-            boxShadow: [
-              BoxShadow(
-                color: AppColors.goldAccent.withOpacity(0.1),
-                blurRadius: 20,
-              ),
-            ],
-          ),
-          child: Row(
-            children: [
-              Container(
-                padding: const EdgeInsets.all(14),
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    colors: [AppColors.goldAccent, AppColors.orange],
-                  ),
-                  borderRadius: BorderRadius.circular(14),
-                  boxShadow: [
-                    BoxShadow(
-                      color: AppColors.goldAccent.withOpacity(0.4),
-                      blurRadius: 12,
-                    ),
-                  ],
-                ),
-                child: const Icon(
-                  Icons.support_agent_rounded,
-                  color: Colors.white,
-                  size: 24,
-                ),
-              ),
-              const SizedBox(width: 16),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text(
-                      'Need Help?',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 18,
-                        fontWeight: FontWeight.w700,
-                      ),
-                    ),
-                    const SizedBox(height: 4),
-                    Text(
-                      'Contact our support team',
-                      style: TextStyle(
-                        color: AppColors.purpleLight.withOpacity(0.7),
-                        fontSize: 13,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Container(
-                padding: const EdgeInsets.all(10),
-                decoration: BoxDecoration(
-                  color: AppColors.goldAccent.withOpacity(0.2),
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: Icon(
-                  Icons.arrow_forward_ios_rounded,
-                  color: AppColors.goldAccent,
-                  size: 16,
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    )
-        .animate()
-        .fadeIn(delay: 100.ms, duration: 400.ms)
-        .slideX(begin: -0.1, delay: 100.ms);
   }
 
   Widget _buildSupportModal() {
@@ -997,17 +815,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
           padding: const EdgeInsets.symmetric(horizontal: 20),
           child: Row(
             children: [
-              Container(
-                padding: const EdgeInsets.all(8),
-                decoration: BoxDecoration(
-                  color: Colors.white.withOpacity(0.1),
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: const Icon(
-                  Icons.tune_rounded,
-                  color: Colors.white,
-                  size: 20,
-                ),
+              const Icon(
+                Icons.tune_rounded,
+                color: Colors.white,
+                size: 20,
               ),
               const SizedBox(width: 12),
               const Text(
@@ -1053,12 +864,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
             child: Column(
               children: [
                 _buildSettingTile(
-                  icon: Icons.volume_up_rounded,
-                  title: 'Sound Effects',
-                  subtitle: 'Game sounds and effects',
+                  icon: Icons.vibration_rounded,
+                  title: 'Haptic Feedback',
+                  subtitle: 'Vibration on interactions',
                   color: AppColors.purplePrimary,
-                  value: _soundEffects,
-                  onChanged: _toggleSoundEffects,
+                  value: _hapticFeedback,
+                  onChanged: _toggleHapticFeedback,
                   index: 0,
                 ),
                 _buildDivider(),
@@ -1071,88 +882,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   onChanged: _toggleNotifications,
                   index: 1,
                 ),
-              ],
-            ),
-          ),
-        )
-            .animate()
-            .fadeIn(delay: 300.ms)
-            .slideY(begin: 0.1, delay: 300.ms),
-      ],
-    );
-  }
-
-  Widget _buildDataSection() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20),
-          child: Row(
-            children: [
-              Container(
-                padding: const EdgeInsets.all(8),
-                decoration: BoxDecoration(
-                  color: Colors.white.withOpacity(0.1),
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: const Icon(
-                  Icons.storage_rounded,
-                  color: Colors.white,
-                  size: 20,
-                ),
-              ),
-              const SizedBox(width: 12),
-              const Text(
-                'Data & Storage',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 20,
-                  fontWeight: FontWeight.w700,
-                ),
-              ),
-            ],
-          ),
-        )
-            .animate()
-            .fadeIn(delay: 400.ms),
-        
-        const SizedBox(height: 16),
-        
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20),
-          child: Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(20),
-              gradient: LinearGradient(
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-                colors: [
-                  AppColors.backgroundSecondary.withOpacity(0.8),
-                  AppColors.cardBackground.withOpacity(0.6),
-                ],
-              ),
-              border: Border.all(
-                color: AppColors.purpleMuted.withOpacity(0.3),
-                width: 1.5,
-              ),
-              boxShadow: [
-                BoxShadow(
-                  color: AppColors.purplePrimary.withOpacity(0.1),
-                  blurRadius: 20,
-                ),
-              ],
-            ),
-            child: Column(
-              children: [
-                _buildActionTile(
-                  icon: Icons.delete_sweep_rounded,
-                  title: 'Clear Cache',
-                  subtitle: 'Free up storage space',
-                  color: AppColors.orange,
-                  onTap: _clearCache,
-                  index: 0,
-                ),
                 _buildDivider(),
                 _buildActionTile(
                   icon: Icons.delete_forever_rounded,
@@ -1160,7 +889,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   subtitle: 'Reset app to initial state',
                   color: AppColors.deleteRed,
                   onTap: _deleteEverything,
-                  index: 1,
+                  index: 2,
                   isDanger: true,
                 ),
               ],
@@ -1168,8 +897,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
           ),
         )
             .animate()
-            .fadeIn(delay: 500.ms)
-            .slideY(begin: 0.1, delay: 500.ms),
+            .fadeIn(delay: 300.ms)
+            .slideY(begin: 0.1, delay: 300.ms),
       ],
     );
   }
@@ -1182,17 +911,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
           padding: const EdgeInsets.symmetric(horizontal: 20),
           child: Row(
             children: [
-              Container(
-                padding: const EdgeInsets.all(8),
-                decoration: BoxDecoration(
-                  color: Colors.white.withOpacity(0.1),
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: const Icon(
-                  Icons.gavel_rounded,
-                  color: Colors.white,
-                  size: 20,
-                ),
+              const Icon(
+                Icons.gavel_rounded,
+                color: Colors.white,
+                size: 20,
               ),
               const SizedBox(width: 12),
               const Text(
@@ -1237,12 +959,21 @@ class _ProfileScreenState extends State<ProfileScreen> {
             ),
             child: Column(
               children: [
+                _buildActionTile(
+                  icon: Icons.support_agent_rounded,
+                  title: 'Need Help?',
+                  subtitle: 'Contact our support team',
+                  color: AppColors.goldAccent,
+                  onTap: _openSupportModal,
+                  index: 0,
+                ),
+                _buildDivider(),
                 _buildInfoTile(
                   icon: Icons.info_rounded,
                   title: 'App Version',
                   value: '1.0.0',
                   color: AppColors.purplePrimary,
-                  index: 0,
+                  index: 1,
                 ),
                 _buildDivider(),
                 _buildActionTile(
@@ -1251,7 +982,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   subtitle: 'Read our terms',
                   color: AppColors.purpleLight,
                   onTap: () => _navigateToLegal('terms'),
-                  index: 1,
+                  index: 2,
                 ),
                 _buildDivider(),
                 _buildActionTile(
@@ -1260,7 +991,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   subtitle: 'Your privacy matters',
                   color: AppColors.purpleLight,
                   onTap: () => _navigateToLegal('privacy'),
-                  index: 2,
+                  index: 3,
                 ),
               ],
             ),
@@ -1297,26 +1028,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
       child: Row(
         children: [
-          Container(
-            padding: const EdgeInsets.all(12),
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                colors: [
-                  color.withOpacity(0.25),
-                  color.withOpacity(0.1),
-                ],
-              ),
-              borderRadius: BorderRadius.circular(14),
-              border: Border.all(
-                color: color.withOpacity(0.3),
-                width: 1.5,
-              ),
-            ),
-            child: Icon(
-              icon,
-              color: color,
-              size: 22,
-            ),
+          Icon(
+            icon,
+            color: Colors.white,
+            size: 22,
           ),
           const SizedBox(width: 16),
           Expanded(
@@ -1345,10 +1060,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
           Switch(
             value: value,
             onChanged: onChanged,
-            activeColor: color,
-            activeTrackColor: color.withOpacity(0.3),
-            inactiveThumbColor: AppColors.purpleLight.withOpacity(0.5),
-            inactiveTrackColor: AppColors.purpleMuted.withOpacity(0.2),
+            activeColor: const Color(0xFF4CAF50), // Green when toggled
+            activeTrackColor: const Color(0xFF4CAF50).withOpacity(0.5),
+            inactiveThumbColor: Colors.white.withOpacity(0.8),
+            inactiveTrackColor: AppColors.purplePrimary.withOpacity(0.5),
+            trackOutlineColor: MaterialStateProperty.resolveWith((states) {
+              if (states.contains(MaterialState.selected)) {
+                return const Color(0xFF4CAF50).withOpacity(0.3);
+              }
+              return AppColors.purplePrimary.withOpacity(0.3);
+            }),
           ),
         ],
       ),
@@ -1373,26 +1094,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
           child: Row(
             children: [
-              Container(
-                padding: const EdgeInsets.all(12),
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    colors: [
-                      color.withOpacity(0.25),
-                      color.withOpacity(0.1),
-                    ],
-                  ),
-                  borderRadius: BorderRadius.circular(14),
-                  border: Border.all(
-                    color: color.withOpacity(0.3),
-                    width: 1.5,
-                  ),
-                ),
-                child: Icon(
-                  icon,
-                  color: color,
-                  size: 22,
-                ),
+              Icon(
+                icon,
+                color: Colors.white,
+                size: 22,
               ),
               const SizedBox(width: 16),
               Expanded(
@@ -1441,26 +1146,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
       child: Row(
         children: [
-          Container(
-            padding: const EdgeInsets.all(12),
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                colors: [
-                  color.withOpacity(0.25),
-                  color.withOpacity(0.1),
-                ],
-              ),
-              borderRadius: BorderRadius.circular(14),
-              border: Border.all(
-                color: color.withOpacity(0.3),
-                width: 1.5,
-              ),
-            ),
-            child: Icon(
-              icon,
-              color: color,
-              size: 22,
-            ),
+          Icon(
+            icon,
+            color: Colors.white,
+            size: 22,
           ),
           const SizedBox(width: 16),
           Expanded(

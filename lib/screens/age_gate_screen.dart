@@ -1,6 +1,8 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import '../constants/constants.dart';
 import '../services/settings_service.dart';
 import '../widgets/app_background.dart';
@@ -15,9 +17,32 @@ class AgeGateScreen extends StatefulWidget {
   State<AgeGateScreen> createState() => _AgeGateScreenState();
 }
 
-class _AgeGateScreenState extends State<AgeGateScreen> {
+class _AgeGateScreenState extends State<AgeGateScreen> with TickerProviderStateMixin {
   bool _ageConfirmed = false;
   bool _termsAccepted = false;
+  late AnimationController _pulseController;
+  late AnimationController _glareController;
+
+  @override
+  void initState() {
+    super.initState();
+    _pulseController = AnimationController(
+      vsync: this,
+      duration: const Duration(seconds: 2),
+    )..repeat(reverse: true);
+    
+    _glareController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 2500), // 1.5s animation + 1s pause
+    )..repeat();
+  }
+
+  @override
+  void dispose() {
+    _pulseController.dispose();
+    _glareController.dispose();
+    super.dispose();
+  }
 
   void _confirmAge() async {
     // Save that age gate has been shown
@@ -71,51 +96,62 @@ class _AgeGateScreenState extends State<AgeGateScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  // App Icon
-                  _buildLogo()
-                        .animate()
-                        .scale(
-                          duration: 800.ms,
-                          curve: Curves.elasticOut,
-                        )
-                        .fadeIn(duration: 600.ms),
-                    
-                    const SizedBox(height: AppSpacing.lg),
-                    
-                    // Welcome Text
-                    Text(
+                  // Welcome Text
+                  ShaderMask(
+                    shaderCallback: (bounds) => LinearGradient(
+                      colors: [Colors.white, Color(0xFFE0E0E0)],
+                    ).createShader(bounds),
+                    child: Text(
                       'Welcome!',
-                      style: AppTextStyles.h1.copyWith(
-                        fontSize: 36,
-                        fontWeight: FontWeight.bold,
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: 44,
+                        fontWeight: FontWeight.w400,
                         color: Colors.white,
+                        height: 1.1,
+                        letterSpacing: -0.5,
+                        shadows: [
+                          Shadow(
+                            color: AppColors.goldAccent.withOpacity(0.5),
+                            blurRadius: 20,
+                          ),
+                          Shadow(
+                            color: AppColors.purplePrimary.withOpacity(0.8),
+                            blurRadius: 30,
+                          ),
+                          Shadow(
+                            color: Colors.black.withOpacity(0.5),
+                            blurRadius: 10,
+                            offset: const Offset(0, 2),
+                          ),
+                        ],
                       ),
-                      textAlign: TextAlign.center,
-                    )
-                        .animate()
-                        .fadeIn(delay: 300.ms, duration: 600.ms)
-                        .slideY(begin: 0.2, end: 0, delay: 300.ms),
-                    
-                    const SizedBox(height: AppSpacing.md),
-                    
-                    // Adult Audience Text
-                    Text(
-                      'These games are intended for an adult\naudience (18+).',
-                      style: AppTextStyles.bodyLarge.copyWith(
-                        color: Colors.white.withOpacity(0.8),
-                        height: 1.6,
+                    ),
+                  )
+                      .animate()
+                      .fadeIn(delay: 300.ms, duration: 600.ms)
+                      .slideY(begin: 0.2, end: 0, delay: 300.ms),
+                  
+                  const SizedBox(height: AppSpacing.lg),
+                  
+                  // Adult Audience and Review Text combined
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'These games are intended for an adult audience (18+).',
+                        style: AppTextStyles.bodyLarge.copyWith(
+                          color: Colors.white.withOpacity(0.8),
+                          height: 1.6,
+                        ),
+                        textAlign: TextAlign.left,
                       ),
-                      textAlign: TextAlign.center,
-                    )
-                        .animate()
-                        .fadeIn(delay: 500.ms, duration: 600.ms),
-                    
-                    const SizedBox(height: AppSpacing.md),
-                    
-                    // Review Terms Text with Links
-                    _buildReviewText()
-                        .animate()
-                        .fadeIn(delay: 700.ms, duration: 600.ms),
+                      const SizedBox(height: AppSpacing.sm),
+                      _buildReviewText(),
+                    ],
+                  )
+                      .animate()
+                      .fadeIn(delay: 500.ms, duration: 600.ms),
                     
                     const SizedBox(height: AppSpacing.xl),
                     
@@ -148,63 +184,24 @@ class _AgeGateScreenState extends State<AgeGateScreen> {
     );
   }
 
-  Widget _buildLogo() {
-    return Container(
-      width: 140,
-      height: 140,
-      decoration: BoxDecoration(
-        shape: BoxShape.circle,
-        boxShadow: [
-          BoxShadow(
-            color: AppColors.goldAccent.withOpacity(0.4),
-            blurRadius: 40,
-            spreadRadius: 10,
-          ),
-          BoxShadow(
-            color: AppColors.purplePrimary.withOpacity(0.4),
-            blurRadius: 60,
-            spreadRadius: 20,
-          ),
-        ],
-      ),
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(90),
-        child: Container(
-          decoration: BoxDecoration(
-            border: Border.all(
-              color: AppColors.goldAccent,
-              width: 4,
-            ),
-            borderRadius: BorderRadius.circular(90),
-          ),
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(86),
-            child: Image.asset(
-              'assets/images/icon.png',
-              fit: BoxFit.cover,
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-
   Widget _buildReviewText() {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
           'Please review and accept our',
-          textAlign: TextAlign.center,
+          textAlign: TextAlign.left,
           style: AppTextStyles.bodyDefault.copyWith(
             color: Colors.white.withOpacity(0.8),
             height: 1.5,
           ),
         ),
         Row(
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.start,
           children: [
             GestureDetector(
               onTap: () {
+                HapticFeedback.lightImpact();
                 Navigator.of(context).push(
                   MaterialPageRoute(
                     builder: (context) => const LegalScreen(type: 'terms'),
@@ -230,6 +227,7 @@ class _AgeGateScreenState extends State<AgeGateScreen> {
             ),
             GestureDetector(
               onTap: () {
+                HapticFeedback.lightImpact();
                 Navigator.of(context).push(
                   MaterialPageRoute(
                     builder: (context) => const LegalScreen(type: 'privacy'),
@@ -253,27 +251,16 @@ class _AgeGateScreenState extends State<AgeGateScreen> {
   }
 
   Widget _buildCheckboxContainer() {
-    return ClipRRect(
-      borderRadius: BorderRadius.circular(AppSpacing.radiusLarge),
-      child: BackdropFilter(
-        filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
-        child: Container(
-          padding: const EdgeInsets.all(AppSpacing.lg),
-          decoration: BoxDecoration(
-            color: AppColors.cardBackground.withOpacity(0.3),
-            borderRadius: BorderRadius.circular(AppSpacing.radiusLarge),
-            border: Border.all(
-              color: AppColors.purpleMuted.withOpacity(0.5),
-              width: 1.5,
-            ),
-          ),
-          child: Column(
-            children: [
-              // Age Confirmation Checkbox
+    return Container(
+      padding: const EdgeInsets.all(AppSpacing.lg),
+      child: Column(
+        children: [
+          // Age Confirmation Checkbox
               _buildCheckboxRow(
                 isChecked: _ageConfirmed,
                 text: 'Yes, I am 18 years old or older.',
                 onChanged: (value) {
+                  HapticFeedback.lightImpact();
                   setState(() => _ageConfirmed = value ?? false);
                 },
               ),
@@ -281,15 +268,14 @@ class _AgeGateScreenState extends State<AgeGateScreen> {
               // Terms Acceptance Checkbox
               _buildCheckboxRow(
                 isChecked: _termsAccepted,
-                text: 'I have read and agree to Grand Mondial Online\'s Terms & Conditions and Privacy Policy.',
+                text: 'I have read and agree to Royal Casino: Gaming Lounge\'s Terms & Conditions and Privacy Policy.',
                 onChanged: (value) {
+                  HapticFeedback.lightImpact();
                   setState(() => _termsAccepted = value ?? false);
                 },
               ),
             ],
           ),
-        ),
-      ),
     );
   }
 
@@ -307,17 +293,17 @@ class _AgeGateScreenState extends State<AgeGateScreen> {
             width: 28,
             height: 28,
             decoration: BoxDecoration(
-              color: isChecked ? AppColors.purplePrimary : Colors.transparent,
+              color: Colors.transparent,
               borderRadius: BorderRadius.circular(6),
               border: Border.all(
-                color: isChecked ? AppColors.purplePrimary : AppColors.purpleLight.withOpacity(0.5),
+                color: isChecked ? AppColors.goldAccent : Colors.grey.withOpacity(0.5),
                 width: 2,
               ),
             ),
             child: isChecked
                 ? Icon(
                     Icons.check_rounded,
-                    color: Colors.white,
+                    color: AppColors.goldAccent,
                     size: 20,
                   )
                 : null,
@@ -344,60 +330,169 @@ class _AgeGateScreenState extends State<AgeGateScreen> {
     final isEnabled = _ageConfirmed && _termsAccepted;
     
     return GestureDetector(
-      onTap: isEnabled ? _confirmAge : null,
-      child: Container(
-        width: double.infinity,
-        padding: const EdgeInsets.symmetric(vertical: 18),
-        decoration: BoxDecoration(
-          image: isEnabled
-              ? DecorationImage(
-                  image: AssetImage('assets/images/main-button-bg.png'),
-                  fit: BoxFit.cover,
-                )
-              : null,
-          color: isEnabled ? null : Colors.grey.withOpacity(0.3),
-          borderRadius: BorderRadius.circular(35),
-          border: Border.all(
-            color: isEnabled ? AppColors.goldAccent : Colors.grey,
-            width: 3,
-          ),
-          boxShadow: isEnabled
-              ? [
+      onTap: isEnabled ? () {
+        HapticFeedback.mediumImpact();
+        _confirmAge();
+      } : null,
+      child: AnimatedBuilder(
+        animation: Listenable.merge([_pulseController, _glareController]),
+        builder: (context, child) {
+          return CustomPaint(
+            painter: isEnabled ? _ButtonGlarePainter(
+              glareAnimation: _glareController,
+              borderRadius: 30,
+            ) : null,
+            child: Container(
+              width: double.infinity,
+              padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 18),
+              decoration: BoxDecoration(
+                gradient: isEnabled ? LinearGradient(
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                  colors: [
+                    AppColors.goldAccent,
+                    AppColors.orange,
+                    const Color(0xFFD4841C),
+                  ],
+                  stops: const [0.0, 0.5, 1.0],
+                ) : null,
+                color: isEnabled ? null : Colors.grey.withOpacity(0.3),
+                borderRadius: BorderRadius.circular(30),
+                border: Border.all(
+                  color: isEnabled ? AppColors.goldAccent.withOpacity(0.8) : Colors.grey,
+                  width: 2.5,
+                ),
+                boxShadow: isEnabled ? [
+                  BoxShadow(
+                    color: AppColors.goldAccent.withOpacity(0.3 + _pulseController.value * 0.1),
+                    blurRadius: 20 + _pulseController.value * 8,
+                    spreadRadius: _pulseController.value * 1.5,
+                  ),
+                  BoxShadow(
+                    color: AppColors.orange.withOpacity(0.2),
+                    blurRadius: 25,
+                  ),
+                  BoxShadow(
+                    color: AppColors.purplePrimary.withOpacity(0.2),
+                    blurRadius: 20,
+                  ),
                   BoxShadow(
                     color: AppColors.goldAccent.withOpacity(0.3),
-                    blurRadius: 20,
-                    spreadRadius: 2,
+                    blurRadius: 8,
+                    offset: const Offset(0, -2),
                   ),
                   BoxShadow(
-                    color: AppColors.purplePrimary.withOpacity(0.3),
-                    blurRadius: 30,
-                    spreadRadius: 5,
+                    color: Colors.black.withOpacity(0.6),
+                    blurRadius: 20,
+                    offset: const Offset(0, 8),
                   ),
-                ]
-              : null,
-        ),
-        child: Text(
-          'CONFIRM AND CONTINUE',
-          style: AppTextStyles.h4.copyWith(
-            color: isEnabled ? Colors.white : Colors.grey,
-            fontWeight: FontWeight.bold,
-            letterSpacing: 1.2,
-          ),
-          textAlign: TextAlign.center,
-        ),
+                ] : null,
+              ),
+              child: Text(
+                'CONFIRM AND CONTINUE',
+                style: TextStyle(
+                  color: isEnabled ? Colors.white : Colors.grey,
+                  fontSize: 16,
+                  fontWeight: FontWeight.w800,
+                  letterSpacing: 1,
+                  shadows: isEnabled ? [
+                    Shadow(
+                      color: Colors.black.withOpacity(0.5),
+                      blurRadius: 5,
+                      offset: const Offset(0, 2),
+                    ),
+                  ] : null,
+                ),
+                textAlign: TextAlign.center,
+              ),
+            ),
+          );
+        },
       ),
     );
   }
 
   Widget _buildLegalText() {
-    return Text(
-      'By confirming your age, you acknowledge that you meet the age requirement and agree to our Terms & Conditions and Privacy Policy. If you are under 18, please exit this app immediately.',
-      style: AppTextStyles.caption.copyWith(
-        color: Colors.white.withOpacity(0.5),
-        fontSize: 10,
-        height: 1.4,
-      ),
-      textAlign: TextAlign.center,
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        SvgPicture.asset(
+          'assets/images/age-rating.svg',
+          width: 24,
+          height: 24,
+          colorFilter: ColorFilter.mode(
+            Colors.white.withOpacity(0.5),
+            BlendMode.srcIn,
+          ),
+        ),
+        const SizedBox(width: 12),
+        Expanded(
+          child: Text(
+            'By confirming your age, you acknowledge that you meet the age requirement and agree to our Terms & Conditions and Privacy Policy. If you are under 18, please exit this app immediately.',
+            style: AppTextStyles.caption.copyWith(
+              color: Colors.white.withOpacity(0.5),
+              fontSize: 12,
+              height: 1.4,
+            ),
+            textAlign: TextAlign.left,
+          ),
+        ),
+      ],
     );
   }
+}
+
+class _ButtonGlarePainter extends CustomPainter {
+  final Animation<double> glareAnimation;
+  final double borderRadius;
+
+  _ButtonGlarePainter({
+    required this.glareAnimation,
+    required this.borderRadius,
+  }) : super(repaint: glareAnimation);
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final progress = glareAnimation.value;
+    
+    // Only show glare for first 1.5 seconds, then 1 second pause
+    if (progress > 0.6) return; // 0.6 * 2.5s = 1.5s animation, 1s pause
+    
+    final adjustedProgress = progress / 0.6; // Normalize to 0-1
+    
+    final rect = Rect.fromLTWH(0, 0, size.width, size.height);
+    final rrect = RRect.fromRectAndRadius(rect, Radius.circular(borderRadius));
+    
+    // Calculate glare position (top-left to bottom-right)
+    final glareStart = Offset(
+      -size.width * 0.3 + (size.width * 1.6 * adjustedProgress),
+      -size.height * 0.3 + (size.height * 1.6 * adjustedProgress),
+    );
+    
+    final glareEnd = Offset(
+      glareStart.dx + size.width * 0.3,
+      glareStart.dy + size.height * 0.3,
+    );
+    
+    final glareGradient = LinearGradient(
+      begin: Alignment.topLeft,
+      end: Alignment.bottomRight,
+      colors: [
+        Colors.white.withOpacity(0),
+        Colors.white.withOpacity(0.6),
+        Colors.white.withOpacity(0),
+      ],
+      stops: const [0.0, 0.5, 1.0],
+    );
+    
+    final glarePaint = Paint()
+      ..shader = glareGradient.createShader(Rect.fromPoints(glareStart, glareEnd))
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = 3.0;
+    
+    canvas.drawRRect(rrect, glarePaint);
+  }
+
+  @override
+  bool shouldRepaint(_ButtonGlarePainter oldDelegate) => true;
 }

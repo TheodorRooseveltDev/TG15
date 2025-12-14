@@ -1,17 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "image_2025-11-26_170651883.png",
+      "filename" : "screen_Splash v1-min.jpg",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "image_2025-11-26_170651883@2x.png",
+      "filename" : "screen_Splash v1@2x-min.jpg",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "image_2025-11-26_170651883@3x.png",
+      "filename" : "screen_Splash v1@3x-min.jpg",
       "idiom" : "universal",
       "scale" : "3x"
     }

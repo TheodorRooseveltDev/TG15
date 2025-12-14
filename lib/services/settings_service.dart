@@ -11,7 +11,7 @@ class SettingsService {
 
   // Keys
   static const String _keyAgeGateShown = 'age_gate_shown';
-  static const String _keySoundEffects = 'sound_effects';
+  static const String _keyHapticFeedback = 'haptic_feedback';
   static const String _keyBackgroundMusic = 'background_music';
   static const String _keyNotifications = 'notifications';
   static const String _keyFavoriteGames = 'favorite_games';
@@ -53,15 +53,15 @@ class SettingsService {
     await prefs.setBool(_keyFirstLaunch, false);
   }
 
-  // Sound Effects
-  Future<bool> getSoundEffects() async {
+  // Haptic Feedback
+  Future<bool> getHapticFeedback() async {
     final prefs = await _getPrefs();
-    return prefs.getBool(_keySoundEffects) ?? true;
+    return prefs.getBool(_keyHapticFeedback) ?? true;
   }
 
-  Future<void> setSoundEffects(bool value) async {
+  Future<void> setHapticFeedback(bool value) async {
     final prefs = await _getPrefs();
-    await prefs.setBool(_keySoundEffects, value);
+    await prefs.setBool(_keyHapticFeedback, value);
   }
 
   // Background Music

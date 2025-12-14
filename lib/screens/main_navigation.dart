@@ -114,7 +114,7 @@ class _MainNavigationState extends State<MainNavigation> with SingleTickerProvid
                       label: 'Home',
                       index: 0,
                     ),
-                    _buildCenterNavItem(
+                    _buildNavItem(
                       icon: Icons.casino_rounded,
                       label: 'Games',
                       index: 1,
@@ -178,7 +178,7 @@ class _MainNavigationState extends State<MainNavigation> with SingleTickerProvid
                   duration: const Duration(milliseconds: 200),
                   child: Icon(
                     icon,
-                    size: 24,
+                    size: 28,
                     color: isSelected 
                         ? Colors.white 
                         : AppColors.purpleLight.withOpacity(0.5),
@@ -193,129 +193,8 @@ class _MainNavigationState extends State<MainNavigation> with SingleTickerProvid
                   ),
                 ),
               ),
-              
-              const SizedBox(height: 2),
-              
-              // Label
-              AnimatedDefaultTextStyle(
-                duration: const Duration(milliseconds: 200),
-                style: TextStyle(
-                  fontSize: isSelected ? 10 : 9,
-                  fontWeight: isSelected ? FontWeight.w700 : FontWeight.w500,
-                  color: isSelected 
-                      ? Colors.white 
-                      : AppColors.purpleLight.withOpacity(0.5),
-                  letterSpacing: 0.3,
-                ),
-                child: Text(label),
-              ),
             ],
           ),
-        ),
-      ),
-    );
-  }
-
-  // Special center nav item with gold accent
-  Widget _buildCenterNavItem({
-    required IconData icon,
-    required String label,
-    required int index,
-  }) {
-    final isSelected = _currentIndex == index;
-    
-    return GestureDetector(
-      onTap: () => _onTabTapped(index),
-      behavior: HitTestBehavior.opaque,
-      child: AnimatedContainer(
-        duration: const Duration(milliseconds: 250),
-        curve: Curves.easeOutCubic,
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            // Center icon with special treatment
-            AnimatedContainer(
-              duration: const Duration(milliseconds: 250),
-              curve: Curves.easeOutCubic,
-              padding: const EdgeInsets.all(8),
-              decoration: BoxDecoration(
-                gradient: isSelected 
-                    ? LinearGradient(
-                        begin: Alignment.topLeft,
-                        end: Alignment.bottomRight,
-                        colors: [
-                          AppColors.goldAccent,
-                          AppColors.orange,
-                        ],
-                      )
-                    : LinearGradient(
-                        begin: Alignment.topLeft,
-                        end: Alignment.bottomRight,
-                        colors: [
-                          AppColors.purplePrimary.withOpacity(0.3),
-                          AppColors.purpleSecondary.withOpacity(0.2),
-                        ],
-                      ),
-                borderRadius: BorderRadius.circular(20),
-                border: Border.all(
-                  color: isSelected 
-                      ? AppColors.goldAccent.withOpacity(0.5)
-                      : AppColors.purpleMuted.withOpacity(0.3),
-                  width: 1.5,
-                ),
-                boxShadow: [
-                  BoxShadow(
-                    color: isSelected 
-                        ? AppColors.goldAccent.withOpacity(0.5)
-                        : AppColors.purplePrimary.withOpacity(0.2),
-                    blurRadius: isSelected ? 20 : 10,
-                    spreadRadius: isSelected ? 2 : 0,
-                  ),
-                  if (isSelected)
-                    BoxShadow(
-                      color: AppColors.orange.withOpacity(0.3),
-                      blurRadius: 30,
-                      spreadRadius: 0,
-                    ),
-                ],
-              ),
-              child: AnimatedScale(
-                scale: isSelected ? 1.08 : 1.0,
-                duration: const Duration(milliseconds: 200),
-                child: Icon(
-                  icon,
-                  size: 24,
-                  color: Colors.white,
-                  shadows: [
-                    Shadow(
-                      color: isSelected 
-                          ? Colors.black.withOpacity(0.3)
-                          : AppColors.purplePrimary,
-                      blurRadius: 10,
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            
-            const SizedBox(height: 2),
-            
-            // Label with gold color when selected
-            AnimatedDefaultTextStyle(
-              duration: const Duration(milliseconds: 200),
-              style: TextStyle(
-                fontSize: isSelected ? 10 : 9,
-                fontWeight: isSelected ? FontWeight.w800 : FontWeight.w500,
-                color: isSelected 
-                    ? AppColors.goldAccent 
-                    : AppColors.purpleLight.withOpacity(0.5),
-                letterSpacing: 0.5,
-              ),
-              child: Text(label),
-            ),
-          ],
         ),
       ),
     );
