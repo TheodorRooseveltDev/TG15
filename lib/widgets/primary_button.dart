@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import '../constants/constants.dart';
 
-/// Primary button widget with custom background texture
 class PrimaryButton extends StatelessWidget {
   final String text;
   final VoidCallback onPressed;
@@ -33,21 +32,11 @@ class PrimaryButton extends StatelessWidget {
               vertical: isLarge ? AppSpacing.md : AppSpacing.sm,
             ),
             decoration: BoxDecoration(
-              image: const DecorationImage(
-                image: AssetImage('assets/images/main-button-bg.png'),
-                fit: BoxFit.cover,
-              ),
+              image: const DecorationImage(image: AssetImage('assets/images/main-button-bg.png'), fit: BoxFit.cover),
               borderRadius: BorderRadius.circular(AppSpacing.radiusMedium),
-              border: Border.all(
-                color: AppColors.goldAccent.withOpacity(0.5),
-                width: 2,
-              ),
+              border: Border.all(color: AppColors.goldAccent.withOpacity(0.5), width: 2),
               boxShadow: [
-                BoxShadow(
-                  color: AppColors.goldAccent.withOpacity(0.3),
-                  blurRadius: 15,
-                  offset: const Offset(0, 4),
-                ),
+                BoxShadow(color: AppColors.goldAccent.withOpacity(0.3), blurRadius: 15, offset: const Offset(0, 4)),
               ],
             ),
             child: Row(
@@ -55,11 +44,7 @@ class PrimaryButton extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 if (icon != null) ...[
-                  Icon(
-                    icon,
-                    color: AppColors.primaryText,
-                    size: isLarge ? 28 : 20,
-                  ),
+                  Icon(icon, color: AppColors.primaryText, size: isLarge ? 28 : 20),
                   SizedBox(width: AppSpacing.sm),
                 ],
                 Text(
@@ -67,12 +52,7 @@ class PrimaryButton extends StatelessWidget {
                   style: (isLarge ? AppTextStyles.h4 : AppTextStyles.buttonText).copyWith(
                     color: AppColors.primaryText,
                     fontWeight: FontWeight.bold,
-                    shadows: [
-                      Shadow(
-                        color: Colors.black.withOpacity(0.5),
-                        blurRadius: 4,
-                      ),
-                    ],
+                    shadows: [Shadow(color: Colors.black.withOpacity(0.5), blurRadius: 4)],
                   ),
                 ),
               ],

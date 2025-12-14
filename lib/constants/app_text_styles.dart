@@ -1,13 +1,9 @@
 import 'package:flutter/material.dart';
 import 'app_colors.dart';
 
-/// Typography system for VIP Gaming Lounge
-/// Using SF Pro Display (iOS Native)
 class AppTextStyles {
-  // Font Family
   static const String fontFamily = '.SF Pro Display';
 
-  // Headings
   static const TextStyle h1 = TextStyle(
     fontFamily: fontFamily,
     fontSize: 48,
@@ -50,7 +46,6 @@ class AppTextStyles {
     color: AppColors.primaryText,
   );
 
-  // Body Text
   static const TextStyle bodyLarge = TextStyle(
     fontFamily: fontFamily,
     fontSize: 18,
@@ -83,7 +78,6 @@ class AppTextStyles {
     color: AppColors.secondaryText,
   );
 
-  // Special Text Styles
   static const TextStyle buttonText = TextStyle(
     fontFamily: fontFamily,
     fontSize: 16,
@@ -96,19 +90,10 @@ class AppTextStyles {
     fontFamily: fontFamily,
     fontSize: 18,
     fontWeight: FontWeight.bold,
-    foreground: Paint()
-      ..shader = AppColors.primaryGradient.createShader(
-        const Rect.fromLTWH(0, 0, 200, 70),
-      ),
+    foreground: Paint()..shader = AppColors.primaryGradient.createShader(const Rect.fromLTWH(0, 0, 200, 70)),
   );
 
-  // Helper method to create gradient text
   static TextStyle gradientText(TextStyle baseStyle, Gradient gradient) {
-    return baseStyle.copyWith(
-      foreground: Paint()
-        ..shader = gradient.createShader(
-          const Rect.fromLTWH(0, 0, 200, 70),
-        ),
-    );
+    return baseStyle.copyWith(foreground: Paint()..shader = gradient.createShader(const Rect.fromLTWH(0, 0, 200, 70)));
   }
 }

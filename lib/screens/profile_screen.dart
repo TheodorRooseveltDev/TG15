@@ -10,7 +10,6 @@ import '../widgets/app_background.dart';
 import 'age_gate_screen.dart';
 import 'legal_screen.dart';
 
-/// Profile screen with settings and user data
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
 
@@ -21,11 +20,10 @@ class ProfileScreen extends StatefulWidget {
 class _ProfileScreenState extends State<ProfileScreen> {
   final SettingsService _settingsService = SettingsService();
   final ImagePicker _imagePicker = ImagePicker();
-  
+
   bool _hapticFeedback = true;
   bool _notifications = true;
-  
-  // Support modal state
+
   final TextEditingController _supportDescriptionController = TextEditingController();
   String _selectedTopic = 'Technical Issue';
   File? _supportImage;
@@ -55,7 +53,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Future<void> _loadSettings() async {
     final hapticFeedback = await _settingsService.getHapticFeedback();
     final notifications = await _settingsService.getNotifications();
-    
+
     setState(() {
       _hapticFeedback = hapticFeedback;
       _notifications = notifications;
@@ -74,22 +72,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
     setState(() => _notifications = value);
   }
 
-  // Support Section Methods
   void _openSupportModal() {
     HapticFeedback.lightImpact();
-    showDialog(
-      context: context,
-      builder: (context) => _buildSupportModal(),
-    );
+    showDialog(context: context, builder: (context) => _buildSupportModal());
   }
 
   Future<void> _pickImageForSupport(ImageSource source) async {
-    final image = await _imagePicker.pickImage(
-      source: source,
-      maxWidth: 1024,
-      maxHeight: 1024,
-      imageQuality: 85,
-    );
+    final image = await _imagePicker.pickImage(source: source, maxWidth: 1024, maxHeight: 1024, imageQuality: 85);
     if (image != null) {
       setState(() => _supportImage = File(image.path));
       Navigator.pop(context); // Close bottom sheet after selection
@@ -110,7 +99,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
     setState(() => _isSending = true);
 
-    // Simulate sending (message goes nowhere)
     await Future.delayed(const Duration(seconds: 2));
 
     if (!mounted) return;
@@ -130,9 +118,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           children: [
             Icon(Icons.check_circle_rounded, color: Colors.white),
             SizedBox(width: 12),
-            Expanded(
-              child: Text('Support request sent successfully!'),
-            ),
+            Expanded(child: Text('Support request sent successfully!')),
           ],
         ),
         backgroundColor: AppColors.success,
@@ -150,30 +136,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
         backgroundColor: AppColors.deepSpace,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(AppSpacing.radiusLarge),
-          side: const BorderSide(
-            color: AppColors.deleteRed,
-            width: 2,
-          ),
+          side: const BorderSide(color: AppColors.deleteRed, width: 2),
         ),
         title: Row(
           children: [
             Container(
               padding: const EdgeInsets.all(AppSpacing.sm),
-              decoration: BoxDecoration(
-                color: AppColors.deleteRed.withOpacity(0.2),
-                shape: BoxShape.circle,
-              ),
-              child: const Icon(
-                Icons.warning_rounded,
-                color: AppColors.deleteRed,
-                size: 24,
-              ),
+              decoration: BoxDecoration(color: AppColors.deleteRed.withOpacity(0.2), shape: BoxShape.circle),
+              child: const Icon(Icons.warning_rounded, color: AppColors.deleteRed, size: 24),
             ),
             const SizedBox(width: AppSpacing.sm),
-            Text(
-              'Delete Everything?',
-              style: AppTextStyles.h4,
-            ),
+            Text('Delete Everything?', style: AppTextStyles.h4),
           ],
         ),
         content: Column(
@@ -182,9 +155,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           children: [
             Text(
               'This action will permanently delete:',
-              style: AppTextStyles.bodyDefault.copyWith(
-                fontWeight: FontWeight.bold,
-              ),
+              style: AppTextStyles.bodyDefault.copyWith(fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: AppSpacing.sm),
             _buildDeleteItem('All your favorites'),
@@ -198,25 +169,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
               decoration: BoxDecoration(
                 color: AppColors.deleteRed.withOpacity(0.1),
                 borderRadius: BorderRadius.circular(AppSpacing.radiusMedium),
-                border: Border.all(
-                  color: AppColors.deleteRed.withOpacity(0.3),
-                ),
+                border: Border.all(color: AppColors.deleteRed.withOpacity(0.3)),
               ),
               child: Row(
                 children: [
-                  const Icon(
-                    Icons.info_outline_rounded,
-                    color: AppColors.deleteRed,
-                    size: 20,
-                  ),
+                  const Icon(Icons.info_outline_rounded, color: AppColors.deleteRed, size: 20),
                   const SizedBox(width: AppSpacing.sm),
                   Expanded(
                     child: Text(
                       'This action cannot be undone!',
-                      style: AppTextStyles.caption.copyWith(
-                        color: AppColors.deleteRed,
-                        fontWeight: FontWeight.bold,
-                      ),
+                      style: AppTextStyles.caption.copyWith(color: AppColors.deleteRed, fontWeight: FontWeight.bold),
                     ),
                   ),
                 ],
@@ -227,24 +189,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context, false),
-            child: Text(
-              'Cancel',
-              style: AppTextStyles.buttonText.copyWith(
-                color: AppColors.secondaryText,
-              ),
-            ),
+            child: Text('Cancel', style: AppTextStyles.buttonText.copyWith(color: AppColors.secondaryText)),
           ),
           TextButton(
             onPressed: () => Navigator.pop(context, true),
-            style: TextButton.styleFrom(
-              backgroundColor: AppColors.deleteRed.withOpacity(0.2),
-            ),
+            style: TextButton.styleFrom(backgroundColor: AppColors.deleteRed.withOpacity(0.2)),
             child: Text(
               'Delete Everything',
-              style: AppTextStyles.buttonText.copyWith(
-                color: AppColors.deleteRed,
-                fontWeight: FontWeight.bold,
-              ),
+              style: AppTextStyles.buttonText.copyWith(color: AppColors.deleteRed, fontWeight: FontWeight.bold),
             ),
           ),
         ],
@@ -252,14 +204,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
 
     if (confirmed == true) {
-      // Clear all SharedPreferences data
       await _settingsService.clearAllCache();
       final prefs = await SharedPreferences.getInstance();
       await prefs.clear();
 
       if (!mounted) return;
 
-      // Navigate to age gate, removing all routes
       Navigator.pushAndRemoveUntil(
         context,
         PageRouteBuilder(
@@ -271,10 +221,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 position: Tween<Offset>(
                   begin: const Offset(0, 0.1),
                   end: Offset.zero,
-                ).animate(CurvedAnimation(
-                  parent: animation,
-                  curve: Curves.easeOut,
-                )),
+                ).animate(CurvedAnimation(parent: animation, curve: Curves.easeOut)),
                 child: child,
               ),
             );
@@ -290,16 +237,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
       padding: const EdgeInsets.only(bottom: AppSpacing.sm),
       child: Row(
         children: [
-          const Icon(
-            Icons.close_rounded,
-            color: AppColors.deleteRed,
-            size: 16,
-          ),
+          const Icon(Icons.close_rounded, color: AppColors.deleteRed, size: 16),
           const SizedBox(width: AppSpacing.sm),
-          Text(
-            text,
-            style: AppTextStyles.bodySmall,
-          ),
+          Text(text, style: AppTextStyles.bodySmall),
         ],
       ),
     );
@@ -307,11 +247,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   void _navigateToLegal(String type) {
     HapticFeedback.lightImpact();
-    Navigator.of(context).push(
-      MaterialPageRoute(
-        builder: (context) => LegalScreen(type: type),
-      ),
-    );
+    Navigator.of(context).push(MaterialPageRoute(builder: (context) => LegalScreen(type: type)));
   }
 
   @override
@@ -348,28 +284,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
         children: [
           const Text(
             'Settings',
-            style: TextStyle(
-              fontSize: 28,
-              fontWeight: FontWeight.w400,
-              color: Colors.white,
-              height: 1.1,
-            ),
+            style: TextStyle(fontSize: 28, fontWeight: FontWeight.w400, color: Colors.white, height: 1.1),
           ),
           const SizedBox(height: 8),
           Text(
             'Manage your preferences',
-            style: TextStyle(
-              color: Colors.white.withOpacity(0.8),
-              fontSize: 14,
-              fontWeight: FontWeight.w500,
-            ),
+            style: TextStyle(color: Colors.white.withOpacity(0.8), fontSize: 14, fontWeight: FontWeight.w500),
           ),
         ],
       ),
-    )
-        .animate()
-        .fadeIn(duration: 400.ms)
-        .slideY(begin: -0.1, duration: 400.ms);
+    ).animate().fadeIn(duration: 400.ms).slideY(begin: -0.1, duration: 400.ms);
   }
 
   Widget _buildSupportModal() {
@@ -380,32 +304,23 @@ class _ProfileScreenState extends State<ProfileScreen> {
           elevation: 0,
           insetPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 24),
           child: ConstrainedBox(
-            constraints: BoxConstraints(
-              maxHeight: MediaQuery.of(context).size.height * 0.8,
-            ),
+            constraints: BoxConstraints(maxHeight: MediaQuery.of(context).size.height * 0.8),
             child: Container(
               decoration: BoxDecoration(
                 color: AppColors.backgroundPrimary,
                 borderRadius: BorderRadius.circular(24),
-                border: Border.all(
-                  color: AppColors.purpleMuted.withOpacity(0.4),
-                  width: 1.5,
-                ),
+                border: Border.all(color: AppColors.purpleMuted.withOpacity(0.4), width: 1.5),
               ),
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(24),
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    // Title Bar
                     Container(
                       padding: const EdgeInsets.all(20),
                       decoration: BoxDecoration(
                         gradient: LinearGradient(
-                          colors: [
-                            AppColors.purplePrimary.withOpacity(0.15),
-                            AppColors.backgroundSecondary,
-                          ],
+                          colors: [AppColors.purplePrimary.withOpacity(0.15), AppColors.backgroundSecondary],
                         ),
                       ),
                       child: Row(
@@ -416,22 +331,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               gradient: AppColors.primaryGradient,
                               borderRadius: BorderRadius.circular(12),
                             ),
-                            child: const Icon(
-                              Icons.support_agent_rounded,
-                              color: Colors.white,
-                              size: 22,
-                            ),
+                            child: const Icon(Icons.support_agent_rounded, color: Colors.white, size: 22),
                           ),
                           const SizedBox(width: 12),
-                          Text(
-                            'Contact Support',
-                            style: AppTextStyles.h4,
-                          ),
+                          Text('Contact Support', style: AppTextStyles.h4),
                         ],
                       ),
                     ),
-                
-                    // Content - scrollable
+
                     Flexible(
                       child: SingleChildScrollView(
                         padding: const EdgeInsets.all(20),
@@ -439,7 +346,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           mainAxisSize: MainAxisSize.min,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            // Topic Dropdown
                             Text(
                               'Topic',
                               style: AppTextStyles.bodyDefault.copyWith(
@@ -453,9 +359,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               decoration: BoxDecoration(
                                 color: AppColors.backgroundSecondary,
                                 borderRadius: BorderRadius.circular(12),
-                                border: Border.all(
-                                  color: AppColors.purpleMuted.withOpacity(0.3),
-                                ),
+                                border: Border.all(color: AppColors.purpleMuted.withOpacity(0.3)),
                               ),
                               child: DropdownButtonHideUnderline(
                                 child: DropdownButton<String>(
@@ -465,27 +369,25 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   style: AppTextStyles.bodyDefault,
                                   icon: const Icon(Icons.arrow_drop_down, color: AppColors.purplePrimary),
                                   items: _supportTopics.map((String topic) {
-                                    return DropdownMenuItem<String>(
-                                      value: topic,
-                                      child: Text(topic),
-                                    );
+                                    return DropdownMenuItem<String>(value: topic, child: Text(topic));
                                   }).toList(),
-                                  onChanged: _isSending ? null : (String? newValue) {
-                                    if (newValue != null) {
-                                      setModalState(() {
-                                        setState(() {
-                                          _selectedTopic = newValue;
-                                        });
-                                      });
-                                    }
-                                  },
+                                  onChanged: _isSending
+                                      ? null
+                                      : (String? newValue) {
+                                          if (newValue != null) {
+                                            setModalState(() {
+                                              setState(() {
+                                                _selectedTopic = newValue;
+                                              });
+                                            });
+                                          }
+                                        },
                                 ),
                               ),
                             ),
-                      
+
                             const SizedBox(height: 20),
-                      
-                            // Description Field
+
                             Text(
                               'Description',
                               style: AppTextStyles.bodyDefault.copyWith(
@@ -498,14 +400,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               controller: _supportDescriptionController,
                               maxLines: 5,
                               enabled: !_isSending,
-                              style: AppTextStyles.bodyDefault.copyWith(
-                                color: Colors.white,
-                              ),
+                              style: AppTextStyles.bodyDefault.copyWith(color: Colors.white),
                               decoration: InputDecoration(
                                 hintText: 'Describe your issue in detail...',
-                                hintStyle: AppTextStyles.caption.copyWith(
-                                  color: AppColors.secondaryText,
-                                ),
+                                hintStyle: AppTextStyles.caption.copyWith(color: AppColors.secondaryText),
                                 filled: true,
                                 fillColor: AppColors.backgroundSecondary,
                                 border: OutlineInputBorder(
@@ -514,24 +412,18 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 ),
                                 enabledBorder: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(12),
-                                  borderSide: BorderSide(
-                                    color: AppColors.purpleMuted.withOpacity(0.3),
-                                  ),
+                                  borderSide: BorderSide(color: AppColors.purpleMuted.withOpacity(0.3)),
                                 ),
                                 focusedBorder: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(12),
-                                  borderSide: const BorderSide(
-                                    color: AppColors.purplePrimary,
-                                    width: 2,
-                                  ),
+                                  borderSide: const BorderSide(color: AppColors.purplePrimary, width: 2),
                                 ),
                                 contentPadding: const EdgeInsets.all(16),
                               ),
                             ),
-                      
+
                             const SizedBox(height: 20),
-                      
-                            // Attachment Section
+
                             Text(
                               'Attachment (Optional)',
                               style: AppTextStyles.bodyDefault.copyWith(
@@ -540,48 +432,41 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               ),
                             ),
                             const SizedBox(height: 8),
-                      
+
                             if (_supportImage != null)
                               Container(
                                 padding: const EdgeInsets.all(12),
                                 decoration: BoxDecoration(
                                   color: AppColors.backgroundSecondary,
                                   borderRadius: BorderRadius.circular(12),
-                                  border: Border.all(
-                                    color: AppColors.purpleMuted.withOpacity(0.3),
-                                  ),
+                                  border: Border.all(color: AppColors.purpleMuted.withOpacity(0.3)),
                                 ),
                                 child: Row(
                                   children: [
                                     ClipRRect(
                                       borderRadius: BorderRadius.circular(8),
-                                      child: Image.file(
-                                        _supportImage!,
-                                        width: 50,
-                                        height: 50,
-                                        fit: BoxFit.cover,
-                                      ),
+                                      child: Image.file(_supportImage!, width: 50, height: 50, fit: BoxFit.cover),
                                     ),
                                     const SizedBox(width: 12),
                                     Expanded(
                                       child: Text(
                                         'Image attached',
-                                        style: AppTextStyles.bodyDefault.copyWith(
-                                          color: Colors.white,
-                                        ),
+                                        style: AppTextStyles.bodyDefault.copyWith(color: Colors.white),
                                       ),
                                     ),
                                     IconButton(
                                       icon: const Icon(Icons.close_rounded),
                                       color: AppColors.error,
                                       iconSize: 20,
-                                      onPressed: _isSending ? null : () {
-                                        setModalState(() {
-                                          setState(() {
-                                            _supportImage = null;
-                                          });
-                                        });
-                                      },
+                                      onPressed: _isSending
+                                          ? null
+                                          : () {
+                                              setModalState(() {
+                                                setState(() {
+                                                  _supportImage = null;
+                                                });
+                                              });
+                                            },
                                     ),
                                   ],
                                 ),
@@ -594,25 +479,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   decoration: BoxDecoration(
                                     color: AppColors.backgroundSecondary,
                                     borderRadius: BorderRadius.circular(12),
-                                    border: Border.all(
-                                      color: AppColors.purpleMuted.withOpacity(0.3),
-                                    ),
+                                    border: Border.all(color: AppColors.purpleMuted.withOpacity(0.3)),
                                   ),
                                   child: Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
-                                      Icon(
-                                        Icons.attach_file_rounded,
-                                        color: AppColors.purpleLight,
-                                        size: 20,
-                                      ),
+                                      Icon(Icons.attach_file_rounded, color: AppColors.purpleLight, size: 20),
                                       const SizedBox(width: 8),
                                       Text(
                                         'Add Image',
-                                        style: TextStyle(
-                                          color: AppColors.purpleLight,
-                                          fontWeight: FontWeight.w500,
-                                        ),
+                                        style: TextStyle(color: AppColors.purpleLight, fontWeight: FontWeight.w500),
                                       ),
                                     ],
                                   ),
@@ -622,44 +498,36 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         ),
                       ),
                     ),
-                
-                    // Action Buttons
+
                     Container(
                       padding: const EdgeInsets.all(20),
                       decoration: BoxDecoration(
                         color: AppColors.backgroundSecondary.withOpacity(0.5),
-                        border: Border(
-                          top: BorderSide(
-                            color: AppColors.purpleMuted.withOpacity(0.2),
-                          ),
-                        ),
+                        border: Border(top: BorderSide(color: AppColors.purpleMuted.withOpacity(0.2))),
                       ),
                       child: Row(
                         children: [
                           Expanded(
                             child: GestureDetector(
-                              onTap: _isSending ? null : () {
-                                _supportDescriptionController.clear();
-                                _supportImage = null;
-                                _selectedTopic = 'Technical Issue';
-                                Navigator.pop(context);
-                              },
+                              onTap: _isSending
+                                  ? null
+                                  : () {
+                                      _supportDescriptionController.clear();
+                                      _supportImage = null;
+                                      _selectedTopic = 'Technical Issue';
+                                      Navigator.pop(context);
+                                    },
                               child: Container(
                                 padding: const EdgeInsets.symmetric(vertical: 14),
                                 decoration: BoxDecoration(
                                   color: AppColors.backgroundSecondary,
                                   borderRadius: BorderRadius.circular(12),
-                                  border: Border.all(
-                                    color: AppColors.purpleMuted.withOpacity(0.3),
-                                  ),
+                                  border: Border.all(color: AppColors.purpleMuted.withOpacity(0.3)),
                                 ),
                                 child: Center(
                                   child: Text(
                                     'Cancel',
-                                    style: TextStyle(
-                                      color: AppColors.purpleLight,
-                                      fontWeight: FontWeight.w600,
-                                    ),
+                                    style: TextStyle(color: AppColors.purpleLight, fontWeight: FontWeight.w600),
                                   ),
                                 ),
                               ),
@@ -687,10 +555,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                         )
                                       : const Text(
                                           'Send',
-                                          style: TextStyle(
-                                            color: Colors.white,
-                                            fontWeight: FontWeight.w700,
-                                          ),
+                                          style: TextStyle(color: Colors.white, fontWeight: FontWeight.w700),
                                         ),
                                 ),
                               ),
@@ -717,58 +582,38 @@ class _ProfileScreenState extends State<ProfileScreen> {
         borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
         child: Stack(
           children: [
-            // Custom background
-            const AppBackground(
-              blurIntensity: 25,
-              overlayOpacity: 0.9,
-            ),
-            // Content
+            const AppBackground(blurIntensity: 25, overlayOpacity: 0.9),
+
             Container(
-              decoration: const BoxDecoration(
-                borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-              ),
-          padding: const EdgeInsets.all(AppSpacing.lg),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Container(
-                width: 40,
-                height: 4,
-                decoration: BoxDecoration(
-                  color: AppColors.secondaryText,
-                  borderRadius: BorderRadius.circular(2),
-                ),
-              ),
-              const SizedBox(height: AppSpacing.lg),
-              Text(
-                'Add Image',
-                style: AppTextStyles.h4,
-              ),
-              const SizedBox(height: AppSpacing.lg),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              decoration: const BoxDecoration(borderRadius: BorderRadius.vertical(top: Radius.circular(20))),
+              padding: const EdgeInsets.all(AppSpacing.lg),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
                 children: [
-                  _buildImagePickerOption(
-                    Icons.camera_alt_rounded,
-                    'Camera',
-                    () async {
-                      await _pickImageForSupport(ImageSource.camera);
-                      setModalState(() {});
-                    },
+                  Container(
+                    width: 40,
+                    height: 4,
+                    decoration: BoxDecoration(color: AppColors.secondaryText, borderRadius: BorderRadius.circular(2)),
                   ),
-                  _buildImagePickerOption(
-                    Icons.photo_library_rounded,
-                    'Gallery',
-                    () async {
-                      await _pickImageForSupport(ImageSource.gallery);
-                      setModalState(() {});
-                    },
+                  const SizedBox(height: AppSpacing.lg),
+                  Text('Add Image', style: AppTextStyles.h4),
+                  const SizedBox(height: AppSpacing.lg),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      _buildImagePickerOption(Icons.camera_alt_rounded, 'Camera', () async {
+                        await _pickImageForSupport(ImageSource.camera);
+                        setModalState(() {});
+                      }),
+                      _buildImagePickerOption(Icons.photo_library_rounded, 'Gallery', () async {
+                        await _pickImageForSupport(ImageSource.gallery);
+                        setModalState(() {});
+                      }),
+                    ],
                   ),
+                  const SizedBox(height: AppSpacing.lg),
                 ],
               ),
-              const SizedBox(height: AppSpacing.lg),
-            ],
-          ),
             ),
           ],
         ),
@@ -786,22 +631,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
             decoration: BoxDecoration(
               gradient: AppColors.primaryGradient,
               shape: BoxShape.circle,
-              boxShadow: [
-                BoxShadow(
-                  color: AppColors.tealPrimary.withOpacity(0.3),
-                  blurRadius: 15,
-                ),
-              ],
+              boxShadow: [BoxShadow(color: AppColors.tealPrimary.withOpacity(0.3), blurRadius: 15)],
             ),
             child: Icon(icon, color: Colors.white, size: 32),
           ),
           const SizedBox(height: 8),
-          Text(
-            label,
-            style: AppTextStyles.caption.copyWith(
-              color: Colors.white,
-            ),
-          ),
+          Text(label, style: AppTextStyles.caption.copyWith(color: Colors.white)),
         ],
       ),
     );
@@ -815,28 +650,18 @@ class _ProfileScreenState extends State<ProfileScreen> {
           padding: const EdgeInsets.symmetric(horizontal: 20),
           child: Row(
             children: [
-              const Icon(
-                Icons.tune_rounded,
-                color: Colors.white,
-                size: 20,
-              ),
+              const Icon(Icons.tune_rounded, color: Colors.white, size: 20),
               const SizedBox(width: 12),
               const Text(
                 'Preferences',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 20,
-                  fontWeight: FontWeight.w700,
-                ),
+                style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.w700),
               ),
             ],
           ),
-        )
-            .animate()
-            .fadeIn(delay: 200.ms),
-        
+        ).animate().fadeIn(delay: 200.ms),
+
         const SizedBox(height: 16),
-        
+
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20),
           child: Container(
@@ -845,21 +670,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
               gradient: LinearGradient(
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
-                colors: [
-                  AppColors.backgroundSecondary.withOpacity(0.8),
-                  AppColors.cardBackground.withOpacity(0.6),
-                ],
+                colors: [AppColors.backgroundSecondary.withOpacity(0.8), AppColors.cardBackground.withOpacity(0.6)],
               ),
-              border: Border.all(
-                color: AppColors.purpleMuted.withOpacity(0.3),
-                width: 1.5,
-              ),
-              boxShadow: [
-                BoxShadow(
-                  color: AppColors.purplePrimary.withOpacity(0.1),
-                  blurRadius: 20,
-                ),
-              ],
+              border: Border.all(color: AppColors.purpleMuted.withOpacity(0.3), width: 1.5),
+              boxShadow: [BoxShadow(color: AppColors.purplePrimary.withOpacity(0.1), blurRadius: 20)],
             ),
             child: Column(
               children: [
@@ -895,10 +709,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ],
             ),
           ),
-        )
-            .animate()
-            .fadeIn(delay: 300.ms)
-            .slideY(begin: 0.1, delay: 300.ms),
+        ).animate().fadeIn(delay: 300.ms).slideY(begin: 0.1, delay: 300.ms),
       ],
     );
   }
@@ -911,28 +722,18 @@ class _ProfileScreenState extends State<ProfileScreen> {
           padding: const EdgeInsets.symmetric(horizontal: 20),
           child: Row(
             children: [
-              const Icon(
-                Icons.gavel_rounded,
-                color: Colors.white,
-                size: 20,
-              ),
+              const Icon(Icons.gavel_rounded, color: Colors.white, size: 20),
               const SizedBox(width: 12),
               const Text(
                 'About & Legal',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 20,
-                  fontWeight: FontWeight.w700,
-                ),
+                style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.w700),
               ),
             ],
           ),
-        )
-            .animate()
-            .fadeIn(delay: 600.ms),
-        
+        ).animate().fadeIn(delay: 600.ms),
+
         const SizedBox(height: 16),
-        
+
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20),
           child: Container(
@@ -941,21 +742,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
               gradient: LinearGradient(
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
-                colors: [
-                  AppColors.backgroundSecondary.withOpacity(0.8),
-                  AppColors.cardBackground.withOpacity(0.6),
-                ],
+                colors: [AppColors.backgroundSecondary.withOpacity(0.8), AppColors.cardBackground.withOpacity(0.6)],
               ),
-              border: Border.all(
-                color: AppColors.purpleMuted.withOpacity(0.3),
-                width: 1.5,
-              ),
-              boxShadow: [
-                BoxShadow(
-                  color: AppColors.purplePrimary.withOpacity(0.1),
-                  blurRadius: 20,
-                ),
-              ],
+              border: Border.all(color: AppColors.purpleMuted.withOpacity(0.3), width: 1.5),
+              boxShadow: [BoxShadow(color: AppColors.purplePrimary.withOpacity(0.1), blurRadius: 20)],
             ),
             child: Column(
               children: [
@@ -996,22 +786,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ],
             ),
           ),
-        )
-            .animate()
-            .fadeIn(delay: 700.ms)
-            .slideY(begin: 0.1, delay: 700.ms),
+        ).animate().fadeIn(delay: 700.ms).slideY(begin: 0.1, delay: 700.ms),
       ],
     );
   }
-  
+
   Widget _buildDivider() {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20),
-      child: Divider(
-        height: 1,
-        thickness: 1,
-        color: AppColors.purpleMuted.withOpacity(0.15),
-      ),
+      child: Divider(height: 1, thickness: 1, color: AppColors.purpleMuted.withOpacity(0.15)),
     );
   }
 
@@ -1028,11 +811,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
       child: Row(
         children: [
-          Icon(
-            icon,
-            color: Colors.white,
-            size: 22,
-          ),
+          Icon(icon, color: Colors.white, size: 22),
           const SizedBox(width: 16),
           Expanded(
             child: Column(
@@ -1040,20 +819,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
               children: [
                 Text(
                   title,
-                  style: const TextStyle(
-                    color: Colors.white,
-                    fontSize: 16,
-                    fontWeight: FontWeight.w600,
-                  ),
+                  style: const TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.w600),
                 ),
                 const SizedBox(height: 2),
-                Text(
-                  subtitle,
-                  style: TextStyle(
-                    color: AppColors.purpleLight.withOpacity(0.6),
-                    fontSize: 13,
-                  ),
-                ),
+                Text(subtitle, style: TextStyle(color: AppColors.purpleLight.withOpacity(0.6), fontSize: 13)),
               ],
             ),
           ),
@@ -1094,11 +863,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
           child: Row(
             children: [
-              Icon(
-                icon,
-                color: Colors.white,
-                size: 22,
-              ),
+              Icon(icon, color: Colors.white, size: 22),
               const SizedBox(width: 16),
               Expanded(
                 child: Column(
@@ -1113,21 +878,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       ),
                     ),
                     const SizedBox(height: 2),
-                    Text(
-                      subtitle,
-                      style: TextStyle(
-                        color: AppColors.purpleLight.withOpacity(0.6),
-                        fontSize: 13,
-                      ),
-                    ),
+                    Text(subtitle, style: TextStyle(color: AppColors.purpleLight.withOpacity(0.6), fontSize: 13)),
                   ],
                 ),
               ),
-              Icon(
-                Icons.chevron_right_rounded,
-                color: AppColors.purpleLight.withOpacity(0.5),
-                size: 24,
-              ),
+              Icon(Icons.chevron_right_rounded, color: AppColors.purpleLight.withOpacity(0.5), size: 24),
             ],
           ),
         ),
@@ -1146,20 +901,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
       child: Row(
         children: [
-          Icon(
-            icon,
-            color: Colors.white,
-            size: 22,
-          ),
+          Icon(icon, color: Colors.white, size: 22),
           const SizedBox(width: 16),
           Expanded(
             child: Text(
               title,
-              style: const TextStyle(
-                color: Colors.white,
-                fontSize: 16,
-                fontWeight: FontWeight.w600,
-              ),
+              style: const TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.w600),
             ),
           ),
           Container(
@@ -1167,18 +914,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
             decoration: BoxDecoration(
               color: color.withOpacity(0.15),
               borderRadius: BorderRadius.circular(20),
-              border: Border.all(
-                color: color.withOpacity(0.3),
-                width: 1,
-              ),
+              border: Border.all(color: color.withOpacity(0.3), width: 1),
             ),
             child: Text(
               value,
-              style: TextStyle(
-                color: color,
-                fontSize: 13,
-                fontWeight: FontWeight.w600,
-              ),
+              style: TextStyle(color: color, fontSize: 13, fontWeight: FontWeight.w600),
             ),
           ),
         ],

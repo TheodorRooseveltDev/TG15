@@ -1,79 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:url_launcher/url_launcher.dart';
-import '../constants/constants.dart';
-import '../services/games_service.dart';
-import '../services/settings_service.dart';
-import 'age_gate_screen.dart';
-import 'main_navigation.dart';
+import 'package:vip_gaming_lounge/constants/constants.dart';
 
-class SplashScreen extends StatefulWidget {
-  const SplashScreen({super.key});
-
-  @override
-  State<SplashScreen> createState() => _SplashScreenState();
-}
-
-class _SplashScreenState extends State<SplashScreen> {
-  @override
-  void initState() {
-    super.initState();
-    _initializeApp();
-  }
-
-  Future<void> _initializeApp() async {
-    await GamesService().loadGames();
-
-    await Future.delayed(AppAnimations.splashDuration);
-
-    if (!mounted) return;
-
-    final hasShownAgeGate = await SettingsService().hasShownAgeGate();
-
-    if (hasShownAgeGate) {
-      _navigateToMainApp();
-    } else {
-      _navigateToAgeGate();
-    }
-  }
-
-  void _navigateToAgeGate() {
-    Navigator.of(context).pushReplacement(
-      PageRouteBuilder(
-        pageBuilder: (context, animation, secondaryAnimation) => const AgeGateScreen(),
-        transitionDuration: const Duration(milliseconds: 300),
-        reverseTransitionDuration: const Duration(milliseconds: 300),
-        transitionsBuilder: (context, animation, secondaryAnimation, child) {
-          return FadeTransition(
-            opacity: Tween<double>(
-              begin: 0.0,
-              end: 1.0,
-            ).animate(CurvedAnimation(parent: animation, curve: Curves.easeInOut)),
-            child: Container(color: Colors.black, child: child),
-          );
-        },
-      ),
-    );
-  }
-
-  void _navigateToMainApp() {
-    Navigator.of(context).pushReplacement(
-      PageRouteBuilder(
-        pageBuilder: (context, animation, secondaryAnimation) => const MainNavigation(),
-        transitionDuration: const Duration(milliseconds: 300),
-        reverseTransitionDuration: const Duration(milliseconds: 300),
-        transitionsBuilder: (context, animation, secondaryAnimation, child) {
-          return FadeTransition(
-            opacity: Tween<double>(
-              begin: 0.0,
-              end: 1.0,
-            ).animate(CurvedAnimation(parent: animation, curve: Curves.easeInOut)),
-            child: Container(color: Colors.black, child: child),
-          );
-        },
-      ),
-    );
-  }
+class CrashDataStatsSplash extends StatelessWidget {
+  const CrashDataStatsSplash({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -141,7 +72,7 @@ class _SplashScreenState extends State<SplashScreen> {
                     valueColor: AlwaysStoppedAnimation<Color>(Color(0xFFFFD700)),
                     backgroundColor: Color(0x33FFD700),
                   ),
-                ),
+                ).animate().fadeIn(delay: 200.ms, duration: 800.ms),
 
                 const Spacer(),
 
@@ -152,14 +83,14 @@ class _SplashScreenState extends State<SplashScreen> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          _buildLegalLink('Terms & Conditions', () => _openTerms()),
+                          _buildLegalLink(context, 'Terms & Conditions', () => _openTerms()),
                           Container(
                             margin: const EdgeInsets.symmetric(horizontal: 12),
                             width: 1,
                             height: 14,
                             color: Colors.white.withOpacity(0.3),
                           ),
-                          _buildLegalLink('Privacy Policy', () => _openPrivacy()),
+                          _buildLegalLink(context, 'Privacy Policy', () => _openPrivacy()),
                         ],
                       ),
                       const SizedBox(height: 12),
@@ -179,7 +110,7 @@ class _SplashScreenState extends State<SplashScreen> {
     );
   }
 
-  Widget _buildLegalLink(String text, VoidCallback onTap) {
+  Widget _buildLegalLink(BuildContext context, String text, VoidCallback onTap) {
     return GestureDetector(
       onTap: onTap,
       child: Text(

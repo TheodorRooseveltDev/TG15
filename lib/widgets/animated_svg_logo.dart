@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
-/// Widget to display animated SVG logos using WebView
-/// This enables full SVG animation support including CSS and SMIL animations
 class AnimatedSvgLogo extends StatefulWidget {
   final String assetPath;
   final double? width;
@@ -56,8 +54,9 @@ class _AnimatedSvgLogoState extends State<AnimatedSvgLogo> {
 
     final backgroundColor = widget.backgroundColor ?? Colors.transparent;
     final bgColorHex = '#${backgroundColor.value.toRadixString(16).padLeft(8, '0').substring(2)}';
-    
-    final html = '''
+
+    final html =
+        '''
 <!DOCTYPE html>
 <html>
 <head>
@@ -122,10 +121,7 @@ class _AnimatedSvgLogoState extends State<AnimatedSvgLogo> {
         width: widget.width,
         height: widget.height,
         child: const Center(
-          child: CircularProgressIndicator(
-            strokeWidth: 2,
-            valueColor: AlwaysStoppedAnimation<Color>(Colors.white54),
-          ),
+          child: CircularProgressIndicator(strokeWidth: 2, valueColor: AlwaysStoppedAnimation<Color>(Colors.white54)),
         ),
       );
     }
@@ -134,10 +130,7 @@ class _AnimatedSvgLogoState extends State<AnimatedSvgLogo> {
       return SizedBox(
         width: widget.width,
         height: widget.height,
-        child: const Icon(
-          Icons.broken_image_outlined,
-          color: Colors.white38,
-        ),
+        child: const Icon(Icons.broken_image_outlined, color: Colors.white38),
       );
     }
 

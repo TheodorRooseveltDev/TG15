@@ -6,7 +6,6 @@ import 'home_screen.dart';
 import 'games_screen.dart';
 import 'profile_screen.dart';
 
-/// Main navigation with bottom tab bar
 class MainNavigation extends StatefulWidget {
   const MainNavigation({super.key});
 
@@ -21,10 +20,7 @@ class _MainNavigationState extends State<MainNavigation> with SingleTickerProvid
   @override
   void initState() {
     super.initState();
-    _animationController = AnimationController(
-      duration: const Duration(milliseconds: 200),
-      vsync: this,
-    );
+    _animationController = AnimationController(duration: const Duration(milliseconds: 200), vsync: this);
   }
 
   @override
@@ -53,10 +49,7 @@ class _MainNavigationState extends State<MainNavigation> with SingleTickerProvid
     return Scaffold(
       backgroundColor: AppColors.backgroundPrimary,
       extendBody: true,
-      body: IndexedStack(
-        index: _currentIndex,
-        children: _screens,
-      ),
+      body: IndexedStack(index: _currentIndex, children: _screens),
       bottomNavigationBar: Padding(
         padding: const EdgeInsets.only(bottom: 24, left: 24, right: 24),
         child: Container(
@@ -64,26 +57,21 @@ class _MainNavigationState extends State<MainNavigation> with SingleTickerProvid
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(40),
             boxShadow: [
-              // Deep shadow for depth
               BoxShadow(
                 color: Colors.black.withOpacity(0.5),
                 blurRadius: 30,
                 offset: const Offset(0, 10),
                 spreadRadius: 0,
               ),
-              // Purple glow
+
               BoxShadow(
                 color: AppColors.purplePrimary.withOpacity(0.25),
                 blurRadius: 40,
                 offset: const Offset(0, 5),
                 spreadRadius: -5,
               ),
-              // Gold accent glow from center
-              BoxShadow(
-                color: AppColors.goldAccent.withOpacity(0.15),
-                blurRadius: 50,
-                spreadRadius: -10,
-              ),
+
+              BoxShadow(color: AppColors.goldAccent.withOpacity(0.15), blurRadius: 50, spreadRadius: -10),
             ],
           ),
           child: ClipRRect(
@@ -101,29 +89,14 @@ class _MainNavigationState extends State<MainNavigation> with SingleTickerProvid
                     ],
                   ),
                   borderRadius: BorderRadius.circular(40),
-                  border: Border.all(
-                    width: 1.5,
-                    color: AppColors.purpleMuted.withOpacity(0.3),
-                  ),
+                  border: Border.all(width: 1.5, color: AppColors.purpleMuted.withOpacity(0.3)),
                 ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    _buildNavItem(
-                      icon: Icons.home_rounded,
-                      label: 'Home',
-                      index: 0,
-                    ),
-                    _buildNavItem(
-                      icon: Icons.casino_rounded,
-                      label: 'Games',
-                      index: 1,
-                    ),
-                    _buildNavItem(
-                      icon: Icons.settings_rounded,
-                      label: 'Settings',
-                      index: 2,
-                    ),
+                    _buildNavItem(icon: Icons.home_rounded, label: 'Home', index: 0),
+                    _buildNavItem(icon: Icons.casino_rounded, label: 'Games', index: 1),
+                    _buildNavItem(icon: Icons.settings_rounded, label: 'Settings', index: 2),
                   ],
                 ),
               ),
@@ -134,13 +107,9 @@ class _MainNavigationState extends State<MainNavigation> with SingleTickerProvid
     );
   }
 
-  Widget _buildNavItem({
-    required IconData icon,
-    required String label,
-    required int index,
-  }) {
+  Widget _buildNavItem({required IconData icon, required String label, required int index}) {
     final isSelected = _currentIndex == index;
-    
+
     return Expanded(
       child: GestureDetector(
         onTap: () => _onTabTapped(index),
@@ -153,24 +122,15 @@ class _MainNavigationState extends State<MainNavigation> with SingleTickerProvid
             mainAxisSize: MainAxisSize.min,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              // Icon with animated container
               AnimatedContainer(
                 duration: const Duration(milliseconds: 250),
                 curve: Curves.easeOutCubic,
                 padding: EdgeInsets.all(isSelected ? 8 : 6),
                 decoration: BoxDecoration(
-                  color: isSelected 
-                      ? AppColors.purplePrimary.withOpacity(0.2)
-                      : Colors.transparent,
+                  color: isSelected ? AppColors.purplePrimary.withOpacity(0.2) : Colors.transparent,
                   borderRadius: BorderRadius.circular(16),
                   boxShadow: isSelected
-                      ? [
-                          BoxShadow(
-                            color: AppColors.purplePrimary.withOpacity(0.4),
-                            blurRadius: 15,
-                            spreadRadius: 0,
-                          ),
-                        ]
+                      ? [BoxShadow(color: AppColors.purplePrimary.withOpacity(0.4), blurRadius: 15, spreadRadius: 0)]
                       : null,
                 ),
                 child: AnimatedScale(
@@ -179,17 +139,8 @@ class _MainNavigationState extends State<MainNavigation> with SingleTickerProvid
                   child: Icon(
                     icon,
                     size: 28,
-                    color: isSelected 
-                        ? Colors.white 
-                        : AppColors.purpleLight.withOpacity(0.5),
-                    shadows: isSelected
-                        ? [
-                            Shadow(
-                              color: AppColors.purplePrimary,
-                              blurRadius: 20,
-                            ),
-                          ]
-                        : null,
+                    color: isSelected ? Colors.white : AppColors.purpleLight.withOpacity(0.5),
+                    shadows: isSelected ? [Shadow(color: AppColors.purplePrimary, blurRadius: 20)] : null,
                   ),
                 ),
               ),

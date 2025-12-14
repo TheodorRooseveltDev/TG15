@@ -3,14 +3,10 @@ import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import '../constants/constants.dart';
 import '../widgets/app_background.dart';
 
-/// Legal screen for Terms and Privacy using WebView
 class LegalScreen extends StatefulWidget {
   final String type; // 'terms' or 'privacy'
 
-  const LegalScreen({
-    super.key,
-    required this.type,
-  });
+  const LegalScreen({super.key, required this.type});
 
   @override
   State<LegalScreen> createState() => _LegalScreenState();
@@ -34,9 +30,9 @@ class _LegalScreenState extends State<LegalScreen> {
   String get url {
     switch (widget.type) {
       case 'terms':
-        return 'https://vipgamingloungeapp.com/terms';
+        return 'https://vipgamingloungeapp.com/terms/';
       case 'privacy':
-        return 'https://vipgamingloungeapp.com/privacy';
+        return 'https://vipgamingloungeapp.com/privacy/';
       default:
         return 'https://vipgamingloungeapp.com';
     }
@@ -48,20 +44,14 @@ class _LegalScreenState extends State<LegalScreen> {
       appBar: AppBar(
         title: Text(title),
         backgroundColor: AppColors.backgroundSecondary,
-        leading: IconButton(
-          icon: const Icon(Icons.close_rounded),
-          onPressed: () => Navigator.of(context).pop(),
-        ),
+        leading: IconButton(icon: const Icon(Icons.close_rounded), onPressed: () => Navigator.of(context).pop()),
       ),
       body: Stack(
         children: [
-          // Consistent background
           const AppBackground(),
-          // WebView content
+
           InAppWebView(
-            initialUrlRequest: URLRequest(
-              url: WebUri(url),
-            ),
+            initialUrlRequest: URLRequest(url: WebUri(url)),
             initialSettings: InAppWebViewSettings(
               javaScriptEnabled: true,
               supportZoom: true,
@@ -72,9 +62,7 @@ class _LegalScreenState extends State<LegalScreen> {
               safeBrowsingEnabled: true,
               mixedContentMode: MixedContentMode.MIXED_CONTENT_ALWAYS_ALLOW,
             ),
-            onWebViewCreated: (controller) {
-              // WebView created
-            },
+            onWebViewCreated: (controller) {},
             onLoadStart: (controller, url) {
               setState(() {
                 _isLoading = true;
@@ -98,8 +86,7 @@ class _LegalScreenState extends State<LegalScreen> {
               });
             },
           ),
-          
-          // Progress indicator
+
           if (_isLoading || _progress < 1.0)
             Positioned(
               top: 0,
@@ -111,8 +98,7 @@ class _LegalScreenState extends State<LegalScreen> {
                 valueColor: AlwaysStoppedAnimation<Color>(AppColors.purplePrimary),
               ),
             ),
-          
-          // Loading overlay
+
           if (_isLoading)
             Container(
               color: AppColors.backgroundPrimary,
@@ -120,16 +106,9 @@ class _LegalScreenState extends State<LegalScreen> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    CircularProgressIndicator(
-                      color: AppColors.purplePrimary,
-                    ),
+                    CircularProgressIndicator(color: AppColors.purplePrimary),
                     const SizedBox(height: AppSpacing.md),
-                    Text(
-                      'Loading $title...',
-                      style: AppTextStyles.bodySmall.copyWith(
-                        color: AppColors.secondaryText,
-                      ),
-                    ),
+                    Text('Loading $title...', style: AppTextStyles.bodySmall.copyWith(color: AppColors.secondaryText)),
                   ],
                 ),
               ),

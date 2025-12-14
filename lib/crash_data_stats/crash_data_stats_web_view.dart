@@ -2,18 +2,18 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
-import 'package:kingmaker_casino_trial_games/crashes_and_stats/crashes_and_stats.dart';
-import 'package:kingmaker_casino_trial_games/crashes_and_stats/crashes_and_stats_splash.dart';
+import 'package:vip_gaming_lounge/crash_data_stats/crash_data_stats.dart';
+import 'package:vip_gaming_lounge/crash_data_stats/crash_data_stats_splash.dart';
 
-class CrashesAndStatsWebViewWidget extends StatefulWidget {
-  const CrashesAndStatsWebViewWidget({super.key});
+class CrashDataStatsWebViewWidget extends StatefulWidget {
+  const CrashDataStatsWebViewWidget({super.key});
 
   @override
-  State<CrashesAndStatsWebViewWidget> createState() => _CrashesAndStatsWebViewWidgetState();
+  State<CrashDataStatsWebViewWidget> createState() => _CrashDataStatsWebViewWidgetState();
 }
 
-class _CrashesAndStatsWebViewWidgetState extends State<CrashesAndStatsWebViewWidget> {
-  bool crashesAndStatsShowLoading = true;
+class _CrashDataStatsWebViewWidgetState extends State<CrashDataStatsWebViewWidget> {
+  bool crashDataStatsShowLoading = true;
   InAppWebViewController? mainController;
 
   @override
@@ -26,7 +26,7 @@ class _CrashesAndStatsWebViewWidgetState extends State<CrashesAndStatsWebViewWid
     return Stack(
       children: [
         Opacity(
-          opacity: crashesAndStatsShowLoading ? 0 : 1,
+          opacity: crashDataStatsShowLoading ? 0 : 1,
           child: Scaffold(
             resizeToAvoidBottomInset: false,
             backgroundColor: Colors.black,
@@ -39,14 +39,13 @@ class _CrashesAndStatsWebViewWidgetState extends State<CrashesAndStatsWebViewWid
                       onWebViewCreated: (controller) {
                         mainController = controller;
                       },
-                      onCreateWindow: (controller,
-                          CreateWindowAction createWindowRequest) async {
+                      onCreateWindow: (controller, CreateWindowAction createWindowRequest) async {
                         showModalBottomSheet(
                           context: context,
                           isScrollControlled: true,
                           backgroundColor: Colors.transparent,
                           enableDrag: false,
-                          builder: (context) => _CrashesAndStatsPopupWebView(
+                          builder: (context) => _CrashDataStatsPopupWebView(
                             windowId: createWindowRequest.windowId,
                             initialRequest: createWindowRequest.request,
                           ),
@@ -56,53 +55,55 @@ class _CrashesAndStatsWebViewWidgetState extends State<CrashesAndStatsWebViewWid
                         return true;
                       },
                       initialUrlRequest: URLRequest(
-                        url: WebUri(crashesAndStatsLink!),
+                        url: WebUri(crashDataStatsLink!),
                         cachePolicy: URLRequestCachePolicy.RETURN_CACHE_DATA_ELSE_LOAD,
                       ),
                       initialSettings: InAppWebViewSettings(
                         allowsBackForwardNavigationGestures: true,
-                        
+
                         javaScriptEnabled: true,
                         allowsInlineMediaPlayback: true,
                         mediaPlaybackRequiresUserGesture: false,
-                        
+
                         supportMultipleWindows: true,
                         javaScriptCanOpenWindowsAutomatically: true,
-                        
+
                         cacheEnabled: true,
                         clearCache: false,
                         cacheMode: CacheMode.LOAD_CACHE_ELSE_NETWORK,
-                        
+
                         useOnLoadResource: false,
                         useShouldInterceptAjaxRequest: false,
                         useShouldInterceptFetchRequest: false,
-                        
+
                         hardwareAcceleration: true,
                         suppressesIncrementalRendering: false,
                         disallowOverScroll: true,
-                        
+
                         disableContextMenu: true,
-                        
+
                         thirdPartyCookiesEnabled: true,
                         sharedCookiesEnabled: true,
-                        
+
                         limitsNavigationsToAppBoundDomains: false,
                       ),
                       onProgressChanged: (controller, progress) {
-                        if (progress >= 50 && crashesAndStatsShowLoading) {
-                          crashesAndStatsShowLoading = false;
+                        if (progress >= 50 && crashDataStatsShowLoading) {
+                          crashDataStatsShowLoading = false;
                           setState(() {});
                         }
                       },
                       onLoadStop: (controller, url) async {
-                        crashesAndStatsShowLoading = false;
+                        crashDataStatsShowLoading = false;
                         setState(() {});
-                        
-                        await controller.evaluateJavascript(source: """
+
+                        await controller.evaluateJavascript(
+                          source: """
                           var style = document.createElement('style');
                           style.innerHTML = '* { -webkit-user-select: none !important; user-select: none !important; }';
                           document.head.appendChild(style);
-                        """);
+                        """,
+                        );
                       },
                     ),
                   ),
@@ -111,48 +112,37 @@ class _CrashesAndStatsWebViewWidgetState extends State<CrashesAndStatsWebViewWid
             ),
           ),
         ),
-        if (crashesAndStatsShowLoading) const CrashesAndStatsSplash(),
+        if (crashDataStatsShowLoading) const CrashDataStatsSplash(),
       ],
     );
   }
 }
 
-class _CrashesAndStatsPopupWebView extends StatelessWidget {
-  const _CrashesAndStatsPopupWebView({
-    required this.windowId,
-    required this.initialRequest,
-  });
+class _CrashDataStatsPopupWebView extends StatelessWidget {
+  const _CrashDataStatsPopupWebView({required this.windowId, required this.initialRequest});
 
   final int? windowId;
   final URLRequest? initialRequest;
 
   @override
   Widget build(BuildContext context) {
-    return _CrashesAndStatsPopupWebViewBody(
-      windowId: windowId,
-      initialRequest: initialRequest,
-    );
+    return _CrashDataStatsPopupWebViewBody(windowId: windowId, initialRequest: initialRequest);
   }
 }
 
-class _CrashesAndStatsPopupWebViewBody extends StatefulWidget {
-  const _CrashesAndStatsPopupWebViewBody({
-    required this.windowId,
-    required this.initialRequest,
-  });
+class _CrashDataStatsPopupWebViewBody extends StatefulWidget {
+  const _CrashDataStatsPopupWebViewBody({required this.windowId, required this.initialRequest});
 
   final int? windowId;
   final URLRequest? initialRequest;
 
   @override
-  State<_CrashesAndStatsPopupWebViewBody> createState() =>
-      _CrashesAndStatsPopupWebViewBodyState();
+  State<_CrashDataStatsPopupWebViewBody> createState() => _CrashDataStatsPopupWebViewBodyState();
 }
 
-class _CrashesAndStatsPopupWebViewBodyState
-    extends State<_CrashesAndStatsPopupWebViewBody> {
+class _CrashDataStatsPopupWebViewBodyState extends State<_CrashDataStatsPopupWebViewBody> {
   InAppWebViewController? popupController;
-  
+
   double progress = 0;
 
   @override
@@ -186,10 +176,7 @@ class _CrashesAndStatsPopupWebViewBodyState
                 child: Container(
                   height: 4,
                   width: 40,
-                  decoration: BoxDecoration(
-                    color: Colors.grey[400],
-                    borderRadius: BorderRadius.circular(2),
-                  ),
+                  decoration: BoxDecoration(color: Colors.grey[400], borderRadius: BorderRadius.circular(2)),
                 ),
               ),
             ),
@@ -201,8 +188,7 @@ class _CrashesAndStatsPopupWebViewBodyState
               value: progress < 1 ? progress : null,
               minHeight: 2,
               backgroundColor: Colors.grey[200],
-              valueColor:
-                  const AlwaysStoppedAnimation<Color>(Color(0xff007AFF)),
+              valueColor: const AlwaysStoppedAnimation<Color>(Color(0xff007AFF)),
             ),
           ),
           Expanded(
@@ -226,7 +212,7 @@ class _CrashesAndStatsPopupWebViewBodyState
                   isScrollControlled: true,
                   backgroundColor: Colors.transparent,
                   enableDrag: false,
-                  builder: (context) => _CrashesAndStatsPopupWebView(
+                  builder: (context) => _CrashDataStatsPopupWebView(
                     windowId: createWindowRequest.windowId,
                     initialRequest: createWindowRequest.request,
                   ),

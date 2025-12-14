@@ -8,7 +8,6 @@ import '../widgets/game_card.dart';
 import '../widgets/app_background.dart';
 import 'game_detail_screen.dart';
 
-/// Games library screen with search and filters
 class GamesScreen extends StatefulWidget {
   const GamesScreen({super.key});
 
@@ -43,28 +42,25 @@ class _GamesScreenState extends State<GamesScreen> {
 
   Future<void> _loadGames() async {
     setState(() => _isLoading = true);
-    
+
     await _gamesService.loadGames();
     _applyFiltersAndSort();
-    
+
     setState(() => _isLoading = false);
   }
 
   void _applyFiltersAndSort() {
     List<Game> games;
-    
-    // Apply search
+
     final query = _searchController.text.toLowerCase();
     if (query.isNotEmpty) {
       games = _gamesService.searchGames(query);
     } else {
-      // Apply filter
       games = _gamesService.filterByCategory(_selectedFilter);
     }
-    
-    // Apply default sort
+
     games = _gamesService.sortGames(games, 'Default');
-    
+
     setState(() {
       _displayedGames = games;
     });
@@ -86,11 +82,7 @@ class _GamesScreenState extends State<GamesScreen> {
 
   void _navigateToGame(Game game) {
     HapticFeedback.lightImpact();
-    Navigator.of(context).push(
-      MaterialPageRoute(
-        builder: (context) => GameDetailScreen(game: game),
-      ),
-    );
+    Navigator.of(context).push(MaterialPageRoute(builder: (context) => GameDetailScreen(game: game)));
   }
 
   @override
@@ -137,19 +129,10 @@ class _GamesScreenState extends State<GamesScreen> {
               color: AppColors.cardBackground.withOpacity(0.5),
               borderRadius: BorderRadius.circular(20),
             ),
-            child: const CircularProgressIndicator(
-              color: AppColors.goldAccent,
-              strokeWidth: 3,
-            ),
+            child: const CircularProgressIndicator(color: AppColors.goldAccent, strokeWidth: 3),
           ),
           const SizedBox(height: 16),
-          Text(
-            'Loading Games...',
-            style: TextStyle(
-              color: AppColors.purpleLight.withOpacity(0.7),
-              fontSize: 14,
-            ),
-          ),
+          Text('Loading Games...', style: TextStyle(color: AppColors.purpleLight.withOpacity(0.7), fontSize: 14)),
         ],
       ),
     );
@@ -163,28 +146,16 @@ class _GamesScreenState extends State<GamesScreen> {
         children: [
           const Text(
             'Game Library',
-            style: TextStyle(
-              fontSize: 28,
-              fontWeight: FontWeight.w400,
-              color: Colors.white,
-              height: 1.1,
-            ),
+            style: TextStyle(fontSize: 28, fontWeight: FontWeight.w400, color: Colors.white, height: 1.1),
           ),
           const SizedBox(height: 8),
           Text(
             '${_displayedGames.length} premium games available',
-            style: TextStyle(
-              color: Colors.white.withOpacity(0.8),
-              fontSize: 14,
-              fontWeight: FontWeight.w500,
-            ),
+            style: TextStyle(color: Colors.white.withOpacity(0.8), fontSize: 14, fontWeight: FontWeight.w500),
           ),
         ],
       ),
-    )
-        .animate()
-        .fadeIn(duration: 400.ms)
-        .slideY(begin: -0.1, duration: 400.ms);
+    ).animate().fadeIn(duration: 400.ms).slideY(begin: -0.1, duration: 400.ms);
   }
 
   Widget _buildFilterChips() {
@@ -195,16 +166,13 @@ class _GamesScreenState extends State<GamesScreen> {
         decoration: BoxDecoration(
           color: AppColors.backgroundSecondary.withOpacity(0.6),
           borderRadius: BorderRadius.circular(30),
-          border: Border.all(
-            color: AppColors.purpleMuted.withOpacity(0.3),
-            width: 1.5,
-          ),
+          border: Border.all(color: AppColors.purpleMuted.withOpacity(0.3), width: 1.5),
         ),
         child: Row(
           children: _filters.asMap().entries.map((entry) {
             final filter = entry.value;
             final isSelected = filter['name'] == _selectedFilter;
-            
+
             return Expanded(
               child: GestureDetector(
                 onTap: () => _selectFilter(filter['name']),
@@ -213,18 +181,10 @@ class _GamesScreenState extends State<GamesScreen> {
                   curve: Curves.easeOutCubic,
                   padding: const EdgeInsets.symmetric(vertical: 12),
                   decoration: BoxDecoration(
-                    color: isSelected 
-                        ? AppColors.purplePrimary.withOpacity(0.3)
-                        : Colors.transparent,
+                    color: isSelected ? AppColors.purplePrimary.withOpacity(0.3) : Colors.transparent,
                     borderRadius: BorderRadius.circular(26),
                     boxShadow: isSelected
-                        ? [
-                            BoxShadow(
-                              color: AppColors.purplePrimary.withOpacity(0.4),
-                              blurRadius: 15,
-                              spreadRadius: 0,
-                            ),
-                          ]
+                        ? [BoxShadow(color: AppColors.purplePrimary.withOpacity(0.4), blurRadius: 15, spreadRadius: 0)]
                         : null,
                   ),
                   child: Row(
@@ -232,18 +192,14 @@ class _GamesScreenState extends State<GamesScreen> {
                     children: [
                       Icon(
                         filter['icon'] as IconData,
-                        color: isSelected
-                            ? Colors.white
-                            : AppColors.purpleLight.withOpacity(0.5),
+                        color: isSelected ? Colors.white : AppColors.purpleLight.withOpacity(0.5),
                         size: 18,
                       ),
                       const SizedBox(width: 8),
                       Text(
                         filter['name'] as String,
                         style: TextStyle(
-                          color: isSelected
-                              ? Colors.white
-                              : AppColors.purpleLight.withOpacity(0.5),
+                          color: isSelected ? Colors.white : AppColors.purpleLight.withOpacity(0.5),
                           fontSize: 14,
                           fontWeight: isSelected ? FontWeight.w700 : FontWeight.w500,
                         ),
@@ -255,9 +211,7 @@ class _GamesScreenState extends State<GamesScreen> {
             );
           }).toList(),
         ),
-      )
-          .animate()
-          .fadeIn(delay: 200.ms),
+      ).animate().fadeIn(delay: 200.ms),
     );
   }
 
@@ -273,44 +227,30 @@ class _GamesScreenState extends State<GamesScreen> {
           padding: const EdgeInsets.symmetric(horizontal: 20),
           child: Row(
             children: [
-              const Icon(
-                Icons.grid_view_rounded,
-                color: Colors.white,
-                size: 20,
-              ),
+              const Icon(Icons.grid_view_rounded, color: Colors.white, size: 20),
               const SizedBox(width: 12),
               const Text(
                 'All Games',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 20,
-                  fontWeight: FontWeight.w400,
-                ),
+                style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.w400),
               ),
               const Spacer(),
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                 decoration: BoxDecoration(
-                  color: AppColors.purpleMuted.withOpacity(0.2),
+                  color: Colors.white.withOpacity(0.1),
                   borderRadius: BorderRadius.circular(20),
                 ),
                 child: Text(
                   '${_displayedGames.length} games',
-                  style: TextStyle(
-                    color: AppColors.purpleLight.withOpacity(0.8),
-                    fontSize: 13,
-                    fontWeight: FontWeight.w500,
-                  ),
+                  style: TextStyle(color: Colors.white.withOpacity(0.8), fontSize: 13, fontWeight: FontWeight.w600),
                 ),
               ),
             ],
           ),
-        )
-            .animate()
-            .fadeIn(delay: 400.ms),
-        
+        ).animate().fadeIn(delay: 400.ms),
+
         const SizedBox(height: 16),
-        
+
         GridView.builder(
           shrinkWrap: true,
           physics: const NeverScrollableScrollPhysics(),
@@ -324,10 +264,7 @@ class _GamesScreenState extends State<GamesScreen> {
           itemCount: _displayedGames.length,
           itemBuilder: (context, index) {
             final game = _displayedGames[index];
-            return GameCard(
-              game: game,
-              onTap: () => _navigateToGame(game),
-            )
+            return GameCard(game: game, onTap: () => _navigateToGame(game))
                 .animate()
                 .fadeIn(delay: (500 + index * 50).ms)
                 .scale(begin: const Offset(0.95, 0.95), delay: (500 + index * 50).ms);
@@ -346,47 +283,27 @@ class _GamesScreenState extends State<GamesScreen> {
         gradient: LinearGradient(
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
-          colors: [
-            AppColors.backgroundSecondary.withOpacity(0.8),
-            AppColors.cardBackground.withOpacity(0.6),
-          ],
+          colors: [AppColors.backgroundSecondary.withOpacity(0.8), AppColors.cardBackground.withOpacity(0.6)],
         ),
-        border: Border.all(
-          color: AppColors.purpleMuted.withOpacity(0.3),
-          width: 1,
-        ),
+        border: Border.all(color: AppColors.purpleMuted.withOpacity(0.3), width: 1),
       ),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Container(
             padding: const EdgeInsets.all(20),
-            decoration: BoxDecoration(
-              color: AppColors.purpleMuted.withOpacity(0.2),
-              shape: BoxShape.circle,
-            ),
-            child: Icon(
-              Icons.search_off_rounded,
-              size: 60,
-              color: AppColors.purpleLight.withOpacity(0.5),
-            ),
+            decoration: BoxDecoration(color: AppColors.purpleMuted.withOpacity(0.2), shape: BoxShape.circle),
+            child: Icon(Icons.search_off_rounded, size: 60, color: AppColors.purpleLight.withOpacity(0.5)),
           ),
           const SizedBox(height: 24),
           const Text(
             'No games found',
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 22,
-              fontWeight: FontWeight.w700,
-            ),
+            style: TextStyle(color: Colors.white, fontSize: 22, fontWeight: FontWeight.w700),
           ),
           const SizedBox(height: 8),
           Text(
             'Try adjusting your search or filters',
-            style: TextStyle(
-              color: AppColors.purpleLight.withOpacity(0.7),
-              fontSize: 14,
-            ),
+            style: TextStyle(color: AppColors.purpleLight.withOpacity(0.7), fontSize: 14),
           ),
           const SizedBox(height: 24),
           GestureDetector(
@@ -399,28 +316,16 @@ class _GamesScreenState extends State<GamesScreen> {
               decoration: BoxDecoration(
                 gradient: AppColors.primaryGradient,
                 borderRadius: BorderRadius.circular(25),
-                boxShadow: [
-                  BoxShadow(
-                    color: AppColors.purplePrimary.withOpacity(0.4),
-                    blurRadius: 15,
-                  ),
-                ],
+                boxShadow: [BoxShadow(color: AppColors.purplePrimary.withOpacity(0.4), blurRadius: 15)],
               ),
               child: const Text(
                 'Reset Filters',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 14,
-                  fontWeight: FontWeight.w600,
-                ),
+                style: TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.w600),
               ),
             ),
           ),
         ],
       ),
-    )
-        .animate()
-        .fadeIn(delay: 300.ms)
-        .scale(begin: const Offset(0.95, 0.95));
+    ).animate().fadeIn(delay: 300.ms).scale(begin: const Offset(0.95, 0.95));
   }
 }

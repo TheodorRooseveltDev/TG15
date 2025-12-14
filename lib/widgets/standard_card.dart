@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import '../constants/app_colors.dart';
 import '../constants/app_spacing.dart';
 
-/// Standardized card widget with consistent styling across the app
 class StandardCard extends StatelessWidget {
   final Widget child;
   final EdgeInsets? padding;
@@ -30,14 +29,9 @@ class StandardCard extends StatelessWidget {
       padding: padding ?? const EdgeInsets.all(AppSpacing.lg),
       decoration: BoxDecoration(
         color: AppColors.backgroundSecondary,
-        borderRadius: BorderRadius.circular(
-          borderRadius ?? AppSpacing.radiusLarge,
-        ),
+        borderRadius: BorderRadius.circular(borderRadius ?? AppSpacing.radiusLarge),
         border: showBorder
-            ? Border.all(
-                color: borderColor ?? AppColors.purpleMuted.withOpacity(0.3),
-                width: borderWidth ?? 1.0,
-              )
+            ? Border.all(color: borderColor ?? AppColors.purpleMuted.withOpacity(0.3), width: borderWidth ?? 1.0)
             : null,
       ),
       child: child,

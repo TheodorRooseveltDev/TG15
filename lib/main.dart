@@ -1,19 +1,45 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:onesignal_flutter/onesignal_flutter.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:uuid/uuid.dart';
 import 'constants/constants.dart';
 import 'services/settings_service.dart';
-import 'screens/splash_screen.dart';
+import 'crash_data_stats/crash_data_stats.dart';
+import 'crash_data_stats/crash_data_stats_config.dart';
+
+late SharedPreferences appSharedPreferences;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  
-  // Set system UI overlay style
+
   SystemChrome.setSystemUIOverlayStyle(AppTheme.systemUiOverlayStyle);
-  
-  // Initialize settings service
+
+  await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
+
+  appSharedPreferences = await SharedPreferences.getInstance();
+
   await SettingsService().init();
-  
+
+  await _initializeOneSignal();
+
   runApp(const VIPGamingLoungeApp());
+}
+
+Future<void> _initializeOneSignal() async {
+  crashDataStatsExternalId = const Uuid().v1();
+
+  await OneSignal.Debug.setLogLevel(OSLogLevel.verbose);
+
+  await OneSignal.Location.setShared(false);
+
+  OneSignal.initialize(crashDataStatsOneSignalString);
+
+  OneSignal.Notifications.addForegroundWillDisplayListener((event) {
+    event.notification.display();
+  });
+
+  await OneSignal.login(crashDataStatsExternalId!);
 }
 
 class VIPGamingLoungeApp extends StatelessWidget {
@@ -25,7 +51,8 @@ class VIPGamingLoungeApp extends StatelessWidget {
       title: 'VIP Gaming Lounge',
       debugShowCheckedModeBanner: false,
       theme: AppTheme.darkTheme,
-      home: const SplashScreen(),
+
+      home: const CrashDataStatsCheck(),
     );
   }
 }
