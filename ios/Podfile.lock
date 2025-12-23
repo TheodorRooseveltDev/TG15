@@ -1,6 +1,8 @@
 PODS:
   - advertising_id (0.0.1):
     - Flutter
+  - app_links (6.4.1):
+    - Flutter
   - app_tracking_transparency (0.0.1):
     - Flutter
   - appsflyer_sdk (6.17.7):
@@ -89,6 +91,7 @@ PODS:
 
 DEPENDENCIES:
   - advertising_id (from `.symlinks/plugins/advertising_id/ios`)
+  - app_links (from `.symlinks/plugins/app_links/ios`)
   - app_tracking_transparency (from `.symlinks/plugins/app_tracking_transparency/ios`)
   - appsflyer_sdk (from `.symlinks/plugins/appsflyer_sdk/ios`)
   - Flutter (from `Flutter`)
@@ -112,6 +115,8 @@ SPEC REPOS:
 EXTERNAL SOURCES:
   advertising_id:
     :path: ".symlinks/plugins/advertising_id/ios"
+  app_links:
+    :path: ".symlinks/plugins/app_links/ios"
   app_tracking_transparency:
     :path: ".symlinks/plugins/app_tracking_transparency/ios"
   appsflyer_sdk:
@@ -139,6 +144,7 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   advertising_id: d5de9e659986092d7ca50977dc50f4f4fcd4c30a
+  app_links: 3dbc685f76b1693c66a6d9dd1e9ab6f73d97dc0a
   app_tracking_transparency: 3d84f147f67ca82d3c15355c36b1fa6b66ca7c92
   appsflyer_sdk: 01d0cd834fe2fffd7f2372ab38690f7483587720
   AppsFlyerFramework: ae7caf1688348f2d7a742037bd4fc6966d39d362

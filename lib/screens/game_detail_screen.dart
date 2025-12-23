@@ -51,6 +51,17 @@ class _GameDetailScreenState extends State<GameDetailScreen> with TickerProvider
   }
 
   Future<void> _loadAvailableScreenshots() async {
+    // First check if the game has screenshots from database
+    if (widget.game.screenshots.isNotEmpty) {
+      if (mounted) {
+        setState(() {
+          _availableScreenshots = widget.game.screenshots;
+        });
+      }
+      return;
+    }
+
+    // Fallback to local assets
     final screenshots = <String>[];
     final gameId = widget.game.id;
 
@@ -107,7 +118,7 @@ class _GameDetailScreenState extends State<GameDetailScreen> with TickerProvider
   Widget build(BuildContext context) {
     return Scaffold(
       extendBodyBehindAppBar: true,
-      backgroundColor: const Color(0xFF1A0F2E), // Solid dark purple background
+      backgroundColor: AppColors.backgroundPrimary,
       body: Stack(
         children: [
           SingleChildScrollView(
@@ -175,19 +186,32 @@ class _GameDetailScreenState extends State<GameDetailScreen> with TickerProvider
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
         decoration: BoxDecoration(
-          color: AppColors.backgroundSecondary.withOpacity(0.9),
+          color: AppColors.cardBackground.withOpacity(0.9),
           borderRadius: BorderRadius.circular(25),
-          border: Border.all(color: AppColors.purpleMuted.withOpacity(0.4), width: 1.5),
-          boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.3), blurRadius: 10)],
+          border: Border.all(color: AppColors.goldPrimary.withOpacity(0.4), width: 1.5),
+          boxShadow: [
+            BoxShadow(color: Colors.black.withOpacity(0.5), blurRadius: 15),
+            BoxShadow(color: AppColors.goldPrimary.withOpacity(0.15), blurRadius: 10),
+          ],
         ),
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Icon(Icons.arrow_back_ios_rounded, color: Colors.white, size: 16),
+            ShaderMask(
+              shaderCallback: (bounds) => LinearGradient(
+                colors: [AppColors.goldLight, AppColors.goldPrimary],
+              ).createShader(bounds),
+              child: const Icon(Icons.arrow_back_ios_rounded, color: Colors.white, size: 16),
+            ),
             const SizedBox(width: 6),
-            const Text(
-              'Back',
-              style: TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.w600),
+            ShaderMask(
+              shaderCallback: (bounds) => LinearGradient(
+                colors: [AppColors.goldLight, AppColors.goldPrimary],
+              ).createShader(bounds),
+              child: const Text(
+                'Back',
+                style: TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.w600),
+              ),
             ),
           ],
         ),
@@ -196,19 +220,31 @@ class _GameDetailScreenState extends State<GameDetailScreen> with TickerProvider
   }
 
   Widget _buildHeroSection() {
+    // Use banner URL if available, otherwise fallback to animated logo or static image
+    final heroImageUrl = widget.game.bannerUrl != null && widget.game.bannerUrl!.isNotEmpty
+        ? widget.game.bannerUrl!
+        : (widget.game.animatedLogo != null && widget.game.animatedLogo!.isNotEmpty
+            ? widget.game.animatedLogo!
+            : widget.game.image);
+
     return Stack(
       children: [
         SizedBox(
           height: 380,
           width: double.infinity,
-          child: widget.game.image.startsWith('http')
+          child: heroImageUrl.startsWith('http')
               ? CachedNetworkImage(
-                  imageUrl: widget.game.image,
+                  imageUrl: heroImageUrl,
                   fit: BoxFit.cover,
                   width: double.infinity,
                   height: double.infinity,
+                  placeholder: (context, url) => Container(
+                    color: AppColors.backgroundSecondary,
+                    child: Center(child: CircularProgressIndicator(color: AppColors.goldPrimary, strokeWidth: 2)),
+                  ),
+                  errorWidget: (context, url, error) => _buildHeroFallbackImage(),
                 )
-              : Image.asset(widget.game.image, fit: BoxFit.cover, width: double.infinity, height: double.infinity),
+              : Image.asset(heroImageUrl, fit: BoxFit.cover, width: double.infinity, height: double.infinity),
         ),
 
         Container(
@@ -220,10 +256,31 @@ class _GameDetailScreenState extends State<GameDetailScreen> with TickerProvider
               colors: [
                 Colors.transparent,
                 Colors.black.withOpacity(0.4),
-                Colors.black.withOpacity(0.8),
-                const Color(0xFF1A0F2E),
+                Colors.black.withOpacity(0.85),
+                AppColors.backgroundPrimary,
               ],
               stops: const [0.0, 0.4, 0.75, 1.0],
+            ),
+          ),
+        ),
+
+        // Gold shimmer line at bottom of hero
+        Positioned(
+          bottom: 0,
+          left: 0,
+          right: 0,
+          child: Container(
+            height: 2,
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                colors: [
+                  Colors.transparent,
+                  AppColors.goldLight.withOpacity(0.3),
+                  AppColors.goldPrimary.withOpacity(0.6),
+                  AppColors.goldLight.withOpacity(0.3),
+                  Colors.transparent,
+                ],
+              ),
             ),
           ),
         ),
@@ -248,22 +305,44 @@ class _GameDetailScreenState extends State<GameDetailScreen> with TickerProvider
                 overflow: TextOverflow.ellipsis,
               ).animate().fadeIn(delay: 250.ms, duration: 400.ms).slideX(begin: 0.1),
               const SizedBox(height: 6),
-              Text(
-                widget.game.subtitle,
-                style: const TextStyle(
-                  color: Colors.white,
-                  fontSize: 15,
-                  fontWeight: FontWeight.w600,
-                  shadows: [Shadow(color: Colors.black, blurRadius: 8)],
+              ShaderMask(
+                shaderCallback: (bounds) => LinearGradient(
+                  colors: [AppColors.goldLight, AppColors.goldPrimary],
+                ).createShader(bounds),
+                child: Text(
+                  widget.game.subtitle,
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 15,
+                    fontWeight: FontWeight.w600,
+                    shadows: [Shadow(color: Colors.black, blurRadius: 8)],
+                  ),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
                 ),
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
               ).animate().fadeIn(delay: 300.ms, duration: 400.ms).slideX(begin: 0.1),
             ],
           ),
         ),
       ],
     );
+  }
+
+  Widget _buildHeroFallbackImage() {
+    // Fallback to static image if banner fails to load
+    if (widget.game.image.startsWith('http')) {
+      return CachedNetworkImage(
+        imageUrl: widget.game.image,
+        fit: BoxFit.cover,
+        width: double.infinity,
+        height: double.infinity,
+        errorWidget: (context, url, error) => Container(
+          decoration: BoxDecoration(gradient: AppColors.primaryGradient),
+          child: const Center(child: Icon(Icons.casino_rounded, size: 80, color: AppColors.goldAccent)),
+        ),
+      );
+    }
+    return Image.asset(widget.game.image, fit: BoxFit.cover, width: double.infinity, height: double.infinity);
   }
 
   Widget _buildPlayButton() {
@@ -273,9 +352,9 @@ class _GameDetailScreenState extends State<GameDetailScreen> with TickerProvider
         return GestureDetector(
           onTap: _playGame,
           child: ClipRRect(
-            borderRadius: BorderRadius.circular(30),
+            borderRadius: BorderRadius.circular(16),
             child: CustomPaint(
-              painter: _ButtonGlarePainter(glareAnimation: _glareController, borderRadius: 30),
+              painter: _ButtonGlarePainter(glareAnimation: _glareController, borderRadius: 16),
               child: Container(
                 padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 18),
                 decoration: BoxDecoration(
@@ -283,63 +362,43 @@ class _GameDetailScreenState extends State<GameDetailScreen> with TickerProvider
                     begin: Alignment.topLeft,
                     end: Alignment.bottomRight,
                     colors: [
-                      AppColors.goldAccent,
-                      AppColors.orange,
-                      const Color(0xFFD4841C), // Darker gold for depth
+                      AppColors.goldLight,
+                      AppColors.goldPrimary,
+                      AppColors.goldMid,
+                      AppColors.goldDark,
                     ],
-                    stops: const [0.0, 0.5, 1.0],
+                    stops: const [0.0, 0.3, 0.6, 1.0],
                   ),
-                  borderRadius: BorderRadius.circular(30),
-
-                  border: Border.all(color: AppColors.goldAccent.withOpacity(0.8), width: 2.5),
+                  borderRadius: BorderRadius.circular(16),
+                  border: Border.all(color: AppColors.goldLight.withOpacity(0.6), width: 1.5),
                   boxShadow: [
                     BoxShadow(
-                      color: AppColors.goldAccent.withOpacity(0.5 + _pulseController.value * 0.3),
-                      blurRadius: 30 + _pulseController.value * 15,
-                      spreadRadius: 5 + _pulseController.value * 5,
+                      color: AppColors.goldPrimary.withOpacity(0.5 + _pulseController.value * 0.3),
+                      blurRadius: 25 + _pulseController.value * 15,
+                      spreadRadius: 3 + _pulseController.value * 4,
                     ),
-
                     BoxShadow(
-                      color: AppColors.orange.withOpacity(0.4 + _pulseController.value * 0.2),
-                      blurRadius: 40 + _pulseController.value * 10,
-                      spreadRadius: 3 + _pulseController.value * 3,
-                    ),
-
-                    BoxShadow(color: AppColors.purplePrimary.withOpacity(0.3), blurRadius: 25, spreadRadius: 2),
-
-                    BoxShadow(
-                      color: AppColors.goldAccent.withOpacity(0.6),
+                      color: AppColors.goldLight.withOpacity(0.4),
                       blurRadius: 15,
                       offset: const Offset(0, -2),
                     ),
-
                     BoxShadow(color: Colors.black.withOpacity(0.6), blurRadius: 20, offset: const Offset(0, 8)),
                   ],
                 ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Container(
-                      padding: const EdgeInsets.all(8),
-                      decoration: BoxDecoration(
-                        gradient: LinearGradient(
-                          colors: [Colors.white.withOpacity(0.2), Colors.white.withOpacity(0.1)],
-                        ),
-                        shape: BoxShape.circle,
-                        boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.3), blurRadius: 10)],
-                      ),
-                      child: const Icon(Icons.play_arrow_rounded, size: 28, color: Colors.white),
-                    ),
-                    const SizedBox(width: 14),
+                  children: const [
+                    Icon(Icons.play_arrow_rounded, size: 28, color: Colors.white),
+                    SizedBox(width: 12),
                     Text(
                       'PLAY NOW',
                       style: TextStyle(
                         color: Colors.white,
-                        fontSize: 20,
+                        fontSize: 18,
                         fontWeight: FontWeight.w800,
                         letterSpacing: 2,
                         shadows: [
-                          Shadow(color: Colors.black.withOpacity(0.5), blurRadius: 5, offset: const Offset(0, 2)),
+                          Shadow(color: Colors.black54, blurRadius: 4, offset: Offset(0, 1)),
                         ],
                       ),
                     ),
@@ -361,11 +420,22 @@ class _GameDetailScreenState extends State<GameDetailScreen> with TickerProvider
           padding: const EdgeInsets.symmetric(horizontal: 20),
           child: Row(
             children: [
-              const Icon(Icons.photo_library_rounded, color: Colors.white, size: 20),
+              ShaderMask(
+                shaderCallback: (bounds) => LinearGradient(
+                  colors: [AppColors.goldLight, AppColors.goldPrimary],
+                ).createShader(bounds),
+                child: const Icon(Icons.photo_library_rounded, color: Colors.white, size: 20),
+              ),
               const SizedBox(width: 12),
-              const Text(
-                'Screenshots',
-                style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.w400),
+              ShaderMask(
+                shaderCallback: (bounds) => LinearGradient(
+                  colors: [AppColors.goldLight, AppColors.goldPrimary, AppColors.goldLight],
+                  stops: const [0.0, 0.5, 1.0],
+                ).createShader(bounds),
+                child: const Text(
+                  'Screenshots',
+                  style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.w700),
+                ),
               ),
             ],
           ),
@@ -386,17 +456,39 @@ class _GameDetailScreenState extends State<GameDetailScreen> with TickerProvider
                 margin: EdgeInsets.only(right: index < _availableScreenshots.length - 1 ? 12 : 0),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(18),
-                  border: Border.all(color: AppColors.purpleMuted.withOpacity(0.3), width: 1.5),
-                  boxShadow: [BoxShadow(color: AppColors.purplePrimary.withOpacity(0.15), blurRadius: 15)],
+                  border: Border.all(color: AppColors.goldPrimary.withOpacity(0.35), width: 1.5),
+                  boxShadow: [
+                    BoxShadow(color: AppColors.goldPrimary.withOpacity(0.15), blurRadius: 15),
+                    BoxShadow(color: Colors.black.withOpacity(0.4), blurRadius: 10, offset: const Offset(0, 5)),
+                  ],
                 ),
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(16),
-                  child: Image.asset(
-                    _availableScreenshots[index],
-                    fit: BoxFit.cover,
-                    errorBuilder: (context, error, stackTrace) {
-                      return Image.asset(widget.game.image, fit: BoxFit.cover);
-                    },
+                  child: Stack(
+                    fit: StackFit.expand,
+                    children: [
+                      _buildScreenshotImage(_availableScreenshots[index]),
+                      // Gold shimmer at top
+                      Positioned(
+                        top: 0,
+                        left: 0,
+                        right: 0,
+                        child: Container(
+                          height: 2,
+                          decoration: BoxDecoration(
+                            gradient: LinearGradient(
+                              colors: [
+                                Colors.transparent,
+                                AppColors.goldLight.withOpacity(0.5),
+                                AppColors.goldPrimary,
+                                AppColors.goldLight.withOpacity(0.5),
+                                Colors.transparent,
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ).animate().fadeIn(delay: (550 + index * 80).ms).slideX(begin: 0.1, delay: (550 + index * 80).ms);
@@ -407,6 +499,42 @@ class _GameDetailScreenState extends State<GameDetailScreen> with TickerProvider
     );
   }
 
+  Widget _buildScreenshotImage(String screenshotUrl) {
+    // Handle network images from database
+    if (screenshotUrl.startsWith('http')) {
+      return CachedNetworkImage(
+        imageUrl: screenshotUrl,
+        fit: BoxFit.cover,
+        placeholder: (context, url) => Container(
+          color: AppColors.backgroundSecondary,
+          child: Center(child: CircularProgressIndicator(color: AppColors.goldPrimary, strokeWidth: 2)),
+        ),
+        errorWidget: (context, url, error) => _buildScreenshotFallback(),
+      );
+    }
+    // Handle local asset images
+    return Image.asset(
+      screenshotUrl,
+      fit: BoxFit.cover,
+      errorBuilder: (context, error, stackTrace) => _buildScreenshotFallback(),
+    );
+  }
+
+  Widget _buildScreenshotFallback() {
+    // Fallback to game image if screenshot fails to load
+    if (widget.game.image.startsWith('http')) {
+      return CachedNetworkImage(
+        imageUrl: widget.game.image,
+        fit: BoxFit.cover,
+        errorWidget: (context, url, error) => Container(
+          color: AppColors.backgroundSecondary,
+          child: const Center(child: Icon(Icons.image_rounded, size: 40, color: AppColors.goldAccent)),
+        ),
+      );
+    }
+    return Image.asset(widget.game.image, fit: BoxFit.cover);
+  }
+
   Widget _buildAboutSection() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -415,11 +543,22 @@ class _GameDetailScreenState extends State<GameDetailScreen> with TickerProvider
           padding: const EdgeInsets.symmetric(horizontal: 20),
           child: Row(
             children: [
-              const Icon(Icons.info_rounded, color: Colors.white, size: 20),
+              ShaderMask(
+                shaderCallback: (bounds) => LinearGradient(
+                  colors: [AppColors.goldLight, AppColors.goldPrimary],
+                ).createShader(bounds),
+                child: const Icon(Icons.info_rounded, color: Colors.white, size: 20),
+              ),
               const SizedBox(width: 12),
-              const Text(
-                'About This Game',
-                style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.w400),
+              ShaderMask(
+                shaderCallback: (bounds) => LinearGradient(
+                  colors: [AppColors.goldLight, AppColors.goldPrimary, AppColors.goldLight],
+                  stops: const [0.0, 0.5, 1.0],
+                ).createShader(bounds),
+                child: const Text(
+                  'About This Game',
+                  style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.w700),
+                ),
               ),
             ],
           ),
@@ -433,16 +572,38 @@ class _GameDetailScreenState extends State<GameDetailScreen> with TickerProvider
             padding: const EdgeInsets.all(20),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(20),
-              gradient: LinearGradient(
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-                colors: [AppColors.backgroundSecondary.withOpacity(0.8), AppColors.cardBackground.withOpacity(0.6)],
-              ),
-              border: Border.all(color: AppColors.purpleMuted.withOpacity(0.3), width: 1.5),
+              color: AppColors.cardBackground,
+              border: Border.all(color: AppColors.goldPrimary.withOpacity(0.35), width: 1.5),
+              boxShadow: [
+                BoxShadow(color: AppColors.goldPrimary.withOpacity(0.15), blurRadius: 20),
+                BoxShadow(color: Colors.black.withOpacity(0.5), blurRadius: 15, offset: const Offset(0, 8)),
+              ],
             ),
-            child: Text(
-              widget.game.description,
-              style: TextStyle(color: Colors.white.withOpacity(0.9), fontSize: 14, height: 1.6),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // Gold shimmer at top
+                Container(
+                  height: 2,
+                  margin: const EdgeInsets.only(bottom: 16),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(1),
+                    gradient: LinearGradient(
+                      colors: [
+                        Colors.transparent,
+                        AppColors.goldLight.withOpacity(0.5),
+                        AppColors.goldPrimary,
+                        AppColors.goldLight.withOpacity(0.5),
+                        Colors.transparent,
+                      ],
+                    ),
+                  ),
+                ),
+                Text(
+                  widget.game.description,
+                  style: TextStyle(color: Colors.white.withOpacity(0.9), fontSize: 14, height: 1.6),
+                ),
+              ],
             ),
           ),
         ).animate().fadeIn(delay: 650.ms).slideY(begin: 0.1, delay: 650.ms),
@@ -460,11 +621,22 @@ class _GameDetailScreenState extends State<GameDetailScreen> with TickerProvider
           padding: const EdgeInsets.symmetric(horizontal: 20),
           child: Row(
             children: [
-              const Icon(Icons.auto_awesome_rounded, color: Colors.white, size: 20),
+              ShaderMask(
+                shaderCallback: (bounds) => LinearGradient(
+                  colors: [AppColors.goldLight, AppColors.goldPrimary],
+                ).createShader(bounds),
+                child: const Icon(Icons.auto_awesome_rounded, color: Colors.white, size: 20),
+              ),
               const SizedBox(width: 12),
-              const Text(
-                'You Might Also Like',
-                style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.w400),
+              ShaderMask(
+                shaderCallback: (bounds) => LinearGradient(
+                  colors: [AppColors.goldLight, AppColors.goldPrimary, AppColors.goldLight],
+                  stops: const [0.0, 0.5, 1.0],
+                ).createShader(bounds),
+                child: const Text(
+                  'You Might Also Like',
+                  style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.w700),
+                ),
               ),
             ],
           ),
@@ -511,24 +683,46 @@ class _GameDetailScreenState extends State<GameDetailScreen> with TickerProvider
                         child: Container(
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(16),
-                            border: Border.all(color: AppColors.purpleMuted.withOpacity(0.3), width: 1.5),
-                            boxShadow: [BoxShadow(color: AppColors.purplePrimary.withOpacity(0.15), blurRadius: 12)],
+                            border: Border.all(color: AppColors.goldPrimary.withOpacity(0.35), width: 1.5),
+                            boxShadow: [
+                              BoxShadow(color: AppColors.goldPrimary.withOpacity(0.15), blurRadius: 12),
+                              BoxShadow(color: Colors.black.withOpacity(0.4), blurRadius: 10, offset: const Offset(0, 5)),
+                            ],
                           ),
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(14),
                             child: Stack(
                               fit: StackFit.expand,
                               children: [
-                                game.image.startsWith('http')
-                                    ? CachedNetworkImage(imageUrl: game.image, fit: BoxFit.cover)
-                                    : Image.asset(game.image, fit: BoxFit.cover),
+                                _buildSimilarGameImage(game),
 
                                 Container(
                                   decoration: BoxDecoration(
                                     gradient: LinearGradient(
                                       begin: Alignment.topCenter,
                                       end: Alignment.bottomCenter,
-                                      colors: [Colors.transparent, Colors.black.withOpacity(0.6)],
+                                      colors: [Colors.transparent, Colors.black.withOpacity(0.7)],
+                                    ),
+                                  ),
+                                ),
+
+                                // Gold shimmer at top
+                                Positioned(
+                                  top: 0,
+                                  left: 0,
+                                  right: 0,
+                                  child: Container(
+                                    height: 2,
+                                    decoration: BoxDecoration(
+                                      gradient: LinearGradient(
+                                        colors: [
+                                          Colors.transparent,
+                                          AppColors.goldLight.withOpacity(0.5),
+                                          AppColors.goldPrimary,
+                                          AppColors.goldLight.withOpacity(0.5),
+                                          Colors.transparent,
+                                        ],
+                                      ),
                                     ),
                                   ),
                                 ),
@@ -537,11 +731,31 @@ class _GameDetailScreenState extends State<GameDetailScreen> with TickerProvider
                                   child: Container(
                                     padding: const EdgeInsets.all(10),
                                     decoration: BoxDecoration(
-                                      color: Colors.white.withOpacity(0.2),
+                                      gradient: LinearGradient(
+                                        begin: Alignment.topLeft,
+                                        end: Alignment.bottomRight,
+                                        colors: [
+                                          AppColors.goldLight.withOpacity(0.25),
+                                          AppColors.goldPrimary.withOpacity(0.15),
+                                          AppColors.goldDark.withOpacity(0.25),
+                                        ],
+                                      ),
                                       shape: BoxShape.circle,
-                                      border: Border.all(color: Colors.white.withOpacity(0.4), width: 2),
+                                      border: Border.all(color: AppColors.goldPrimary.withOpacity(0.6), width: 2),
+                                      boxShadow: [
+                                        BoxShadow(
+                                          color: AppColors.goldPrimary.withOpacity(0.35),
+                                          blurRadius: 15,
+                                          spreadRadius: 2,
+                                        ),
+                                      ],
                                     ),
-                                    child: const Icon(Icons.play_arrow_rounded, color: Colors.white, size: 20),
+                                    child: ShaderMask(
+                                      shaderCallback: (bounds) => LinearGradient(
+                                        colors: [AppColors.goldLight, AppColors.goldPrimary],
+                                      ).createShader(bounds),
+                                      child: const Icon(Icons.play_arrow_rounded, color: Colors.white, size: 20),
+                                    ),
                                   ),
                                 ),
                               ],
@@ -557,11 +771,16 @@ class _GameDetailScreenState extends State<GameDetailScreen> with TickerProvider
                         overflow: TextOverflow.ellipsis,
                       ),
                       const SizedBox(height: 2),
-                      Text(
-                        game.subtitle,
-                        style: TextStyle(color: AppColors.purpleLight.withOpacity(0.6), fontSize: 11),
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
+                      ShaderMask(
+                        shaderCallback: (bounds) => LinearGradient(
+                          colors: [AppColors.goldLight, AppColors.goldPrimary],
+                        ).createShader(bounds),
+                        child: Text(
+                          game.subtitle,
+                          style: const TextStyle(color: Colors.white, fontSize: 11, fontWeight: FontWeight.w500),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
                       ),
                     ],
                   ),
@@ -572,6 +791,29 @@ class _GameDetailScreenState extends State<GameDetailScreen> with TickerProvider
         ),
       ],
     );
+  }
+
+  Widget _buildSimilarGameImage(Game game) {
+    // Prefer animated logo (GIF) if available for similar games
+    final imageUrl = game.animatedLogo != null && game.animatedLogo!.isNotEmpty
+        ? game.animatedLogo!
+        : game.image;
+
+    if (imageUrl.startsWith('http')) {
+      return CachedNetworkImage(
+        imageUrl: imageUrl,
+        fit: BoxFit.cover,
+        placeholder: (context, url) => Container(
+          color: AppColors.backgroundSecondary,
+          child: Center(child: CircularProgressIndicator(color: AppColors.goldPrimary, strokeWidth: 2)),
+        ),
+        errorWidget: (context, url, error) => Container(
+          decoration: BoxDecoration(gradient: AppColors.primaryGradient),
+          child: const Center(child: Icon(Icons.casino_rounded, size: 40, color: AppColors.goldAccent)),
+        ),
+      );
+    }
+    return Image.asset(imageUrl, fit: BoxFit.cover);
   }
 }
 

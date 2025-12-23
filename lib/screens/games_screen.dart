@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import '../constants/constants.dart';
 import '../models/game.dart';
 import '../services/games_service.dart';
-import '../widgets/game_card.dart';
 import '../widgets/app_background.dart';
 import 'game_detail_screen.dart';
 
@@ -23,9 +23,9 @@ class _GamesScreenState extends State<GamesScreen> {
   bool _isLoading = true;
 
   final List<Map<String, dynamic>> _filters = [
-    {'name': 'Featured', 'icon': Icons.star_rounded, 'color': AppColors.goldAccent},
-    {'name': 'Popular', 'icon': Icons.local_fire_department_rounded, 'color': AppColors.orange},
-    {'name': 'New', 'icon': Icons.new_releases_rounded, 'color': AppColors.success},
+    {'name': 'Featured', 'icon': Icons.star_rounded},
+    {'name': 'Popular', 'icon': Icons.local_fire_department_rounded},
+    {'name': 'New', 'icon': Icons.new_releases_rounded},
   ];
 
   @override
@@ -140,18 +140,49 @@ class _GamesScreenState extends State<GamesScreen> {
 
   Widget _buildHeroHeader() {
     return Container(
-      padding: const EdgeInsets.fromLTRB(20, 60, 20, 0),
+      padding: const EdgeInsets.fromLTRB(20, 70, 20, 0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(
-            'Game Library',
-            style: TextStyle(fontSize: 28, fontWeight: FontWeight.w400, color: Colors.white, height: 1.1),
+          // Title with gold gradient
+          ShaderMask(
+            shaderCallback: (bounds) => LinearGradient(
+              colors: [
+                const Color(0xFFFFF9C4),
+                const Color(0xFFFFE082),
+                const Color(0xFFFFD54F),
+                const Color(0xFFFFE082),
+                const Color(0xFFFFF9C4),
+              ],
+              stops: const [0.0, 0.25, 0.5, 0.75, 1.0],
+            ).createShader(bounds),
+            child: const Text(
+              'Game Library',
+              style: TextStyle(
+                fontSize: 32,
+                fontWeight: FontWeight.w700,
+                color: Colors.white,
+                height: 1.1,
+              ),
+            ),
           ),
           const SizedBox(height: 8),
-          Text(
-            '${_displayedGames.length} premium games available',
-            style: TextStyle(color: Colors.white.withOpacity(0.8), fontSize: 14, fontWeight: FontWeight.w500),
+          Row(
+            children: [
+              ShaderMask(
+                shaderCallback: (bounds) => LinearGradient(
+                  colors: [AppColors.goldLight, AppColors.goldPrimary],
+                ).createShader(bounds),
+                child: Text(
+                  '${_displayedGames.length} premium games available',
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 14,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+              ),
+            ],
           ),
         ],
       ),
@@ -166,7 +197,7 @@ class _GamesScreenState extends State<GamesScreen> {
         decoration: BoxDecoration(
           color: AppColors.backgroundSecondary.withOpacity(0.6),
           borderRadius: BorderRadius.circular(30),
-          border: Border.all(color: AppColors.purpleMuted.withOpacity(0.3), width: 1.5),
+          border: Border.all(color: AppColors.goldPrimary.withOpacity(0.3), width: 1.5),
         ),
         child: Row(
           children: _filters.asMap().entries.map((entry) {
@@ -181,27 +212,55 @@ class _GamesScreenState extends State<GamesScreen> {
                   curve: Curves.easeOutCubic,
                   padding: const EdgeInsets.symmetric(vertical: 12),
                   decoration: BoxDecoration(
-                    color: isSelected ? AppColors.purplePrimary.withOpacity(0.3) : Colors.transparent,
+                    gradient: isSelected ? LinearGradient(
+                      colors: [
+                        AppColors.goldDark.withOpacity(0.4),
+                        AppColors.goldPrimary.withOpacity(0.2),
+                        AppColors.goldDark.withOpacity(0.4),
+                      ],
+                    ) : null,
                     borderRadius: BorderRadius.circular(26),
+                    border: isSelected ? Border.all(
+                      color: AppColors.goldPrimary.withOpacity(0.5),
+                      width: 1,
+                    ) : null,
                     boxShadow: isSelected
-                        ? [BoxShadow(color: AppColors.purplePrimary.withOpacity(0.4), blurRadius: 15, spreadRadius: 0)]
+                        ? [BoxShadow(color: AppColors.goldPrimary.withOpacity(0.3), blurRadius: 15, spreadRadius: 0)]
                         : null,
                   ),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Icon(
-                        filter['icon'] as IconData,
-                        color: isSelected ? Colors.white : AppColors.purpleLight.withOpacity(0.5),
-                        size: 18,
+                      ShaderMask(
+                        shaderCallback: isSelected
+                            ? (bounds) => LinearGradient(
+                                colors: [AppColors.goldLight, AppColors.goldPrimary],
+                              ).createShader(bounds)
+                            : (bounds) => LinearGradient(
+                                colors: [AppColors.secondaryText, AppColors.secondaryText],
+                              ).createShader(bounds),
+                        child: Icon(
+                          filter['icon'] as IconData,
+                          color: Colors.white,
+                          size: 18,
+                        ),
                       ),
                       const SizedBox(width: 8),
-                      Text(
-                        filter['name'] as String,
-                        style: TextStyle(
-                          color: isSelected ? Colors.white : AppColors.purpleLight.withOpacity(0.5),
-                          fontSize: 14,
-                          fontWeight: isSelected ? FontWeight.w700 : FontWeight.w500,
+                      ShaderMask(
+                        shaderCallback: isSelected
+                            ? (bounds) => LinearGradient(
+                                colors: [AppColors.goldLight, AppColors.goldPrimary],
+                              ).createShader(bounds)
+                            : (bounds) => LinearGradient(
+                                colors: [AppColors.secondaryText, AppColors.secondaryText],
+                              ).createShader(bounds),
+                        child: Text(
+                          filter['name'] as String,
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 14,
+                            fontWeight: isSelected ? FontWeight.w700 : FontWeight.w500,
+                          ),
                         ),
                       ),
                     ],
@@ -220,6 +279,8 @@ class _GamesScreenState extends State<GamesScreen> {
       return _buildEmptyState();
     }
 
+    final isTablet = MediaQuery.of(context).size.shortestSide >= 600;
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -227,22 +288,39 @@ class _GamesScreenState extends State<GamesScreen> {
           padding: const EdgeInsets.symmetric(horizontal: 20),
           child: Row(
             children: [
-              const Icon(Icons.grid_view_rounded, color: Colors.white, size: 20),
+              ShaderMask(
+                shaderCallback: (bounds) => LinearGradient(
+                  colors: [AppColors.goldLight, AppColors.goldPrimary],
+                ).createShader(bounds),
+                child: const Icon(Icons.grid_view_rounded, color: Colors.white, size: 22),
+              ),
               const SizedBox(width: 12),
-              const Text(
-                'All Games',
-                style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.w400),
+              ShaderMask(
+                shaderCallback: (bounds) => LinearGradient(
+                  colors: [AppColors.goldLight, AppColors.goldPrimary, AppColors.goldLight],
+                  stops: const [0.0, 0.5, 1.0],
+                ).createShader(bounds),
+                child: const Text(
+                  'All Games',
+                  style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.w700),
+                ),
               ),
               const Spacer(),
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
                 decoration: BoxDecoration(
-                  color: Colors.white.withOpacity(0.1),
+                  color: AppColors.cardBackground,
                   borderRadius: BorderRadius.circular(20),
+                  border: Border.all(color: AppColors.goldPrimary.withOpacity(0.3), width: 1),
                 ),
-                child: Text(
-                  '${_displayedGames.length} games',
-                  style: TextStyle(color: Colors.white.withOpacity(0.8), fontSize: 13, fontWeight: FontWeight.w600),
+                child: ShaderMask(
+                  shaderCallback: (bounds) => LinearGradient(
+                    colors: [AppColors.goldLight, AppColors.goldPrimary],
+                  ).createShader(bounds),
+                  child: Text(
+                    '${_displayedGames.length} games',
+                    style: const TextStyle(color: Colors.white, fontSize: 13, fontWeight: FontWeight.w600),
+                  ),
                 ),
               ),
             ],
@@ -256,18 +334,200 @@ class _GamesScreenState extends State<GamesScreen> {
           physics: const NeverScrollableScrollPhysics(),
           padding: const EdgeInsets.symmetric(horizontal: 20),
           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: MediaQuery.of(context).size.shortestSide >= 600 ? 3 : 2,
-            childAspectRatio: 0.7,
-            crossAxisSpacing: 12,
-            mainAxisSpacing: 12,
+            crossAxisCount: isTablet ? 3 : 2,
+            childAspectRatio: 0.75,
+            crossAxisSpacing: 14,
+            mainAxisSpacing: 14,
           ),
           itemCount: _displayedGames.length,
           itemBuilder: (context, index) {
             final game = _displayedGames[index];
-            return GameCard(game: game, onTap: () => _navigateToGame(game))
-                .animate()
-                .fadeIn(delay: (500 + index * 50).ms)
-                .scale(begin: const Offset(0.95, 0.95), delay: (500 + index * 50).ms);
+            return GestureDetector(
+              onTap: () => _navigateToGame(game),
+              child: Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(20),
+                  border: Border.all(
+                    color: AppColors.goldPrimary.withOpacity(0.35),
+                    width: 1.5,
+                  ),
+                  boxShadow: [
+                    BoxShadow(
+                      color: AppColors.goldPrimary.withOpacity(0.2),
+                      blurRadius: 20,
+                      spreadRadius: 0,
+                    ),
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.5),
+                      blurRadius: 15,
+                      offset: const Offset(0, 8),
+                    ),
+                  ],
+                ),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(19),
+                  child: Stack(
+                    fit: StackFit.expand,
+                    children: [
+                      // Game image
+                      game.image.startsWith('http')
+                          ? CachedNetworkImage(imageUrl: game.image, fit: BoxFit.cover)
+                          : Image.asset(game.image, fit: BoxFit.cover),
+
+                      // Premium gradient overlay
+                      Container(
+                        decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                            begin: Alignment.topCenter,
+                            end: Alignment.bottomCenter,
+                            colors: [
+                              Colors.transparent,
+                              Colors.black.withOpacity(0.2),
+                              Colors.black.withOpacity(0.85),
+                            ],
+                            stops: const [0.0, 0.4, 1.0],
+                          ),
+                        ),
+                      ),
+
+                      // Gold shimmer edge at top
+                      Positioned(
+                        top: 0,
+                        left: 0,
+                        right: 0,
+                        child: Container(
+                          height: 2,
+                          decoration: BoxDecoration(
+                            gradient: LinearGradient(
+                              colors: [
+                                Colors.transparent,
+                                AppColors.goldLight.withOpacity(0.5),
+                                AppColors.goldPrimary,
+                                AppColors.goldLight.withOpacity(0.5),
+                                Colors.transparent,
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+
+                      // Corner gold accent
+                      Positioned(
+                        top: 0,
+                        right: 0,
+                        child: Container(
+                          width: 40,
+                          height: 40,
+                          decoration: BoxDecoration(
+                            gradient: LinearGradient(
+                              begin: Alignment.topRight,
+                              end: Alignment.bottomLeft,
+                              colors: [
+                                AppColors.goldPrimary.withOpacity(0.3),
+                                Colors.transparent,
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+
+                      // Play button
+                      Center(
+                        child: Container(
+                          padding: const EdgeInsets.all(16),
+                          decoration: BoxDecoration(
+                            gradient: LinearGradient(
+                              begin: Alignment.topLeft,
+                              end: Alignment.bottomRight,
+                              colors: [
+                                AppColors.goldLight.withOpacity(0.25),
+                                AppColors.goldPrimary.withOpacity(0.15),
+                                AppColors.goldDark.withOpacity(0.25),
+                              ],
+                            ),
+                            shape: BoxShape.circle,
+                            border: Border.all(
+                              color: AppColors.goldPrimary.withOpacity(0.6),
+                              width: 2,
+                            ),
+                            boxShadow: [
+                              BoxShadow(
+                                color: AppColors.goldPrimary.withOpacity(0.35),
+                                blurRadius: 20,
+                                spreadRadius: 3,
+                              ),
+                            ],
+                          ),
+                          child: ShaderMask(
+                            shaderCallback: (bounds) => LinearGradient(
+                              colors: [AppColors.goldLight, AppColors.goldPrimary],
+                            ).createShader(bounds),
+                            child: const Icon(Icons.play_arrow_rounded, color: Colors.white, size: 28),
+                          ),
+                        ),
+                      ),
+
+                      // Bottom content with glass effect
+                      Positioned(
+                        bottom: 0,
+                        left: 0,
+                        right: 0,
+                        child: Container(
+                          padding: const EdgeInsets.all(14),
+                          decoration: BoxDecoration(
+                            gradient: LinearGradient(
+                              begin: Alignment.topCenter,
+                              end: Alignment.bottomCenter,
+                              colors: [
+                                Colors.transparent,
+                                Colors.black.withOpacity(0.6),
+                              ],
+                            ),
+                          ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                game.name,
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.w700,
+                                  shadows: [
+                                    Shadow(color: Colors.black, blurRadius: 6),
+                                  ],
+                                ),
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                              const SizedBox(height: 4),
+                              ShaderMask(
+                                shaderCallback: (bounds) => LinearGradient(
+                                  colors: [AppColors.goldLight, AppColors.goldPrimary],
+                                ).createShader(bounds),
+                                child: Text(
+                                  game.subtitle,
+                                  style: const TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 11,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            )
+            .animate()
+            .fadeIn(delay: (500 + index * 50).ms)
+            .scale(begin: const Offset(0.95, 0.95), delay: (500 + index * 50).ms);
           },
         ),
       ],
@@ -285,25 +545,40 @@ class _GamesScreenState extends State<GamesScreen> {
           end: Alignment.bottomRight,
           colors: [AppColors.backgroundSecondary.withOpacity(0.8), AppColors.cardBackground.withOpacity(0.6)],
         ),
-        border: Border.all(color: AppColors.purpleMuted.withOpacity(0.3), width: 1),
+        border: Border.all(color: AppColors.goldPrimary.withOpacity(0.3), width: 1),
       ),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Container(
             padding: const EdgeInsets.all(20),
-            decoration: BoxDecoration(color: AppColors.purpleMuted.withOpacity(0.2), shape: BoxShape.circle),
-            child: Icon(Icons.search_off_rounded, size: 60, color: AppColors.purpleLight.withOpacity(0.5)),
+            decoration: BoxDecoration(
+              color: AppColors.goldPrimary.withOpacity(0.15),
+              shape: BoxShape.circle,
+              border: Border.all(color: AppColors.goldPrimary.withOpacity(0.3), width: 1),
+            ),
+            child: ShaderMask(
+              shaderCallback: (bounds) => LinearGradient(
+                colors: [AppColors.goldLight, AppColors.goldPrimary],
+              ).createShader(bounds),
+              child: const Icon(Icons.search_off_rounded, size: 60, color: Colors.white),
+            ),
           ),
           const SizedBox(height: 24),
-          const Text(
-            'No games found',
-            style: TextStyle(color: Colors.white, fontSize: 22, fontWeight: FontWeight.w700),
+          ShaderMask(
+            shaderCallback: (bounds) => LinearGradient(
+              colors: [AppColors.goldLight, AppColors.goldPrimary, AppColors.goldLight],
+              stops: const [0.0, 0.5, 1.0],
+            ).createShader(bounds),
+            child: const Text(
+              'No games found',
+              style: TextStyle(color: Colors.white, fontSize: 22, fontWeight: FontWeight.w700),
+            ),
           ),
           const SizedBox(height: 8),
           Text(
             'Try adjusting your search or filters',
-            style: TextStyle(color: AppColors.purpleLight.withOpacity(0.7), fontSize: 14),
+            style: TextStyle(color: AppColors.secondaryText, fontSize: 14),
           ),
           const SizedBox(height: 24),
           GestureDetector(
@@ -314,13 +589,31 @@ class _GamesScreenState extends State<GamesScreen> {
             child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
               decoration: BoxDecoration(
-                gradient: AppColors.primaryGradient,
+                gradient: LinearGradient(
+                  colors: [
+                    AppColors.goldLight,
+                    AppColors.goldPrimary,
+                    AppColors.goldMid,
+                    AppColors.goldDark,
+                  ],
+                  stops: const [0.0, 0.3, 0.6, 1.0],
+                ),
                 borderRadius: BorderRadius.circular(25),
-                boxShadow: [BoxShadow(color: AppColors.purplePrimary.withOpacity(0.4), blurRadius: 15)],
+                border: Border.all(color: AppColors.goldLight.withOpacity(0.5), width: 1),
+                boxShadow: [
+                  BoxShadow(color: AppColors.goldPrimary.withOpacity(0.4), blurRadius: 15),
+                ],
               ),
               child: const Text(
                 'Reset Filters',
-                style: TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.w600),
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 14,
+                  fontWeight: FontWeight.w700,
+                  shadows: [
+                    Shadow(color: Colors.black54, blurRadius: 4),
+                  ],
+                ),
               ),
             ),
           ),

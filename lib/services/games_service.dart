@@ -1,12 +1,14 @@
 import 'dart:convert';
 import 'package:flutter/services.dart';
 import '../models/game.dart';
+import 'supabase_service.dart';
 
 class GamesService {
   static final GamesService _instance = GamesService._internal();
   factory GamesService() => _instance;
   GamesService._internal();
 
+  final SupabaseService _supabaseService = SupabaseService();
   List<Game>? _games;
   bool _isLoaded = false;
 
@@ -16,20 +18,42 @@ class GamesService {
     }
 
     try {
-      final String jsonString = await rootBundle.loadString('assets/games-data.json');
-      final Map<String, dynamic> jsonData = json.decode(jsonString);
-      final List<dynamic> gamesJson = jsonData['games'] as List<dynamic>;
+      // Try to load from Supabase first
+      final gamesData = await _supabaseService.fetchGames();
 
-      _games = gamesJson.map((json) => Game.fromJson(json as Map<String, dynamic>)).toList();
+      if (gamesData.isNotEmpty) {
+        _games = gamesData
+            .map((json) => Game.fromSupabase(json, _supabaseService.getPublicUrl))
+            .toList();
+      } else {
+        // Fallback to local JSON if Supabase is empty or fails
+        _games = await _loadFromLocalJson();
+      }
 
       _enrichGamesData();
-
       _isLoaded = true;
       return _games!;
     } catch (e) {
-      print('Error loading games: $e');
-      return [];
+      print('Error loading games from Supabase: $e');
+
+      // Fallback to local JSON
+      try {
+        _games = await _loadFromLocalJson();
+        _enrichGamesData();
+        _isLoaded = true;
+        return _games!;
+      } catch (e2) {
+        print('Error loading games from local JSON: $e2');
+        return [];
+      }
     }
+  }
+
+  Future<List<Game>> _loadFromLocalJson() async {
+    final String jsonString = await rootBundle.loadString('assets/games-data.json');
+    final Map<String, dynamic> jsonData = json.decode(jsonString);
+    final List<dynamic> gamesJson = jsonData['games'] as List<dynamic>;
+    return gamesJson.map((json) => Game.fromJson(json as Map<String, dynamic>)).toList();
   }
 
   void _enrichGamesData() {

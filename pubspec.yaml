@@ -81,6 +81,12 @@ dependencies:
   uuid: ^4.3.3
   http: ^1.2.0
 
+  # Supabase
+  supabase_flutter: ^2.8.4
+
+  # Environment Variables
+  flutter_dotenv: ^5.2.1
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -102,6 +108,7 @@ flutter:
     - assets/images/
     - assets/images/game-previews/
     - assets/games-data.json
+    - .env
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images

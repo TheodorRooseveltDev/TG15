@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'dart:ui';
 import '../constants/constants.dart';
 import 'home_screen.dart';
 import 'games_screen.dart';
+import 'slot_screen.dart';
 import 'profile_screen.dart';
 
 class MainNavigation extends StatefulWidget {
@@ -32,6 +32,7 @@ class _MainNavigationState extends State<MainNavigation> with SingleTickerProvid
   List<Widget> get _screens => [
     HomeScreen(onNavigateToGames: () => _onTabTapped(1)),
     const GamesScreen(),
+    const SlotScreen(),
     const ProfileScreen(),
   ];
 
@@ -48,58 +49,34 @@ class _MainNavigationState extends State<MainNavigation> with SingleTickerProvid
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.backgroundPrimary,
-      extendBody: true,
+      extendBody: false,
       body: IndexedStack(index: _currentIndex, children: _screens),
-      bottomNavigationBar: Padding(
-        padding: const EdgeInsets.only(bottom: 24, left: 24, right: 24),
-        child: Container(
-          height: 72,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(40),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withOpacity(0.5),
-                blurRadius: 30,
-                offset: const Offset(0, 10),
-                spreadRadius: 0,
-              ),
-
-              BoxShadow(
-                color: AppColors.purplePrimary.withOpacity(0.25),
-                blurRadius: 40,
-                offset: const Offset(0, 5),
-                spreadRadius: -5,
-              ),
-
-              BoxShadow(color: AppColors.goldAccent.withOpacity(0.15), blurRadius: 50, spreadRadius: -10),
+      bottomNavigationBar: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [
+              AppColors.cardBackground,
+              AppColors.backgroundSecondary,
             ],
           ),
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(40),
-            child: BackdropFilter(
-              filter: ImageFilter.blur(sigmaX: 25, sigmaY: 25),
-              child: Container(
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
-                    colors: [
-                      AppColors.cardBackground.withOpacity(0.9),
-                      AppColors.backgroundSecondary.withOpacity(0.95),
-                    ],
-                  ),
-                  borderRadius: BorderRadius.circular(40),
-                  border: Border.all(width: 1.5, color: AppColors.purpleMuted.withOpacity(0.3)),
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    _buildNavItem(icon: Icons.home_rounded, label: 'Home', index: 0),
-                    _buildNavItem(icon: Icons.casino_rounded, label: 'Games', index: 1),
-                    _buildNavItem(icon: Icons.settings_rounded, label: 'Settings', index: 2),
-                  ],
-                ),
-              ),
+          border: Border(
+            top: BorderSide(width: 1, color: AppColors.goldPrimary.withOpacity(0.2)),
+          ),
+        ),
+        child: SafeArea(
+          top: false,
+          child: Padding(
+            padding: const EdgeInsets.only(top: 12, bottom: 8),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                _buildNavItem(icon: Icons.home_rounded, label: 'Home', index: 0),
+                _buildNavItem(icon: Icons.casino_rounded, label: 'Games', index: 1),
+                _buildNavItem(icon: Icons.gamepad_rounded, label: 'Slots', index: 2),
+                _buildNavItem(icon: Icons.settings_rounded, label: 'Settings', index: 3),
+              ],
             ),
           ),
         ),
@@ -114,38 +91,81 @@ class _MainNavigationState extends State<MainNavigation> with SingleTickerProvid
       child: GestureDetector(
         onTap: () => _onTabTapped(index),
         behavior: HitTestBehavior.opaque,
-        child: AnimatedContainer(
-          duration: const Duration(milliseconds: 250),
-          curve: Curves.easeOutCubic,
-          padding: const EdgeInsets.symmetric(vertical: 4),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              AnimatedContainer(
-                duration: const Duration(milliseconds: 250),
-                curve: Curves.easeOutCubic,
-                padding: EdgeInsets.all(isSelected ? 8 : 6),
-                decoration: BoxDecoration(
-                  color: isSelected ? AppColors.purplePrimary.withOpacity(0.2) : Colors.transparent,
-                  borderRadius: BorderRadius.circular(16),
-                  boxShadow: isSelected
-                      ? [BoxShadow(color: AppColors.purplePrimary.withOpacity(0.4), blurRadius: 15, spreadRadius: 0)]
-                      : null,
-                ),
-                child: AnimatedScale(
-                  scale: isSelected ? 1.05 : 1.0,
-                  duration: const Duration(milliseconds: 200),
-                  child: Icon(
-                    icon,
-                    size: 28,
-                    color: isSelected ? Colors.white : AppColors.purpleLight.withOpacity(0.5),
-                    shadows: isSelected ? [Shadow(color: AppColors.purplePrimary, blurRadius: 20)] : null,
-                  ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Container(
+              padding: const EdgeInsets.all(10),
+              decoration: BoxDecoration(
+                gradient: isSelected ? LinearGradient(
+                  colors: [
+                    AppColors.goldDark.withOpacity(0.3),
+                    AppColors.goldPrimary.withOpacity(0.15),
+                    AppColors.goldDark.withOpacity(0.3),
+                  ],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                ) : null,
+                borderRadius: BorderRadius.circular(14),
+                border: isSelected ? Border.all(
+                  width: 1,
+                  color: AppColors.goldPrimary.withOpacity(0.4),
+                ) : null,
+                boxShadow: isSelected
+                    ? [
+                        BoxShadow(
+                          color: AppColors.goldPrimary.withOpacity(0.3),
+                          blurRadius: 20,
+                          spreadRadius: 1,
+                        ),
+                      ]
+                    : null,
+              ),
+              child: ShaderMask(
+                shaderCallback: isSelected ? (bounds) => LinearGradient(
+                  colors: [
+                    AppColors.goldLight,
+                    AppColors.goldPrimary,
+                    AppColors.goldLight,
+                  ],
+                  stops: const [0.0, 0.5, 1.0],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                ).createShader(bounds) : (bounds) => LinearGradient(
+                  colors: [AppColors.secondaryText, AppColors.secondaryText],
+                ).createShader(bounds),
+                child: Icon(
+                  icon,
+                  size: 26,
+                  color: Colors.white,
                 ),
               ),
-            ],
-          ),
+            ),
+            const SizedBox(height: 6),
+            ShaderMask(
+              shaderCallback: isSelected ? (bounds) => LinearGradient(
+                colors: [
+                  AppColors.goldLight,
+                  AppColors.goldPrimary,
+                  AppColors.goldLight,
+                ],
+                stops: const [0.0, 0.5, 1.0],
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+              ).createShader(bounds) : (bounds) => LinearGradient(
+                colors: [AppColors.secondaryText, AppColors.secondaryText],
+              ).createShader(bounds),
+              child: Text(
+                label,
+                style: TextStyle(
+                  fontSize: 11,
+                  fontWeight: isSelected ? FontWeight.w600 : FontWeight.w400,
+                  color: Colors.white,
+                ),
+              ),
+            ),
+          ],
         ),
       ),
     );

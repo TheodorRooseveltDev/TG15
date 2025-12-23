@@ -1,59 +1,81 @@
 import 'package:flutter/material.dart';
 
 class AppColors {
-  static const Color backgroundPrimary = Color(0xFF0f0319);
-  static const Color backgroundSecondary = Color(0xFF1a0b2e);
-  static const Color cardBackground = Color(0xFF2d1b69);
+  // Backgrounds - Pure black
+  static const Color backgroundPrimary = Color(0xFF000000);
+  static const Color backgroundSecondary = Color(0xFF050505);
+  static const Color cardBackground = Color(0xFF0a0a0a);
 
   static const Color deepSpace = backgroundPrimary;
   static const Color cardDark = backgroundSecondary;
 
-  static const Color purplePrimary = Color(0xFF7c3aed); // purple-600 - Buttons, borders, accents
-  static const Color purpleSecondary = Color(0xFF6d28d9); // purple-700 - Gradients, hover states
-  static const Color purpleDark = Color(0xFF4c1d95); // purple-900 - Header gradient, deep accents
-  static const Color purpleLight = Color(0xFFa78bfa); // purple-400 - Secondary text, links
-  static const Color purpleMuted = Color(0xFF8b5cf6); // purple-500 - Borders with opacity
+  // Gold - Realistic metallic gold colors
+  static const Color goldLight = Color(0xFFF7E98E); // Highlight gold
+  static const Color goldPrimary = Color(0xFFD4Af37); // Classic gold
+  static const Color goldMid = Color(0xFFBF9B30); // Mid gold
+  static const Color goldDark = Color(0xFF996515); // Shadow gold
+  static const Color goldDeep = Color(0xFF704214); // Deep shadow
+  static const Color goldMuted = Color(0xFFC9A227);
 
-  static const Color tealPrimary = purplePrimary;
-  static const Color tealDark = purpleSecondary;
+  // Legacy purple names mapped to gold for compatibility
+  static const Color purplePrimary = goldPrimary;
+  static const Color purpleSecondary = goldDark;
+  static const Color purpleDark = Color(0xFF0a0a0a);
+  static const Color purpleLight = Color(0xFF6B7280); // Dark gray for secondary text
+  static const Color purpleMuted = goldMuted;
 
-  static const Color goldAccent = Color(0xFFfbbf24); // Gold/Yellow - Coin rewards, highlights, CTA buttons
-  static const Color orange = Color(0xFFf59e0b); // Gradients with gold, tournament badges
-  static const Color pink = Color(0xFFec4899); // Secondary buttons
-  static const Color pinkDark = Color(0xFFbe185d); // Secondary button gradients
+  static const Color tealPrimary = goldPrimary;
+  static const Color tealDark = goldDark;
 
-  static const Color badgeRed = Color(0xFFef4444); // LIVE badges
-  static const Color badgeBlue = Color(0xFF3b82f6); // DAILY badges
-  static const Color badgeOrange = Color(0xFFf97316); // MONTHLY badges
-  static const Color success = Color(0xFF22c55e); // Success states, prize text
+  static const Color goldAccent = goldLight;
+  static const Color orange = Color(0xFFf59e0b);
+  static const Color pink = Color(0xFFec4899);
+  static const Color pinkDark = Color(0xFFbe185d);
+
+  static const Color badgeRed = Color(0xFFef4444);
+  static const Color badgeBlue = Color(0xFF3b82f6);
+  static const Color badgeOrange = Color(0xFFf97316);
+  static const Color success = Color(0xFF22c55e);
 
   static const Color warning = orange;
   static const Color error = badgeRed;
   static const Color deleteRed = Color(0xFFef4444);
 
-  static const Color overlay = Color(0x99000000); // 60% opacity
+  static const Color overlay = Color(0x99000000);
 
   static const Color primaryText = Color(0xFFFFFFFF);
-  static const Color secondaryText = purpleLight; // #a78bfa
-  static const Color tertiaryText = Color(0xFFc4b5fd); // purple-300
-  static const Color accentText = purplePrimary;
+  static const Color secondaryText = Color(0xFF505050); // Dark gray
+  static const Color tertiaryText = Color(0xFF3a3a3a); // Darker gray
+  static const Color accentText = goldPrimary;
 
+  // Realistic metallic gold gradient - simulates light reflection
   static const LinearGradient primaryGradient = LinearGradient(
-    colors: [purplePrimary, purpleSecondary],
+    colors: [goldLight, goldPrimary, goldDark, goldPrimary, goldLight],
+    stops: [0.0, 0.3, 0.5, 0.7, 1.0],
     begin: Alignment.topLeft,
     end: Alignment.bottomRight,
   );
 
   static const LinearGradient headerGradient = LinearGradient(
-    colors: [purpleDark, purpleSecondary],
+    colors: [Color(0xFF0a0a0a), Color(0xFF000000)],
     begin: Alignment.topLeft,
     end: Alignment.bottomRight,
   );
 
+  // Real metallic gold texture gradient
   static const LinearGradient goldGradient = LinearGradient(
-    colors: [goldAccent, orange],
+    colors: [goldLight, goldPrimary, goldMid, goldDark, goldMid, goldPrimary, goldLight],
+    stops: [0.0, 0.15, 0.35, 0.5, 0.65, 0.85, 1.0],
     begin: Alignment.topLeft,
     end: Alignment.bottomRight,
+  );
+
+  // Simpler gold gradient for smaller elements
+  static const LinearGradient goldGradientSimple = LinearGradient(
+    colors: [goldLight, goldPrimary, goldDark],
+    stops: [0.0, 0.5, 1.0],
+    begin: Alignment.topCenter,
+    end: Alignment.bottomCenter,
   );
 
   static const LinearGradient pinkGradient = LinearGradient(
@@ -63,7 +85,7 @@ class AppColors {
   );
 
   static const LinearGradient cardOverlayGradient = LinearGradient(
-    colors: [Colors.transparent, Color(0xCC0f0319)],
+    colors: [Colors.transparent, Color(0xCC000000)],
     begin: Alignment.topCenter,
     end: Alignment.bottomCenter,
   );

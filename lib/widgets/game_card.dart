@@ -110,15 +110,36 @@ class GameCard extends StatelessWidget {
   }
 
   Widget _buildGameImage() {
-    if (game.animatedLogo != null) {
-      return AnimatedSvgLogo(assetPath: game.animatedLogo!, fit: BoxFit.cover, backgroundColor: Colors.black);
-    } else if (game.image.endsWith('.gif') || game.image.endsWith('.webp')) {
-      return Image.asset(
-        game.image,
-        fit: BoxFit.cover,
-        errorBuilder: (context, error, stackTrace) => _buildErrorWidget(),
-      );
-    } else if (game.image.startsWith('http')) {
+    // Prefer animated logo (GIF) if available
+    if (game.animatedLogo != null && game.animatedLogo!.isNotEmpty) {
+      final animatedUrl = game.animatedLogo!;
+      if (animatedUrl.startsWith('http')) {
+        // Network GIF
+        return CachedNetworkImage(
+          imageUrl: animatedUrl,
+          fit: BoxFit.cover,
+          placeholder: (context, url) => _buildImagePlaceholder(),
+          errorWidget: (context, url, error) => _buildStaticImage(),
+        );
+      } else if (animatedUrl.endsWith('.svg')) {
+        // Local SVG
+        return AnimatedSvgLogo(assetPath: animatedUrl, fit: BoxFit.cover, backgroundColor: Colors.black);
+      } else {
+        // Local GIF/asset
+        return Image.asset(
+          animatedUrl,
+          fit: BoxFit.cover,
+          errorBuilder: (context, error, stackTrace) => _buildStaticImage(),
+        );
+      }
+    }
+
+    // Fallback to static image
+    return _buildStaticImage();
+  }
+
+  Widget _buildStaticImage() {
+    if (game.image.startsWith('http')) {
       return CachedNetworkImage(
         imageUrl: game.image,
         fit: BoxFit.cover,

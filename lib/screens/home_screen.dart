@@ -1,4 +1,3 @@
-import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
@@ -18,29 +17,24 @@ class HomeScreen extends StatefulWidget {
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
+class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateMixin {
   final GamesService _gamesService = GamesService();
   List<Game> _featuredGames = [];
   List<Game> _allGames = [];
   bool _isLoading = true;
   late AnimationController _pulseController;
-  late AnimationController _glareController;
 
   @override
   void initState() {
     super.initState();
     _pulseController = AnimationController(vsync: this, duration: const Duration(milliseconds: 2000))
       ..repeat(reverse: true);
-
-    _glareController = AnimationController(vsync: this, duration: const Duration(milliseconds: 2500))..repeat();
-
     _loadGames();
   }
 
   @override
   void dispose() {
     _pulseController.dispose();
-    _glareController.dispose();
     super.dispose();
   }
 
@@ -80,6 +74,100 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
+                        // Tagline above hero - premium style with decorative lines
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(20, 70, 20, 20),
+                          child: Row(
+                            children: [
+                              // Left decorative line
+                              Expanded(
+                                child: Container(
+                                  height: 1,
+                                  decoration: BoxDecoration(
+                                    gradient: LinearGradient(
+                                      colors: [
+                                        Colors.transparent,
+                                        const Color(0xFFFFD54F).withOpacity(0.3),
+                                        const Color(0xFFFFD54F),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              // Left diamond
+                              Padding(
+                                padding: const EdgeInsets.symmetric(horizontal: 12),
+                                child: ShaderMask(
+                                  shaderCallback: (bounds) => const LinearGradient(
+                                    colors: [Color(0xFFFFF9C4), Color(0xFFFFD54F)],
+                                  ).createShader(bounds),
+                                  child: Transform.rotate(
+                                    angle: 0.785398, // 45 degrees
+                                    child: Container(
+                                      width: 6,
+                                      height: 6,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              // Main text
+                              ShaderMask(
+                                shaderCallback: (bounds) => const LinearGradient(
+                                  colors: [
+                                    Color(0xFFFFF9C4),
+                                    Color(0xFFFFE082),
+                                    Color(0xFFFFD54F),
+                                    Color(0xFFFFE082),
+                                    Color(0xFFFFF9C4),
+                                  ],
+                                  stops: [0.0, 0.25, 0.5, 0.75, 1.0],
+                                ).createShader(bounds),
+                                child: const Text(
+                                  'FEEL THE THRILL',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 13,
+                                    fontWeight: FontWeight.w600,
+                                    letterSpacing: 4,
+                                  ),
+                                ),
+                              ),
+                              // Right diamond
+                              Padding(
+                                padding: const EdgeInsets.symmetric(horizontal: 12),
+                                child: ShaderMask(
+                                  shaderCallback: (bounds) => const LinearGradient(
+                                    colors: [Color(0xFFFFF9C4), Color(0xFFFFD54F)],
+                                  ).createShader(bounds),
+                                  child: Transform.rotate(
+                                    angle: 0.785398,
+                                    child: Container(
+                                      width: 6,
+                                      height: 6,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              // Right decorative line
+                              Expanded(
+                                child: Container(
+                                  height: 1,
+                                  decoration: BoxDecoration(
+                                    gradient: LinearGradient(
+                                      colors: [
+                                        const Color(0xFFFFD54F),
+                                        const Color(0xFFFFD54F).withOpacity(0.3),
+                                        Colors.transparent,
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ).animate().fadeIn(delay: 100.ms).scale(begin: const Offset(0.8, 0.8)),
                         _buildHeroSection(),
                         const SizedBox(height: 48),
                         _buildHotGamesCarousel(),
@@ -117,227 +205,157 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
 
   Widget _buildHeroSection() {
     return Container(
-      padding: const EdgeInsets.fromLTRB(20, 60, 20, 0),
-      child: Stack(
-        clipBehavior: Clip.none,
-        children: [
-          Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(28),
-              boxShadow: [
-                BoxShadow(
-                  color: AppColors.purplePrimary.withOpacity(0.4),
-                  blurRadius: 40,
-                  spreadRadius: 0,
-                  offset: const Offset(0, 10),
-                ),
-                BoxShadow(color: Colors.black.withOpacity(0.5), blurRadius: 30, offset: const Offset(0, 15)),
-              ],
+      margin: const EdgeInsets.fromLTRB(20, 0, 20, 0),
+      height: 300,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(24),
+        border: Border.all(
+          color: AppColors.goldPrimary.withOpacity(0.4),
+          width: 1.5,
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: AppColors.goldPrimary.withOpacity(0.2),
+            blurRadius: 30,
+            spreadRadius: 0,
+          ),
+        ],
+      ),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(23),
+        child: Stack(
+          fit: StackFit.expand,
+          children: [
+            // Background Image
+            Image.asset(
+              'assets/images/herobg.png',
+              fit: BoxFit.cover,
             ),
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(28),
-              child: Stack(
+
+            // Dark gradient overlay - stronger at bottom
+            Container(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [
+                    Colors.transparent,
+                    Colors.black.withOpacity(0.4),
+                    Colors.black.withOpacity(0.85),
+                  ],
+                  stops: const [0.0, 0.4, 1.0],
+                ),
+              ),
+            ),
+
+            // Content
+            Padding(
+              padding: const EdgeInsets.all(24),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  ImageFiltered(
-                    imageFilter: ImageFilter.blur(sigmaX: 2, sigmaY: 2),
-                    child: Image.asset(
-                      'assets/images/herobg.png',
-                      width: double.infinity,
-                      height: 380,
-                      fit: BoxFit.cover,
+                  // Title - WHITE text
+                  const Text(
+                    'Premium\nCasino Games',
+                    style: TextStyle(
+                      fontSize: 38,
+                      fontWeight: FontWeight.w700,
+                      color: Colors.white,
+                      height: 1.1,
+                      letterSpacing: -0.5,
                     ),
-                  ),
+                  ).animate().fadeIn(delay: 300.ms).slideY(begin: 0.2),
 
-                  Positioned.fill(
-                    child: Container(
-                      decoration: BoxDecoration(
-                        gradient: LinearGradient(
-                          begin: Alignment.topCenter,
-                          end: Alignment.bottomCenter,
-                          stops: const [0.0, 0.5, 1.0],
-                          colors: [Colors.transparent, Colors.black.withOpacity(0.3), Colors.black.withOpacity(0.85)],
-                        ),
-                      ),
+                  const SizedBox(height: 10),
+
+                  // Subtitle
+                  Text(
+                    'No deposits. No purchases. Just play.',
+                    style: TextStyle(
+                      color: Colors.white.withOpacity(0.6),
+                      fontSize: 14,
+                      fontWeight: FontWeight.w400,
                     ),
-                  ),
+                  ).animate().fadeIn(delay: 400.ms),
 
-                  Positioned(
-                    top: -50,
-                    right: -50,
-                    child: Container(
-                      width: 150,
-                      height: 150,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        gradient: RadialGradient(
-                          colors: [AppColors.purplePrimary.withOpacity(0.3), Colors.transparent],
-                        ),
-                      ),
-                    ),
-                  ),
+                  const SizedBox(height: 20),
 
-                  Positioned(
-                    top: 0,
-                    left: 0,
-                    right: 0,
-                    bottom: 0,
-                    child: Padding(
-                      padding: const EdgeInsets.all(24),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          ShaderMask(
-                            shaderCallback: (bounds) =>
-                                const LinearGradient(colors: [Colors.white, Color(0xFFE0E0E0)]).createShader(bounds),
-                            child: Text(
-                              'Premium Casino Games',
-                              textAlign: TextAlign.left,
-                              style: TextStyle(
-                                fontSize: 44,
-                                fontWeight: FontWeight.w400,
-                                color: Colors.white,
-                                height: 1.1,
-                                letterSpacing: -0.5,
-                                shadows: [
-                                  Shadow(color: AppColors.goldAccent.withOpacity(0.5), blurRadius: 20),
-                                  Shadow(color: AppColors.purplePrimary.withOpacity(0.8), blurRadius: 30),
-                                  Shadow(
-                                    color: Colors.black.withOpacity(0.5),
-                                    blurRadius: 10,
-                                    offset: const Offset(0, 2),
-                                  ),
-                                ],
+                  // Play Now Button - more gold glow
+                  GestureDetector(
+                    onTap: () {
+                      HapticFeedback.mediumImpact();
+                      widget.onNavigateToGames?.call();
+                    },
+                    child: AnimatedBuilder(
+                      animation: _pulseController,
+                      builder: (context, child) {
+                        return Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
+                          decoration: BoxDecoration(
+                            gradient: LinearGradient(
+                              begin: Alignment.topLeft,
+                              end: Alignment.bottomRight,
+                              colors: [
+                                AppColors.goldLight,
+                                AppColors.goldPrimary,
+                                AppColors.goldMid,
+                                AppColors.goldDark,
+                                AppColors.goldMid,
+                                AppColors.goldPrimary,
+                              ],
+                              stops: const [0.0, 0.2, 0.4, 0.6, 0.8, 1.0],
+                            ),
+                            borderRadius: BorderRadius.circular(12),
+                            border: Border.all(
+                              color: AppColors.goldLight.withOpacity(0.6),
+                              width: 1.5,
+                            ),
+                            boxShadow: [
+                              BoxShadow(
+                                color: AppColors.goldPrimary.withOpacity(0.7 + _pulseController.value * 0.3),
+                                blurRadius: 30 + _pulseController.value * 20,
+                                spreadRadius: 3 + _pulseController.value * 3,
                               ),
-                            ),
-                          ).animate().fadeIn(delay: 300.ms, duration: 500.ms).slideY(begin: 0.2, delay: 300.ms),
-
-                          const SizedBox(height: 8),
-
-                          Text(
-                            'No deposits. No purchases. Just play.',
-                            style: TextStyle(
-                              color: Colors.white.withOpacity(0.9),
-                              fontSize: 16,
-                              fontWeight: FontWeight.w300,
-                              shadows: [Shadow(color: Colors.black.withOpacity(0.8), blurRadius: 8)],
-                            ),
-                          ).animate().fadeIn(delay: 400.ms, duration: 400.ms),
-
-                          const SizedBox(height: 40), // Space for button overflow
-                        ],
-                      ),
+                              BoxShadow(
+                                color: AppColors.goldLight.withOpacity(0.5),
+                                blurRadius: 15,
+                                offset: const Offset(0, -3),
+                              ),
+                            ],
+                          ),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: const [
+                              Icon(Icons.play_arrow_rounded, color: Colors.white, size: 24),
+                              SizedBox(width: 8),
+                              Text(
+                                'PLAY NOW',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w800,
+                                  letterSpacing: 1.5,
+                                  shadows: [
+                                    Shadow(
+                                      color: Colors.black54,
+                                      blurRadius: 4,
+                                      offset: Offset(0, 1),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                        );
+                      },
                     ),
-                  ),
+                  ).animate().fadeIn(delay: 500.ms).scale(begin: const Offset(0.9, 0.9)),
                 ],
               ),
             ),
-          ),
-
-          Positioned(
-            bottom: 24,
-            left: 24,
-            right: 24,
-            child: GestureDetector(
-              onTap: () {
-                HapticFeedback.mediumImpact();
-                widget.onNavigateToGames?.call();
-              },
-              child:
-                  AnimatedBuilder(
-                        animation: Listenable.merge([_pulseController, _glareController]),
-                        builder: (context, child) {
-                          return ClipRRect(
-                            borderRadius: BorderRadius.circular(30),
-                            child: CustomPaint(
-                              painter: _ButtonGlarePainter(glareAnimation: _glareController, borderRadius: 30),
-                              child: Container(
-                                padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 18),
-                                decoration: BoxDecoration(
-                                  gradient: LinearGradient(
-                                    begin: Alignment.topLeft,
-                                    end: Alignment.bottomRight,
-                                    colors: [AppColors.goldAccent, AppColors.orange, const Color(0xFFD4841C)],
-                                    stops: const [0.0, 0.5, 1.0],
-                                  ),
-                                  borderRadius: BorderRadius.circular(30),
-                                  border: Border.all(color: AppColors.goldAccent.withOpacity(0.8), width: 2.5),
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: AppColors.goldAccent.withOpacity(0.5 + _pulseController.value * 0.3),
-                                      blurRadius: 30 + _pulseController.value * 15,
-                                      spreadRadius: 5 + _pulseController.value * 5,
-                                    ),
-                                    BoxShadow(
-                                      color: AppColors.orange.withOpacity(0.4 + _pulseController.value * 0.2),
-                                      blurRadius: 40 + _pulseController.value * 10,
-                                      spreadRadius: 3 + _pulseController.value * 3,
-                                    ),
-                                    BoxShadow(
-                                      color: AppColors.purplePrimary.withOpacity(0.3),
-                                      blurRadius: 25,
-                                      spreadRadius: 2,
-                                    ),
-                                    BoxShadow(
-                                      color: AppColors.goldAccent.withOpacity(0.6),
-                                      blurRadius: 15,
-                                      offset: const Offset(0, -2),
-                                    ),
-                                    BoxShadow(
-                                      color: Colors.black.withOpacity(0.6),
-                                      blurRadius: 20,
-                                      offset: const Offset(0, 8),
-                                    ),
-                                  ],
-                                ),
-                                child: Row(
-                                  mainAxisSize: MainAxisSize.min,
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Container(
-                                      padding: const EdgeInsets.all(8),
-                                      decoration: BoxDecoration(
-                                        gradient: LinearGradient(
-                                          colors: [Colors.white.withOpacity(0.2), Colors.white.withOpacity(0.1)],
-                                        ),
-                                        shape: BoxShape.circle,
-                                        boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.3), blurRadius: 10)],
-                                      ),
-                                      child: Icon(Icons.play_arrow_rounded, color: Colors.white, size: 24),
-                                    ),
-                                    const SizedBox(width: 14),
-                                    Text(
-                                      'BROWSE ALL GAMES',
-                                      style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w800,
-                                        letterSpacing: 1,
-                                        shadows: [
-                                          Shadow(
-                                            color: Colors.black.withOpacity(0.5),
-                                            blurRadius: 5,
-                                            offset: const Offset(0, 2),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          );
-                        },
-                      )
-                      .animate()
-                      .fadeIn(delay: 500.ms, duration: 400.ms)
-                      .scale(begin: const Offset(0.9, 0.9), delay: 500.ms)
-                      .animate(onPlay: (controller) => controller.repeat(reverse: true))
-                      .shimmer(duration: 2000.ms)
-                      .scale(duration: 2000.ms, begin: const Offset(1.0, 1.0), end: const Offset(1.02, 1.02)),
-            ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -352,33 +370,56 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
           padding: const EdgeInsets.symmetric(horizontal: 20),
           child: Row(
             children: [
-              const Icon(Icons.local_fire_department_rounded, color: Colors.white, size: 20),
-              const SizedBox(width: 12),
-              const Text(
-                'Hot Games',
-                style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.w400),
+              ShaderMask(
+                shaderCallback: (bounds) => LinearGradient(
+                  colors: [AppColors.goldLight, AppColors.goldPrimary],
+                ).createShader(bounds),
+                child: const Icon(Icons.star_rounded, color: Colors.white, size: 24),
+              ),
+              const SizedBox(width: 10),
+              ShaderMask(
+                shaderCallback: (bounds) => LinearGradient(
+                  colors: [AppColors.goldLight, AppColors.goldPrimary, AppColors.goldLight],
+                  stops: const [0.0, 0.5, 1.0],
+                ).createShader(bounds),
+                child: const Text(
+                  'Top Picks',
+                  style: TextStyle(color: Colors.white, fontSize: 22, fontWeight: FontWeight.w700, letterSpacing: 0.5),
+                ),
               ),
               const Spacer(),
               GestureDetector(
                 onTap: widget.onNavigateToGames,
                 child: Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                   decoration: BoxDecoration(
-                    color: Colors.white.withOpacity(0.1),
+                    gradient: LinearGradient(
+                      colors: [
+                        AppColors.goldPrimary.withOpacity(0.15),
+                        AppColors.goldDark.withOpacity(0.1),
+                      ],
+                    ),
+                    border: Border.all(color: AppColors.goldPrimary.withOpacity(0.4), width: 1),
                     borderRadius: BorderRadius.circular(20),
                   ),
                   child: Row(
                     children: [
-                      Text(
-                        'See All',
-                        style: TextStyle(
-                          color: Colors.white.withOpacity(0.8),
-                          fontSize: 13,
-                          fontWeight: FontWeight.w600,
+                      ShaderMask(
+                        shaderCallback: (bounds) => LinearGradient(
+                          colors: [AppColors.goldLight, AppColors.goldPrimary],
+                        ).createShader(bounds),
+                        child: const Text(
+                          'View All',
+                          style: TextStyle(color: Colors.white, fontSize: 13, fontWeight: FontWeight.w600),
                         ),
                       ),
-                      const SizedBox(width: 4),
-                      Icon(Icons.arrow_forward_ios_rounded, color: Colors.white.withOpacity(0.8), size: 12),
+                      const SizedBox(width: 6),
+                      ShaderMask(
+                        shaderCallback: (bounds) => LinearGradient(
+                          colors: [AppColors.goldLight, AppColors.goldPrimary],
+                        ).createShader(bounds),
+                        child: const Icon(Icons.arrow_forward_rounded, color: Colors.white, size: 16),
+                      ),
                     ],
                   ),
                 ),
@@ -390,7 +431,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
         const SizedBox(height: 16),
 
         SizedBox(
-          height: 240,
+          height: 220,
           child: ListView.builder(
             scrollDirection: Axis.horizontal,
             padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -398,88 +439,196 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
             itemBuilder: (context, index) {
               final game = _featuredGames[index];
               return Padding(
-                padding: EdgeInsets.only(right: index < _featuredGames.length - 1 ? 12 : 0),
+                padding: EdgeInsets.only(right: index < _featuredGames.length - 1 ? 16 : 0),
                 child: GestureDetector(
                   onTap: () => _navigateToGame(game),
                   child: SizedBox(
-                    width: 140,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Expanded(
-                          child:
-                              Container(
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(16),
-                                      border: Border.all(color: AppColors.purpleMuted.withOpacity(0.3), width: 1.5),
-                                      boxShadow: [
-                                        BoxShadow(color: AppColors.purplePrimary.withOpacity(0.15), blurRadius: 12),
-                                      ],
+                    width: 160,
+                    child: Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(20),
+                        border: Border.all(
+                          width: 1.5,
+                          color: AppColors.goldPrimary.withOpacity(0.4),
+                        ),
+                        boxShadow: [
+                          BoxShadow(
+                            color: AppColors.goldPrimary.withOpacity(0.25),
+                            blurRadius: 20,
+                            spreadRadius: 0,
+                          ),
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.5),
+                            blurRadius: 15,
+                            offset: const Offset(0, 8),
+                          ),
+                        ],
+                      ),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(19),
+                        child: Stack(
+                          fit: StackFit.expand,
+                          children: [
+                            // Game Image
+                            game.image.startsWith('http')
+                                ? CachedNetworkImage(imageUrl: game.image, fit: BoxFit.cover)
+                                : Image.asset(game.image, fit: BoxFit.cover),
+
+                            // Premium gradient overlay
+                            Container(
+                              decoration: BoxDecoration(
+                                gradient: LinearGradient(
+                                  begin: Alignment.topCenter,
+                                  end: Alignment.bottomCenter,
+                                  colors: [
+                                    Colors.transparent,
+                                    Colors.black.withOpacity(0.3),
+                                    Colors.black.withOpacity(0.9),
+                                  ],
+                                  stops: const [0.0, 0.5, 1.0],
+                                ),
+                              ),
+                            ),
+
+                            // Gold shimmer edge at top
+                            Positioned(
+                              top: 0,
+                              left: 0,
+                              right: 0,
+                              child: Container(
+                                height: 2,
+                                decoration: BoxDecoration(
+                                  gradient: LinearGradient(
+                                    colors: [
+                                      Colors.transparent,
+                                      AppColors.goldLight.withOpacity(0.6),
+                                      AppColors.goldPrimary,
+                                      AppColors.goldLight.withOpacity(0.6),
+                                      Colors.transparent,
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+
+                            // Ranking number - large stylized number
+                            Positioned(
+                              top: 8,
+                              left: 8,
+                              child: ShaderMask(
+                                shaderCallback: (bounds) => const LinearGradient(
+                                  begin: Alignment.topCenter,
+                                  end: Alignment.bottomCenter,
+                                  colors: [
+                                    Color(0xFFFFF9C4), // Very bright gold/yellow
+                                    Color(0xFFFFD54F), // Bright gold
+                                    Color(0xFFFFCA28), // Medium bright gold
+                                    Color(0xFFD4AF37), // Classic gold
+                                  ],
+                                  stops: [0.0, 0.3, 0.6, 1.0],
+                                ).createShader(bounds),
+                                child: Text(
+                                  '#${index + 1}',
+                                  style: const TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 38,
+                                    fontWeight: FontWeight.w900,
+                                    fontStyle: FontStyle.italic,
+                                    height: 1,
+                                    shadows: [
+                                      Shadow(
+                                        color: Colors.black87,
+                                        blurRadius: 4,
+                                        offset: Offset(1, 2),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+
+                            // Play button overlay
+                            Center(
+                              child: Container(
+                                padding: const EdgeInsets.all(14),
+                                decoration: BoxDecoration(
+                                  gradient: LinearGradient(
+                                    begin: Alignment.topLeft,
+                                    end: Alignment.bottomRight,
+                                    colors: [
+                                      AppColors.goldLight.withOpacity(0.3),
+                                      AppColors.goldPrimary.withOpacity(0.2),
+                                      AppColors.goldDark.withOpacity(0.3),
+                                    ],
+                                  ),
+                                  shape: BoxShape.circle,
+                                  border: Border.all(
+                                    color: AppColors.goldPrimary.withOpacity(0.7),
+                                    width: 2,
+                                  ),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: AppColors.goldPrimary.withOpacity(0.4),
+                                      blurRadius: 15,
+                                      spreadRadius: 2,
                                     ),
-                                    child: ClipRRect(
-                                      borderRadius: BorderRadius.circular(14),
-                                      child: Stack(
-                                        fit: StackFit.expand,
-                                        children: [
-                                          game.image.startsWith('http')
-                                              ? CachedNetworkImage(imageUrl: game.image, fit: BoxFit.cover)
-                                              : Image.asset(game.image, fit: BoxFit.cover),
+                                  ],
+                                ),
+                                child: ShaderMask(
+                                  shaderCallback: (bounds) => LinearGradient(
+                                    colors: [AppColors.goldLight, AppColors.goldPrimary],
+                                  ).createShader(bounds),
+                                  child: const Icon(Icons.play_arrow_rounded, color: Colors.white, size: 26),
+                                ),
+                              ),
+                            ),
 
-                                          Container(
-                                            decoration: BoxDecoration(
-                                              gradient: LinearGradient(
-                                                begin: Alignment.topCenter,
-                                                end: Alignment.bottomCenter,
-                                                colors: [Colors.transparent, Colors.black.withOpacity(0.6)],
-                                              ),
-                                            ),
-                                          ),
-
-                                          Center(
-                                            child: Container(
-                                              padding: const EdgeInsets.all(10),
-                                              decoration: BoxDecoration(
-                                                color: Colors.white.withOpacity(0.2),
-                                                shape: BoxShape.circle,
-                                                border: Border.all(color: Colors.white.withOpacity(0.4), width: 2),
-                                              ),
-                                              child: const Icon(
-                                                Icons.play_arrow_rounded,
-                                                color: Colors.white,
-                                                size: 20,
-                                              ),
-                                            ),
-                                          ),
+                            // Bottom content
+                            Positioned(
+                              bottom: 0,
+                              left: 0,
+                              right: 0,
+                              child: Container(
+                                padding: const EdgeInsets.all(12),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      game.name,
+                                      style: const TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w700,
+                                        shadows: [
+                                          Shadow(color: Colors.black, blurRadius: 4),
                                         ],
                                       ),
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
                                     ),
-                                  )
-                                  .animate(onPlay: (controller) => controller.repeat(reverse: true))
-                                  .shimmer(
-                                    duration: 2000.ms,
-                                    delay: Duration(milliseconds: index * 200),
-                                  )
-                                  .scale(
-                                    duration: 2000.ms,
-                                    begin: const Offset(1.0, 1.0),
-                                    end: const Offset(1.02, 1.02),
-                                  ),
+                                    const SizedBox(height: 4),
+                                    ShaderMask(
+                                      shaderCallback: (bounds) => LinearGradient(
+                                        colors: [AppColors.goldLight, AppColors.goldPrimary],
+                                      ).createShader(bounds),
+                                      child: Text(
+                                        game.subtitle,
+                                        style: const TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 11,
+                                          fontWeight: FontWeight.w500,
+                                        ),
+                                        maxLines: 1,
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
-                        const SizedBox(height: 10),
-                        Text(
-                          game.name,
-                          style: const TextStyle(color: Colors.white, fontSize: 13, fontWeight: FontWeight.w600),
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                        const SizedBox(height: 2),
-                        Text(
-                          game.subtitle,
-                          style: TextStyle(color: AppColors.purpleLight.withOpacity(0.6), fontSize: 11),
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                      ],
+                      ),
                     ),
                   ),
                 ).animate().fadeIn(delay: (600 + index * 80).ms).slideX(begin: 0.2, delay: (600 + index * 80).ms),
@@ -506,22 +655,39 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
           padding: const EdgeInsets.symmetric(horizontal: 20),
           child: Row(
             children: [
-              const Icon(Icons.grid_view_rounded, color: Colors.white, size: 20),
+              ShaderMask(
+                shaderCallback: (bounds) => LinearGradient(
+                  colors: [AppColors.goldLight, AppColors.goldPrimary],
+                ).createShader(bounds),
+                child: const Icon(Icons.grid_view_rounded, color: Colors.white, size: 22),
+              ),
               const SizedBox(width: 12),
-              const Text(
-                'More Games',
-                style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.w700),
+              ShaderMask(
+                shaderCallback: (bounds) => LinearGradient(
+                  colors: [AppColors.goldLight, AppColors.goldPrimary, AppColors.goldLight],
+                  stops: const [0.0, 0.5, 1.0],
+                ).createShader(bounds),
+                child: const Text(
+                  'More Games',
+                  style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.w700),
+                ),
               ),
               const Spacer(),
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
                 decoration: BoxDecoration(
-                  color: Colors.white.withOpacity(0.1),
+                  color: AppColors.cardBackground,
                   borderRadius: BorderRadius.circular(20),
+                  border: Border.all(color: AppColors.goldPrimary.withOpacity(0.2), width: 1),
                 ),
-                child: Text(
-                  '${_allGames.length} games',
-                  style: TextStyle(color: Colors.white.withOpacity(0.8), fontSize: 13, fontWeight: FontWeight.w600),
+                child: ShaderMask(
+                  shaderCallback: (bounds) => LinearGradient(
+                    colors: [AppColors.goldLight, AppColors.goldPrimary],
+                  ).createShader(bounds),
+                  child: Text(
+                    '${_allGames.length} games',
+                    style: const TextStyle(color: Colors.white, fontSize: 13, fontWeight: FontWeight.w600),
+                  ),
                 ),
               ),
             ],
@@ -536,9 +702,9 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
           padding: const EdgeInsets.symmetric(horizontal: 20),
           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: isTablet ? 3 : 2,
-            childAspectRatio: 0.85,
-            crossAxisSpacing: 12,
-            mainAxisSpacing: 12,
+            childAspectRatio: 0.75,
+            crossAxisSpacing: 14,
+            mainAxisSpacing: 14,
           ),
           itemCount: otherGames.length,
           itemBuilder: (context, index) {
@@ -547,64 +713,178 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                   onTap: () => _navigateToGame(game),
                   child: Container(
                     decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(18),
-                      border: Border.all(color: AppColors.purpleMuted.withOpacity(0.25), width: 1.5),
+                      borderRadius: BorderRadius.circular(20),
+                      border: Border.all(
+                        color: AppColors.goldPrimary.withOpacity(0.35),
+                        width: 1.5,
+                      ),
                       boxShadow: [
                         BoxShadow(
-                          color: AppColors.purplePrimary.withOpacity(0.1),
+                          color: AppColors.goldPrimary.withOpacity(0.2),
+                          blurRadius: 20,
+                          spreadRadius: 0,
+                        ),
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.5),
                           blurRadius: 15,
-                          offset: const Offset(0, 5),
+                          offset: const Offset(0, 8),
                         ),
                       ],
                     ),
                     child: ClipRRect(
-                      borderRadius: BorderRadius.circular(18),
+                      borderRadius: BorderRadius.circular(19),
                       child: Stack(
                         fit: StackFit.expand,
                         children: [
+                          // Game image
                           game.image.startsWith('http')
                               ? CachedNetworkImage(imageUrl: game.image, fit: BoxFit.cover)
                               : Image.asset(game.image, fit: BoxFit.cover),
 
+                          // Premium gradient overlay
                           Container(
                             decoration: BoxDecoration(
                               gradient: LinearGradient(
                                 begin: Alignment.topCenter,
                                 end: Alignment.bottomCenter,
-                                colors: [Colors.transparent, Colors.black.withOpacity(0.6)],
+                                colors: [
+                                  Colors.transparent,
+                                  Colors.black.withOpacity(0.2),
+                                  Colors.black.withOpacity(0.85),
+                                ],
+                                stops: const [0.0, 0.4, 1.0],
                               ),
                             ),
                           ),
 
-                          Center(
-                            child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Container(
-                                  padding: const EdgeInsets.all(10),
-                                  decoration: BoxDecoration(
-                                    color: Colors.white.withOpacity(0.2),
-                                    shape: BoxShape.circle,
-                                    border: Border.all(color: Colors.white.withOpacity(0.4), width: 2),
-                                  ),
-                                  child: const Icon(Icons.play_arrow_rounded, color: Colors.white, size: 20),
+                          // Gold shimmer edge at top
+                          Positioned(
+                            top: 0,
+                            left: 0,
+                            right: 0,
+                            child: Container(
+                              height: 2,
+                              decoration: BoxDecoration(
+                                gradient: LinearGradient(
+                                  colors: [
+                                    Colors.transparent,
+                                    AppColors.goldLight.withOpacity(0.5),
+                                    AppColors.goldPrimary,
+                                    AppColors.goldLight.withOpacity(0.5),
+                                    Colors.transparent,
+                                  ],
                                 ),
-                                const SizedBox(height: 12),
-                                Padding(
-                                  padding: const EdgeInsets.symmetric(horizontal: 12),
-                                  child: Text(
+                              ),
+                            ),
+                          ),
+
+                          // Corner gold accent
+                          Positioned(
+                            top: 0,
+                            right: 0,
+                            child: Container(
+                              width: 40,
+                              height: 40,
+                              decoration: BoxDecoration(
+                                gradient: LinearGradient(
+                                  begin: Alignment.topRight,
+                                  end: Alignment.bottomLeft,
+                                  colors: [
+                                    AppColors.goldPrimary.withOpacity(0.3),
+                                    Colors.transparent,
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+
+                          // Play button
+                          Center(
+                            child: Container(
+                              padding: const EdgeInsets.all(16),
+                              decoration: BoxDecoration(
+                                gradient: LinearGradient(
+                                  begin: Alignment.topLeft,
+                                  end: Alignment.bottomRight,
+                                  colors: [
+                                    AppColors.goldLight.withOpacity(0.25),
+                                    AppColors.goldPrimary.withOpacity(0.15),
+                                    AppColors.goldDark.withOpacity(0.25),
+                                  ],
+                                ),
+                                shape: BoxShape.circle,
+                                border: Border.all(
+                                  color: AppColors.goldPrimary.withOpacity(0.6),
+                                  width: 2,
+                                ),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: AppColors.goldPrimary.withOpacity(0.35),
+                                    blurRadius: 20,
+                                    spreadRadius: 3,
+                                  ),
+                                ],
+                              ),
+                              child: ShaderMask(
+                                shaderCallback: (bounds) => LinearGradient(
+                                  colors: [AppColors.goldLight, AppColors.goldPrimary],
+                                ).createShader(bounds),
+                                child: const Icon(Icons.play_arrow_rounded, color: Colors.white, size: 28),
+                              ),
+                            ),
+                          ),
+
+                          // Bottom content with glass effect
+                          Positioned(
+                            bottom: 0,
+                            left: 0,
+                            right: 0,
+                            child: Container(
+                              padding: const EdgeInsets.all(14),
+                              decoration: BoxDecoration(
+                                gradient: LinearGradient(
+                                  begin: Alignment.topCenter,
+                                  end: Alignment.bottomCenter,
+                                  colors: [
+                                    Colors.transparent,
+                                    Colors.black.withOpacity(0.6),
+                                  ],
+                                ),
+                              ),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
                                     game.name,
                                     style: const TextStyle(
                                       color: Colors.white,
-                                      fontSize: 13,
-                                      fontWeight: FontWeight.w600,
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.w700,
+                                      shadows: [
+                                        Shadow(color: Colors.black, blurRadius: 6),
+                                      ],
                                     ),
-                                    maxLines: 2,
-                                    textAlign: TextAlign.center,
+                                    maxLines: 1,
                                     overflow: TextOverflow.ellipsis,
                                   ),
-                                ),
-                              ],
+                                  const SizedBox(height: 4),
+                                  ShaderMask(
+                                    shaderCallback: (bounds) => LinearGradient(
+                                      colors: [AppColors.goldLight, AppColors.goldPrimary],
+                                    ).createShader(bounds),
+                                    child: Text(
+                                      game.subtitle,
+                                      style: const TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 11,
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
                         ],
@@ -620,47 +900,4 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
       ],
     );
   }
-}
-
-class _ButtonGlarePainter extends CustomPainter {
-  final AnimationController glareAnimation;
-  final double borderRadius;
-
-  _ButtonGlarePainter({required this.glareAnimation, required this.borderRadius}) : super(repaint: glareAnimation);
-
-  @override
-  void paint(Canvas canvas, Size size) {
-    final progress = glareAnimation.value;
-
-    if (progress > 0.6) return; // 0.6 * 2.5s = 1.5s animation, 1s pause
-
-    final adjustedProgress = progress / 0.6; // Normalize to 0-1
-
-    final rect = Rect.fromLTWH(0, 0, size.width, size.height);
-    final rrect = RRect.fromRectAndRadius(rect, Radius.circular(borderRadius));
-
-    final glareStart = Offset(
-      -size.width * 0.3 + (size.width * 1.6 * adjustedProgress),
-      -size.height * 0.3 + (size.height * 1.6 * adjustedProgress),
-    );
-
-    final glareEnd = Offset(glareStart.dx + size.width * 0.3, glareStart.dy + size.height * 0.3);
-
-    final glareGradient = LinearGradient(
-      begin: Alignment.topLeft,
-      end: Alignment.bottomRight,
-      colors: [Colors.white.withOpacity(0), Colors.white.withOpacity(0.6), Colors.white.withOpacity(0)],
-      stops: const [0.0, 0.5, 1.0],
-    );
-
-    final glarePaint = Paint()
-      ..shader = glareGradient.createShader(Rect.fromPoints(glareStart, glareEnd))
-      ..style = PaintingStyle.stroke
-      ..strokeWidth = 3.0;
-
-    canvas.drawRRect(rrect, glarePaint);
-  }
-
-  @override
-  bool shouldRepaint(_ButtonGlarePainter oldDelegate) => true;
 }
