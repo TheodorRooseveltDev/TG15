@@ -52,7 +52,7 @@ class VIPGamingLoungeApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'VIP Gaming Lounge',
+      title: 'Royal Casino Slots Trial',
       debugShowCheckedModeBanner: false,
       theme: AppTheme.darkTheme,
 

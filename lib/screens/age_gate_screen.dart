@@ -119,16 +119,18 @@ class _AgeGateScreenState extends State<AgeGateScreen> with TickerProviderStateM
           const SizedBox(height: 8),
           Row(
             children: [
-              ShaderMask(
-                shaderCallback: (bounds) => LinearGradient(
-                  colors: [AppColors.goldLight, AppColors.goldPrimary],
-                ).createShader(bounds),
-                child: const Text(
-                  'These games are intended for an adult audience (18+).',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 14,
-                    fontWeight: FontWeight.w500,
+              Expanded(
+                child: ShaderMask(
+                  shaderCallback: (bounds) => LinearGradient(
+                    colors: [AppColors.goldLight, AppColors.goldPrimary],
+                  ).createShader(bounds),
+                  child: const Text(
+                    'These games are intended for an adult audience (18+).',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 14,
+                      fontWeight: FontWeight.w500,
+                    ),
                   ),
                 ),
               ),
