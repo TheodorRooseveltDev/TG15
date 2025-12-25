@@ -106,8 +106,6 @@ flutter:
   # Assets
   assets:
     - assets/images/
-    - assets/images/game-previews/
-    - assets/games-data.json
     - .env
 
   # An image asset can refer to one or more resolution-specific "variants", see
